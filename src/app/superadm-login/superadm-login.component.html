@@ -1,0 +1,38 @@
+<section class="main-section">
+    <div class="container main-container">
+       
+        <img src="assets/eplogo.png" class="center" style="height: 200px;width: 150px;"> <br><br>
+    
+       
+        <form #f="ngForm" (submit)="SubmitClick(f)">
+            <div class="row">
+                <div class="col-12">
+                     
+                    <div class="form-group">
+                       <label>UserName</label>&nbsp;<span class="text-danger">*</span>
+                       <input #txtusername="ngModel" ngModel type="email" name="txtusername" placeholder="Enter username" required  class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern">                   
+                       <div class="text-danger" *ngIf="f.submitted && txtusername.invalid">
+                        <span *ngIf="txtusername.errors.required">* Username Required</span> 
+                      </div>
+                    </div>
+                
+                   <div class="form-group">
+                    <label>Password</label>&nbsp; <span class="text-danger">*</span>
+                    <input #txtpassword="ngModel" ngModel type="password" name="txtpassword" placeholder="Enter password" required minlength="6" class="form-control"> 
+                    <div class="text-danger" *ngIf="f.submitted && txtpassword.invalid">
+                        <span *ngIf="txtpassword.errors.required">* Password Required</span>
+                        <span *ngIf="txtpassword.errors.minlength">Password must be 6 character</span>
+                       </div>
+                     </div>
+                    <br>
+                <div class="form-group">
+                     <button class="btn btn-success" style="background-color: #086d92;">Login</button>
+                 </div>
+                   
+                </div>
+            </div>
+    
+        </form>
+    </div>
+    </section>
+    

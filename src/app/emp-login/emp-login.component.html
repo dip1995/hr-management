@@ -1,0 +1,68 @@
+<!-- <div class="container">
+    <h2>Login Form</h2>
+    <form #f="ngForm" (submit)="SubmitClick(f.value)">
+        <div class="row">
+            <div class="col-xs-12">
+               <div class="form-group">
+                   <label>Name</label>
+                   <input #txtname="ngModel" ngModel type="text" name="txtname" required  class="form-control"> 
+               </div>
+               <div class="form-group">
+                <label>Email</label>
+                <input #txtemail="ngModel" ngModel type="email" name="txtemail" required class="form-control"> 
+             </div>
+             <div class="form-group">
+                <label>Mobile</label>
+                <input #txtmobile="ngModel" ngModel type="number" name="txtmobile" required class="form-control"> 
+             </div>
+             <div class="form-group">
+                 <button class="btn btn-success" [disabled]=f.invalid>Login</button>
+                  <button type="button" (click)="Signup()" class="btn btn-danger">Signup</button> -->
+             <!-- </div>
+               
+            </div>
+        </div>
+
+    </form>
+</div> --> -->
+
+
+<section class="main-section">
+    <div class="container main-container">
+       
+        <img src="assets/eplogo.png" class="center" style="height: 150px;width: 150px;"> <br><br>
+    
+       
+        <form #f="ngForm" (submit)="SubmitClick(f)">
+            <div class="row">
+                <div class="col-12">
+                     
+                    <div class="form-group">
+                       <label>username</label>&nbsp;<span class="text-danger">*</span>
+                       <input #txtusername="ngModel" ngModel type="email" name="txtusername" placeholder="Enter username" required  class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-pattern">                   
+                       <div class="text-danger" *ngIf="f.submitted && txtusername.invalid">
+                        <span *ngIf="txtusername.errors.required">* Username Required</span> 
+                      </div>
+                    </div>
+                
+                   <div class="form-group">
+                    <label>password</label>&nbsp; <span class="text-danger">*</span>
+                    <input #txtpassword="ngModel" ngModel type="password" name="txtpassword" placeholder="Enter password" required minlength="6" class="form-control"> 
+                    <div class="text-danger" *ngIf="f.submitted && txtpassword.invalid">
+                        <span *ngIf="txtpassword.errors.required">* Password Required</span>
+                        <span *ngIf="txtpassword.errors.minlength">Password must be 6 character</span>
+                       </div>
+                     </div>
+                    <br>
+                 
+                    <div class="form-group">
+                     <button class="btn btn-success" style="background-color: #086d92;">Login</button> 
+                    </div>
+                   
+                </div>
+            </div>
+    
+        </form>
+    </div>
+    </section>
+    

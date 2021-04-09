@@ -1,0 +1,53 @@
+<app-home></app-home>
+<br><br><br><br>
+<section class="main-section">
+  <div class="container-fluid main-container">
+   <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        
+    <button class="pull-right btn-small btn btn-primary block-btn" type="button" (click)="addItem()" style="background-color: #086d92;">Add</button>     
+   
+    <div class="col-sm-3">
+      <label for="date">Start Date</label>
+      <input type="date" name="date" formControlName="date" class="form-control">    
+    </div>      
+    <br>
+    
+    <div formArrayName="arr" *ngFor="let a of myForm.get('arr')['controls']; let i = index">     
+      <div [formGroupName]="i" style="margin-bottom: 10px;">
+    
+    
+        <div class="form-group row">                  
+    
+          <div class="col-sm-3">
+            <label for="starttime">Start Time:</label>
+            <input type="time" name="starttime" class="form-control" formControlName="starttime"> 
+            </div>
+    
+    
+            <div class="col-sm-3">
+            <label for="endtime">End Time:</label>
+            <input type="time" name="endtime" formControlName="endtime" class="form-control">
+            </div>
+    
+
+          <div class="col-sm-3">
+        <label for="moduleName">Module Name:</label>
+        <input type="text"  name="moduleName" formControlName="moduleName" class="form-control">
+       </div>
+
+       <div class="col-sm-3">
+        <label for="description">Description:</label>
+        <textarea name="description" formControlName="description" class="form-control"></textarea>
+        <button class="pull-right btn-small btn btn-primary block-btn" type="button" (click)="removeItem(i)" style="background-color: #086d92;" >x</button>
+      </div>
+       
+
+    </div> 
+    </div>
+    </div>
+
+    <button type="submit" class="btn btn-success" style="background-color: #086d92; margin-right: 2px;">Save</button>
+    <button type="button" name="button" class="btn-small btn btn-secondary" (click)="onCancel()">CANCEL</button>
+  </form>
+</div>
+</section>
