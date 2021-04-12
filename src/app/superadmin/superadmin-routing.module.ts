@@ -6,6 +6,7 @@ import { HrHolidaysComponent } from './hr-holidays/hr-holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { HrAuthGuard } from '../common-module/hr-auth.guard';
+import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
 
 const routes: Routes = [
     {
@@ -22,22 +23,27 @@ const routes: Routes = [
     {
       path : 'superadmin/hr-dashboard',
       component: DashboardComponent,
-      canActivate: [HrAuthGuard]
+      // canActivate: [HrAuthGuard]
+    },
+    {
+      path : 'superadmin/hr-employee',
+      component: HrEmployeeComponent,
+      // canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-daily-work',
       component: HrDailyWorkComponent,
-      canActivate: [HrAuthGuard]
+      // canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-leave-application',
       component: HrLeaveApplicationComponent,
-      canActivate: [HrAuthGuard]
+      // canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-holidays',
       component: HrHolidaysComponent,
-      canActivate: [HrAuthGuard]
+      // canActivate: [HrAuthGuard]
     },
 ];
 

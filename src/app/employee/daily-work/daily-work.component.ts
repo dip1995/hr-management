@@ -113,7 +113,7 @@ export class DailyWorkComponent implements OnInit {
   }
 
   onAdd(){
-  this.router.navigate(['detail']);
+  this.router.navigate(['daily-work-detail']);
   }
 
 }

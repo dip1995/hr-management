@@ -1,0 +1,28 @@
+<app-header></app-header>
+<section>
+<div class="container main-container">
+    <form #f="ngForm" (submit)="">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-6">
+                 <label for="txtName">Name:</label><span class="text-danger">*</span>
+                 <input #txtName="ngModel" ngModel type="text" name="txtName" class="form-control" required>
+                 <div class="text-danger" *ngIf="f.submitted && txtName.invalid">
+                    <span *ngIf="txtName.errors.required">Name Required</span>
+                </div>
+              </div>
+                <div class="col-sm-6">
+                 <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
+                     <input #txtMobile="ngModel" ngModel type="number" name="txtMobile" class="form-control" required pattern="\+91[0-9]{10}">
+                     <div class="text-danger" *ngIf="f.submitted && txtMobile.invalid">
+                        <span *ngIf="txtMobile.errors.required">Mobile Required</span>
+                        <span *ngIf="txtMobile.errors.pattern">Invalid Mobile</span>
+                    </div>
+                </div>
+
+         </div>
+         
+    </div>
+</form>
+</div>
+</section>

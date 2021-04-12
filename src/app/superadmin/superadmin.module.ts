@@ -10,17 +10,21 @@ import { HrHolidaysComponent } from './hr-holidays/hr-holidays.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { HrHeaderComponent } from './hr-header/hr-header.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
 
 
 @NgModule({
-  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent],
+  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
     CommonModuleModule,
-    SuperadminRoutingModule
+    SuperadminRoutingModule,
+    AgGridModule.withComponents([])
+
   ],
   exports: [
     LoginComponent,

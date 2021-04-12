@@ -1,25 +1,31 @@
 <app-hr-header></app-hr-header>
 <section class="home-section">
-  <!-- <div *ngIf="holiday">
-  <div class="container">
-    <h2 style="text-align: center;">Holidays</h2>
-    <div class="form-group">
-    <div class="row">
-      <div class="col-sm-12">
-        <label>Holiday Name:</label>
-        <input type="text" [(ngModel)]="holidayName" class="form-control">
-        <br>
-        <label>Holiday Date:</label>
-        <input type="date" [(ngModel)]="holidayDate" class="form-control">
+  <div *ngIf="holiday">
+    <div class="container">
+      <h2 style="text-align: center;">Holidays</h2>
+      <form #f="ngForm" (submit)="onSave(f.value)">
+      <div class="form-group">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Holiday Name:</label>
+          <input #txtholidayName="ngModel" ngModel type="text" name="txtholidayName" class="form-control" required>
+          <div class="text-danger" *ngIf="f.submitted && txtholidayName.invalid">
+            <span *ngIf="txtholidayName.errors.required">* Name Required</span>
+        </div>
+          <br>
+          <label>Holiday Date:</label>
+          <input type="date" #txtholidayDate="ngModel" ngModel name="txtholidayDate" class="form-control" required>
+          <div class="text-danger" *ngIf="f.submitted && txtholidayDate.invalid">
+            <span *ngIf="txtholidayDate.errors.required">* Date Required</span>
+        </div>
+        </div>
       </div>
-    </div>
-    <br>
-    <div>
-      <button type="submit" class="btn btn-success" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
-    </div>
+      <br>
+      <div>
+        <button type="submit" class="btn btn-success" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
+      </div> 
   </div>
-
-
+  </form>
   </div>
   </div>
 
@@ -45,7 +51,7 @@
         [rowData]="rowData"
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
-    </div> -->
+    </div>
 
 
 </section>

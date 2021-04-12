@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./hr-holidays.component.css']
 })
 export class HrHolidaysComponent implements OnInit {
-  holidayName;
-  holidayDate;
+  
+  data;
   holiday = false;
   selectYear;
 
@@ -98,6 +98,13 @@ export class HrHolidaysComponent implements OnInit {
   addHoliday(){
      this.holiday = true;
 
+  }
+
+  onSave(f){
+    if(f.valid){
+this.data = f.value;
+console.log(this.data);
+    }
   }
 
 }
