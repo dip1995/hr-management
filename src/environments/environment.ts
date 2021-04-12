@@ -1,9 +1,14 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false
+  production: false,
+  LOCAL_API_URL : 'http://localhost:8001',
+  LINK_URL : 'http://localhost:8000/#',
+  hr_api : 'http://localhost:8001',
+  mediaURL : "http://localhost:4201/assets/",
+  exportUrl : "http://localhost:8001/user_downloads",
+  SOCKET_ENDPOINT: 'http://localhost:4201/'
 };
 
 /*
