@@ -1,0 +1,37 @@
+<section class="main-section">
+  <div class="container main-container">
+    <img src="assets/eplogo.png" class="center"/> <br/><br/>
+    <form [formGroup]="HRLoginForm" (ngSubmit)="hrLogin()" class="mb-20">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="text-muted" for="exampleInputEmail1">Username <span class="text-danger">*</span></label>
+            <span class="pull-right">
+              <div *ngIf="isSubmit && HRLoginForm.controls.username.errors?.required" role="alert">
+                <div class="text-danger" ng-message="required"> Username Required</div>
+              </div>
+            </span>
+            <input [ngClass]="{'has-error':isSubmit && HRLoginForm.controls.username.errors?.required}" type="text" class="form-control" required formControlName="username" placeholder="username">
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="text-muted" for="exampleInputEmail1">Password <span class="text-danger">*</span></label>
+            <span class="pull-right">
+              <div *ngIf="isSubmit && HRLoginForm.controls.password.errors?.required" role="alert">
+                <div class="text-danger" ng-message="required"> Password Required</div>
+              </div>
+            </span>
+            <input [ngClass]="{'has-error':isSubmit && HRLoginForm.controls.password.errors?.required}" type="password" class="form-control" required formControlName="password" placeholder="password">
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <button class="btn btn-medium btn-primary" href="#" role="button" type="submit">LOGIN</button>
+        </div>
+        <div class="col-sm-12" *ngIf="loginError" style="margin-top: 20px;">
+          <div class="alert-validation alert-danger">{{loginErrorMessage}}</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

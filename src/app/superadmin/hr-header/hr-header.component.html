@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white py-0">
+  <div class="container">
+    <a class="navbar-brand" href="">
+      <img src="assets/eplogo.png" style="width: auto; height: 66px;" class="logo header_logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link px-3 py-4" routerLink="/superadmin/hr-dashboard">Dashboard</a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link px-3 py-4" routerLink="/superadmin/hr-daily-work">Daily Work</a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link px-3 py-4" routerLink="/superadmin/hr-leave-application">Leave Application</a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link px-3 py-4" routerLink="/superadmin/hr-holidays">Holidays</a>
+        </li>
+
+        <li class="nav-item dropdown pad-left-10 border-transparent">
+          <a class="nav-link dropdown-toggle pad-0" id="navbarDropdown" href="#" data-toggle="dropdown" aria-expanded="false" routerLink="#">
+            <div class="admin-name ng-binding">
+              HR
+            </div>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown" role="menu">
+            <li><a class="dropdown-item" (click)="logoutHR()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

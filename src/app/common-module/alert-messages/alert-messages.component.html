@@ -1,0 +1,15 @@
+<div class="modal fade" tabindex="-1" role="dialog"  id="showSuccessMessage" style="margin-top: 10px;position: fixed;bottom: 0px;right: 5px;z-index: 9999;">
+   <div class="modal-dialog modal-alert modalTop25" role="document">
+   <div class="modal-content">
+       <div class="modal-body modalBodyPadding">
+           <p>{{message}}</p>
+       </div>
+       <div class="modal-footer table_all_side_border">
+         <!-- <button class="btn btn-primary"  data-dismiss="modal" type="button" (click)="close()" *ngIf="!navigationEvent">OK</button> -->
+         <button class="btn-small btn btn-primary"  data-dismiss="modal" type="button" data-dismiss="modal" *ngIf="!navigationEvent" #closeAlertModelEvent>OK</button>
+         <button class="btn-small btn btn-primary" data-dismiss="modal" type="button" *ngIf="navigationEvent" (click)="navigateToNext()" #closeAlertModelEvent>OK</button>
+
+       </div>
+   </div>
+   </div>
+</div>
