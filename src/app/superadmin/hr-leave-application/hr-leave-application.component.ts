@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-hr-leave-application',
@@ -6,10 +7,42 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hr-leave-application.component.css']
 })
 export class HrLeaveApplicationComponent implements OnInit {
+  data;
+  selectMonth;
+ dateFromDisable;
+ dateToDisable;
+ todayDate = new Date();
 
-  constructor() { }
+ constructor() { }
 
   ngOnInit(): void {
+
   }
 
+  dateFrom(){
+    let year =  this.todayDate.getFullYear();
+    let month = (this.todayDate.getMonth() > 9 ? this.todayDate.getMonth()+1 : "0"+(this.todayDate.getMonth()+1));
+    let day = (this.todayDate.getDate() > 9 ? this.todayDate.getDate() : "0"+(this.todayDate.getDate()));
+    this.dateFromDisable = year + "-" + month + "-" + day;
+    console.log(this.dateFromDisable);
+
+    return this.dateFromDisable;
+
+
+  }
+
+  toFrom(){
+    this.dateToDisable = this.todayDate;
+  }
+
+
+  submitLeaveApplication(obj){
+
+    this.data = obj;
+    console.log(obj);
+  }
+
+  onCancel(f: NgForm){
+   f.form.reset();
+  }
 }

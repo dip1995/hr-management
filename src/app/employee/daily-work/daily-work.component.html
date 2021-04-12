@@ -1,6 +1,6 @@
 <app-header></app-header>
 <section class="home-section">
-  <!-- <div style="width:15%;margin-left:5px;">
+  <div style="width:15%;margin-left:5px;">
     <label>Select Month</label>
     <select [(ngModel)]="selectMonth">
     <option value=''>--Select Month--</option>
@@ -19,7 +19,7 @@
     </select>
     </div>
 
-  <button class="pull-right btn-small btn btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="onAdd()">ADD</button>
+  <button class="pull-right btn btn-medium btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="onAdd()">ADD</button>
   <br><br>
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
       <ag-grid-angular
@@ -34,5 +34,5 @@
         [rowData]="rowData"
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
-    </div> -->
+    </div>
 </section>

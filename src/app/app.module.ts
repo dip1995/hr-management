@@ -11,6 +11,8 @@ import { CommonModuleModule } from './common-module/common-module.module';
 import { SuperadminModule } from './superadmin/superadmin.module';
 import { EmployeeModule } from './employee/employee.module';
 import { RouterModule, Routes } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+
 
 const routes: Routes = [
     {
@@ -38,9 +40,10 @@ const routes: Routes = [
     CommonModuleModule,
     CommonModule,
     SuperadminModule,
-    EmployeeModule
+    EmployeeModule,
+    
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
