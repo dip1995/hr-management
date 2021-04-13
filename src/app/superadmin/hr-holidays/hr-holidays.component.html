@@ -1,43 +1,50 @@
 <app-hr-header></app-hr-header>
 <section class="home-section">
-  <div *ngIf="holiday">
-    <div class="container">
-      <h2 style="text-align: center;">Holidays</h2>
-      <form #f="ngForm" (submit)="onSave(f.value)">
-      <div class="form-group">
-      <div class="row">
-        <div class="col-sm-12">
-          <label>Holiday Name:</label>
-          <input #txtholidayName="ngModel" ngModel type="text" name="txtholidayName" class="form-control" required>
-          <div class="text-danger" *ngIf="f.submitted && txtholidayName.invalid">
-            <span *ngIf="txtholidayName.errors.required">* Name Required</span>
-        </div>
+  <div class="row mb-20 margin-0" *ngIf="holiday">
+    <div class="col-sm-12 rounded-border">
+      <h2 style="text-align: center;">Add/Update Holiday</h2>
+      <form #f="ngForm" (submit)="addUpdateBusinessHolidays(f.value)">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Holiday Name:</label>
+              <input #txtholidayName="ngModel" ngModel type="text" name="txtholidayName" class="form-control" required>
+              <div class="text-danger" *ngIf="f.submitted && txtholidayName.invalid">
+                <span *ngIf="txtholidayName.errors.required">* Name Required</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label>Holiday Date:</label>
+              <input type="date" #txtholidayDate="ngModel" ngModel name="txtholidayDate" class="form-control" required>
+              <div class="text-danger" *ngIf="f.submitted && txtholidayDate.invalid">
+                <span *ngIf="txtholidayDate.errors.required">* Date Required</span>
+              </div>
+            </div>
+          </div>
           <br>
-          <label>Holiday Date:</label>
-          <input type="date" #txtholidayDate="ngModel" ngModel name="txtholidayDate" class="form-control" required>
-          <div class="text-danger" *ngIf="f.submitted && txtholidayDate.invalid">
-            <span *ngIf="txtholidayDate.errors.required">* Date Required</span>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <button type="submit" class="btn btn-medium btn-primary">Save</button>
+            </div>
+          </div>
         </div>
-        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="d-inline-block mr-10">Select Year:</label>
+        <select [(ngModel)]="selectYear" class="form-control d-inline-block" style="width:auto;min-width:200px;">
+          <option>2021</option>
+        </select>
       </div>
-      <br>
-      <div>
-        <button type="submit" class="btn btn-success" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
-      </div> 
+    </div>
+    <div class="col-sm-8">
+      <button class="pull-right btn btn-primary" tabindex="0" (click)="addHoliday()">Add Holiday</button>
+    </div>
   </div>
-  </form>
-  </div>
-  </div>
-
-  <div class="dropdown">
-    <label>Select Year:</label>
-     <select [(ngModel)]="selectYear">
-       <option>2021</option>
-     </select>
-   </div>
-
-  <button class="pull-right btn btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="addHoliday()">Add Holiday</button>
-  <br><br>
+  <!-- <br><br> -->
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
       <ag-grid-angular
         #agGrid
@@ -51,7 +58,5 @@
         [rowData]="rowData"
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
-    </div>
-
-
+  </div>
 </section>
