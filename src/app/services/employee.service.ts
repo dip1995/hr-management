@@ -30,8 +30,32 @@ export class EmployeeService {
     return this.http.post<any>(this.local_url+'/api/logout/logout',body);
   }
 
-  getVeevaAccountAndUserFields(body:any) : Observable<any> {
-    return this.http.get<any>(this.local_url+'/api/veeva/getVeevaAccountAndUserFields',{ params: body});
+  getEmployeeDetailsById(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getEmployeeDetailsById',{ params: body});
+  }
+
+  getWorkingMonthsList(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getWorkingMonthsList',{ params: body});
+  }
+
+  getEmployeesDailyWorksheetData(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getEmployeesDailyWorksheetData',{ params: body});
+  }
+
+  getEmployeesDailyWorkByDate(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getEmployeesDailyWorkByDate',{ params: body});
+  }
+
+  addUpdateDailyWorkData(body:any) : Observable<any> {
+    return this.http.post<any>(this.local_url+'/api/employee/addUpdateDailyWorkData',body);
+  }
+
+  addUpdateLeaveApplication(body:any) : Observable<any> {
+    return this.http.post<any>(this.local_url+'/api/employee/addUpdateLeaveApplication',body);
+  }
+
+  updatePassword(body:any) : Observable<any> {
+    return this.http.post<any>(this.local_url+'/api/employee/updatePassword',body);
   }
 
 }

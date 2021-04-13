@@ -103,3 +103,6 @@ ul.navbar-nav a.nav-link:hover {
 .border-transparent a.nav-link:hover{
   border-color: transparent !important;
 }
+.router-link-active{
+  border-color: #086D92 !important;
+}

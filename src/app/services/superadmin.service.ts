@@ -31,9 +31,49 @@ export class SuperadminService {
     return this.http.post<any>(this.local_url+'/api/logout/logout',body);
   }
 
-  getVeevaAccountAndUserFields(body:any) : Observable<any> {
+  getEmployeeList(body:any) : Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getVeevaAccountAndUserFields',{ params: body});
+    return this.http.get<any>(this.local_url+'/api/superadmin/getEmployeeList',{ params: body});
+  }
+
+  addUpdateEmployeeDetails(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/addUpdateEmployeeDetails',body);
+  }
+
+  endEmployeeSession(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/endEmployeeSession',body);
+  }
+
+  approveLeaveApplication(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/approveLeaveApplication',body);
+  }
+
+  getAllEmployeeReportCard(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(this.local_url+'/api/superadmin/getAllEmployeeReportCard',{ params: body});
+  }
+
+  uploadZipDocument(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/uploadZipDocument',body);
+  }
+
+  addUpdateBusinessHolidays(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/addUpdateBusinessHolidays',body);
+  }
+
+  deleteBusinessHolidays(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/deleteBusinessHolidays',body);
+  }
+
+  getBusinessHolidayList(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(this.local_url+'/api/superadmin/getBusinessHolidayList',{ params: body});
   }
 
 }

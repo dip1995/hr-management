@@ -6,7 +6,7 @@
 <!-- <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="endSessionModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -26,98 +26,99 @@
   </div>
 </div>
    <!-- </div> -->
-  
+   <div class="row mb-20 margin-0" *ngIf="addUpdateEmployee">
+     <div class="col-sm-12 rounded-border">
+       <br/>
+       <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
+       <br/>
+       <form #f="ngForm" (submit)="addUpdateEmployeeDetails(f.value)">
+         <div class="form-group row">
+           <div class="col-sm-6">
+             <label>Name:</label><span class="text-danger">*</span>
+             <input #name="ngModel" ngModel type="text" name="name" class="form-control" required>
+             <div class="text-danger" *ngIf="f.submitted && name.invalid">
+               <span *ngIf="name.errors.required">Name Required</span>
+             </div>
+           </div>
+           <div class="col-sm-6">
+             <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
+             <input #mobile="ngModel" ngModel type="number" name="mobile" class="form-control" required pattern="\+91[0-9]{10}">
+             <div class="text-danger" *ngIf="f.submitted && mobile.invalid">
+               <span *ngIf="mobile.errors.required">Mobile Required</span>
+               <span *ngIf="mobile.errors.pattern">Invalid Mobile</span>
+             </div>
+           </div>
+         </div>
+         <div class="form-group row">
+           <div class="col-sm-6">
+             <label>Email:</label><span class="text-danger">*</span>
+             <input #email="ngModel" ngModel type="text" name="email" class="form-control" required>
+             <div class="text-danger" *ngIf="f.submitted && email.invalid">
+               <span *ngIf="email.errors.required">Email Required</span>
+             </div>
+           </div>
+           <div class="col-sm-6">
+             <label >Salary:</label><span class="text-danger">*</span>
+             <input #salary="ngModel" ngModel type="number" name="salary" class="form-control" required>
+             <div class="text-danger" *ngIf="f.submitted && salary.invalid">
+               <span *ngIf="salary.errors.required">Salary Required</span>
+             </div>
+           </div>
+         </div>
+         <div class="form-group row">
+           <div class="col-sm-6">
+             <label >Joining Date:</label><span class="text-danger">*</span>
+             <input type="date" #start_date="ngModel" ngModel name="start_date" class="form-control" required>
+             <div class="text-danger" *ngIf="f.submitted && start_date.invalid">
+               <span *ngIf="start_date.errors.required">Joining date required</span>
+             </div>
+           </div>
+           <div class="col-sm-6">
+             <label >Increament Date:</label><span class="text-danger">*</span>
+             <input type="date" #increament_date="ngModel" ngModel name="increament_date" class="form-control" required>
+             <div class="text-danger" *ngIf="f.submitted && increament_date.invalid">
+               <span *ngIf="increament_date.errors.required">Increament date required</span>
+             </div>
+           </div>
+         </div>
+         <div class="form-group row">
+           <div class="col-sm-6">
+             <label>Leave Credit:</label>
+             <input #leave_credit="ngModel" ngModel type="number" name="leave_credit" class="form-control" required min="0" value="0">
+             <div class="text-danger" *ngIf="f.submitted && leave_credit.invalid">
+               <span *ngIf="leave_credit.errors.required"> required</span>
+             </div>
+           </div>
+           <div class="col-sm-6">
+ 						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
+             <div class="import_file_upload">
+               <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
+               <input type="file" class="form-control" accept="application/octet-stream" flow-btn="">
+             </div>
+             <!-- <div class="ng-scope" flow-transfers=""> -->
+               <!-- ngRepeat: file in transfers -->
+             <!-- </div> -->
+ 		      </div>
+         </div>
+         <br>
+         <div class="row">
+           <div class="col-sm-12 text-center">
+             <button type="submit" class="btn btn-medium btn-primary" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
+           </div>
+         </div>
+         <br/>
+       </form>
+     </div>
+   </div>
   <div class="row">
-  <div class="col-sm-12">
-    <button class="pull-right btn btn-primary" tabindex="0" (click)="addEmployee()">Add Employee</button>
-    <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete()">DELETE</button>
-    <button class="pull-right btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">End Session</button>
-  </div>
-</div>
-  <br>
-  <div class="row mb-20 margin-0" *ngIf="addUpdateEmployee">
-    <div class="col-sm-12 rounded-border">
-      <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
-      <form #f="ngForm" (submit)="addUpdateEmployeeDetails(f.value)">
-        <div class="form-group row">
-          <div class="col-sm-6">
-            <label>Name:</label><span class="text-danger">*</span>
-            <input #name="ngModel" ngModel type="text" name="name" class="form-control" required>
-            <div class="text-danger" *ngIf="f.submitted && name.invalid">
-              <span *ngIf="name.errors.required">Name Required</span>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
-            <input #mobile="ngModel" ngModel type="number" name="mobile" class="form-control" required pattern="\+91[0-9]{10}">
-            <div class="text-danger" *ngIf="f.submitted && mobile.invalid">
-              <span *ngIf="mobile.errors.required">Mobile Required</span>
-              <span *ngIf="mobile.errors.pattern">Invalid Mobile</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-6">
-            <label>Email:</label><span class="text-danger">*</span>
-            <input #email="ngModel" ngModel type="text" name="email" class="form-control" required>
-            <div class="text-danger" *ngIf="f.submitted && email.invalid">
-              <span *ngIf="email.errors.required">Email Required</span>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <label >Salary:</label><span class="text-danger">*</span>
-            <input #salary="ngModel" ngModel type="number" name="salary" class="form-control" required>
-            <div class="text-danger" *ngIf="f.submitted && salary.invalid">
-              <span *ngIf="salary.errors.required">Salary Required</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-6">
-            <label >Joining Date:</label><span class="text-danger">*</span>
-            <input type="date" #start_date="ngModel" ngModel name="start_date" class="form-control" required>
-            <div class="text-danger" *ngIf="f.submitted && start_date.invalid">
-              <span *ngIf="start_date.errors.required">Joining date required</span>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <label >Increament Date:</label><span class="text-danger">*</span>
-            <input type="date" #increament_date="ngModel" ngModel name="increament_date" class="form-control" required>
-            <div class="text-danger" *ngIf="f.submitted && increament_date.invalid">
-              <span *ngIf="increament_date.errors.required">Increament date required</span>
-            </div>
-          </div>
-        </div>
-        <div class="form-group row">
-          <div class="col-sm-6">
-            <label>Leave Credit:</label>
-            <input #leave_credit="ngModel" ngModel type="number" name="leave_credit" class="form-control" required min="0" value="0">
-            <div class="text-danger" *ngIf="f.submitted && leave_credit.invalid">
-              <span *ngIf="leave_credit.errors.required"> required</span>
-            </div>
-          </div>
-          <div class="col-sm-6">
-						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
-            <div class="import_file_upload">
-              <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
-              <input type="file" class="form-control" accept="application/octet-stream" flow-btn="">
-            </div>
-            <!-- <div class="ng-scope" flow-transfers=""> -->
-              <!-- ngRepeat: file in transfers -->
-            <!-- </div> -->
-		      </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-sm-12 text-center">
-            <button type="submit" class="btn btn-medium btn-primary" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
-          </div>
-        </div>
-        <br/>
-      </form>
+    <div class="col-sm-12">
+      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete()">DELETE</button>
+      <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
+      <button class="pull-right btn btn-primary mr-6" type="button" data-toggle="modal" data-target="#endSessionModal">End Session</button>
     </div>
-    </div> 
- 
+  </div>
+  <br>
+
     <div style="height: 100%; box-sizing: border-box; width: 100%;">
     <ag-grid-angular
       #agGrid

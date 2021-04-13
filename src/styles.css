@@ -60,11 +60,17 @@ body{
 .mr-10 {
   margin-right: 10px;
 }
+.mr-6 {
+  margin-right: 6px;
+}
 .form-control {
   font-size: 14px;
 }
 .navbar .dropdown-item{
   cursor: pointer;
+}
+.navbar .nav-link{
+  font-size: 14px;
 }
 .home-section{
   padding-top: 100px;
@@ -78,4 +84,7 @@ body{
 }
 .margin-0{
   margin: 0px;
+}
+.form-group label{
+  font-size: 12px;
 }
