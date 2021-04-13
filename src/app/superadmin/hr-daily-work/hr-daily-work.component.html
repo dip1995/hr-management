@@ -1,39 +1,39 @@
 <app-hr-header></app-hr-header>
 <section class="home-section" type="dropdown">
-    <div style="width:15%;margin-left:5px;">
-      <label>Select Month</label>
-      <select [(ngModel)]="selectMonth">
-      <!-- <option value=''>--Select Month--</option> -->
-      <option selected value='1'>Janaury</option>
-      <option value='2'>February</option>
-      <option value='3'>March</option>
-      <option value='4'>April</option>
-      <option value='5'>May</option>
-      <option value='6'>June</option>
-      <option value='7'>July</option>
-      <option value='8'>August</option>
-      <option value='9'>September</option>
-      <option value='10'>October</option>
-      <option value='11'>November</option>
-      <option value='12'>December</option>
-      </select>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="d-inline-block mr-10">Select Month:</label>
+        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
+          <option selected value='1'>Janaury</option>
+          <option value='2'>February</option>
+          <option value='3'>March</option>
+          <option value='4'>April</option>
+          <option value='5'>May</option>
+          <option value='6'>June</option>
+          <option value='7'>July</option>
+          <option value='8'>August</option>
+          <option value='9'>September</option>
+          <option value='10'>October</option>
+          <option value='11'>November</option>
+          <option value='12'>December</option>
+        </select>
       </div>
-  
-    <!-- <button class="pull-right btn btn-medium btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="onAdd()">ADD</button> -->
-    <br><br>
-    <div style="height: 100%; box-sizing: border-box; width: 100%;">
-        <ag-grid-angular
-          #agGrid
-          style="width: 100%; height: 500px;"
-          id="myGrid"
-          class="ag-theme-alpine"
-          [columnDefs]="columnDefs"
-          [defaultColDef]="defaultColDef"
-          [defaultColGroupDef]="defaultColGroupDef"
-          [columnTypes]="columnTypes"
-          [rowData]="rowData"
-          (gridReady)="onGridReady($event)"
-        ></ag-grid-angular>
-      </div>
-  </section>
-  
+    </div>
+  </div>
+
+  <div style="height: 100%; box-sizing: border-box; width: 100%;">
+      <ag-grid-angular
+        #agGrid
+        style="width: 100%; height: 500px;"
+        id="myGrid"
+        class="ag-theme-alpine"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [defaultColGroupDef]="defaultColGroupDef"
+        [columnTypes]="columnTypes"
+        [rowData]="rowData"
+        (gridReady)="onGridReady($event)"
+      ></ag-grid-angular>
+  </div>
+</section>
