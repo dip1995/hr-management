@@ -1,5 +1,40 @@
 <app-hr-header></app-hr-header>
+
 <section class="home-section">
+  <!-- <div *ngIf="session"> -->
+    <!-- Trigger the modal with a button -->
+<!-- <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+   <!-- </div> -->
+  
+  <div class="row">
+  <div class="col-sm-12">
+    <button class="pull-right btn btn-primary" tabindex="0" (click)="addEmployee()">Add Employee</button>
+    <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete()">DELETE</button>
+    <button class="pull-right btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">End Session</button>
+  </div>
+</div>
+  <br>
   <div class="row mb-20 margin-0" *ngIf="addUpdateEmployee">
     <div class="col-sm-12 rounded-border">
       <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
@@ -30,7 +65,7 @@
             </div>
           </div>
           <div class="col-sm-6">
-            <label for="txtMobile">Salary:</label><span class="text-danger">*</span>
+            <label >Salary:</label><span class="text-danger">*</span>
             <input #salary="ngModel" ngModel type="number" name="salary" class="form-control" required>
             <div class="text-danger" *ngIf="f.submitted && salary.invalid">
               <span *ngIf="salary.errors.required">Salary Required</span>
@@ -39,14 +74,14 @@
         </div>
         <div class="form-group row">
           <div class="col-sm-6">
-            <label for="txtMobile">Joining Date:</label><span class="text-danger">*</span>
+            <label >Joining Date:</label><span class="text-danger">*</span>
             <input type="date" #start_date="ngModel" ngModel name="start_date" class="form-control" required>
             <div class="text-danger" *ngIf="f.submitted && start_date.invalid">
               <span *ngIf="start_date.errors.required">Joining date required</span>
             </div>
           </div>
           <div class="col-sm-6">
-            <label for="txtMobile">Increament Date:</label><span class="text-danger">*</span>
+            <label >Increament Date:</label><span class="text-danger">*</span>
             <input type="date" #increament_date="ngModel" ngModel name="increament_date" class="form-control" required>
             <div class="text-danger" *ngIf="f.submitted && increament_date.invalid">
               <span *ngIf="increament_date.errors.required">Increament date required</span>
@@ -57,6 +92,9 @@
           <div class="col-sm-6">
             <label>Leave Credit:</label>
             <input #leave_credit="ngModel" ngModel type="number" name="leave_credit" class="form-control" required min="0" value="0">
+            <div class="text-danger" *ngIf="f.submitted && leave_credit.invalid">
+              <span *ngIf="leave_credit.errors.required"> required</span>
+            </div>
           </div>
           <div class="col-sm-6">
 						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
@@ -78,6 +116,21 @@
         <br/>
       </form>
     </div>
-  </div>
-  
-</section>
+    </div> 
+ 
+    <div style="height: 100%; box-sizing: border-box; width: 100%;">
+    <ag-grid-angular
+      #agGrid
+      style="width: 100%; height: 500px;"
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [defaultColGroupDef]="defaultColGroupDef"
+      [columnTypes]="columnTypes"
+      [rowData]="rowData"
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+</div>
+
+ </section>
