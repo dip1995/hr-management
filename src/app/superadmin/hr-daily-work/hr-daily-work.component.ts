@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-
+// declare var $:any;
+// import * as $ from "jquery";
 
 @Component({
   selector: 'app-hr-daily-work',
@@ -21,16 +22,19 @@ export class HrDailyWorkComponent implements OnInit {
   columnTypes;
   rowData: [];
   dateParts;
+  rowSelection;
   day;
   month;
   year;
   cellDate;
+  // autoGroupColumnDef;
 
  constructor(private router : Router) {
     this.columnDefs = [
      {
        headerName: 'Sno',
-       field: 'Sno',
+       field: 'Sno', 
+      //  checkboxSelection:true,
      },
      {
        headerName: 'Date',
@@ -64,17 +68,28 @@ export class HrDailyWorkComponent implements OnInit {
        field: 'year',
        type: 'numberColumn',
      },
+ ]
 
-     ]
+ this.defaultColDef = {
+  width: 150,
+  editable: true,
+  filter: 'agTextColumnFilter',
+  floatingFilter: true,
+  resizable: true,
+};
 
-   this.defaultColDef = {
-     width: 150,
-     editable: true,
-     filter: 'agTextColumnFilter',
-     floatingFilter: true,
-     resizable: true,
-   };
-   this.defaultColGroupDef = { marryChildren: true };
+
+//  this.autoGroupColumnDef = {
+//   headerName: 'Sno',
+//   field: 'Sno',
+//   minWidth: 250,
+//   cellRenderer: 'agGroupCellRenderer',
+//   cellRendererParams: { checkbox: true },
+// };
+   
+   this.rowSelection = 'multiple',
+  
+    this.defaultColGroupDef = { marryChildren: true };
    this.columnTypes = {
      numberColumn: {
        width: 130,
@@ -101,20 +116,23 @@ export class HrDailyWorkComponent implements OnInit {
        },
      },
    };
- }
+  }
 
  onGridReady(params) {
    this.gridApi = params.api;
    this.gridColumnApi = params.columnApi;
-
-
  }
 
- ngOnInit(): void {
- }
+ 
 
-//  onAdd(){
-//  this.router.navigate(['daily-work-detail']);
-//  }
+ngOnInit(): void {
+}
+
+// onTeamRowSelected(event) {
+
+//   $(function () {
+//   $('[data-toggle="popover"]').popover()
+//   })
+//   }
 
 }

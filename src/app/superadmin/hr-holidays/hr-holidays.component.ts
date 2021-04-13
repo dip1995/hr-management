@@ -100,6 +100,10 @@ export class HrHolidaysComponent implements OnInit {
 
   }
 
+  onDelete(){
+    
+  }
+
   addUpdateBusinessHolidays(f){
     if(f.valid){
       this.data = f.value;
