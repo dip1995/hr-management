@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if(this.cookieService.get('superadmin')){
       console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin1'))
-      this.router.navigate(['/superadmin/hr-dashboard']);
+      this.router.navigate(['/superadmin/hr-employee']);
     }
   }
 
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
           var coockie_expire = new Date(date_now+days_90_ms);
           let opts = {expires:coockie_expire};
           this.cookieService.set('superadmin',JSON.stringify(cookieData),opts);
-          this.router.navigate(['/superadmin/hr-dashboard']);
+          this.router.navigate(['/superadmin/hr-employee']);
         }else{
           this.loginError = true;
           this.loginErrorMessage = res.message;

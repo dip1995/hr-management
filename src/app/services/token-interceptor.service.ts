@@ -34,7 +34,12 @@ export class TokenInterceptorService  implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler):
   Observable<HttpEvent<any>> {
-    let user_type = request.body.user_type;
+    let user_type = '';
+    if(request.method == 'GET'){
+      user_type = request.params.get('user_type');
+    }else{
+      user_type = request.body.user_type; 
+    }
     let newHeaders = request.headers;
     // check user type and set token accordingly
     if(user_type == 'superadmin'){

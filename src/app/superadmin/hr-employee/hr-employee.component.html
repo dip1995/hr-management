@@ -93,7 +93,8 @@
  						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
              <div class="import_file_upload">
                <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
-               <input type="file" class="form-control" accept="application/octet-stream" flow-btn="">
+               <input type="file" #document="ngModel" ngModel class="form-control" accept="application/octet-stream" flow-btn="">
+               <!-- (change)="uploadFileToServer($event)" -->
              </div>
              <!-- <div class="ng-scope" flow-transfers=""> -->
                <!-- ngRepeat: file in transfers -->
