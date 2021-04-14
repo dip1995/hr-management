@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { HrHeaderComponent } from './hr-header/hr-header.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
+// import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,8 +24,8 @@ import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
     CommonModule,
     CommonModuleModule,
     SuperadminRoutingModule,
-    AgGridModule.withComponents([])
-
+    AgGridModule.withComponents([]),
+    // HttpClientModule
   ],
   exports: [
     LoginComponent,

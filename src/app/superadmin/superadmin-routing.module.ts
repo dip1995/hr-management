@@ -23,27 +23,27 @@ const routes: Routes = [
     {
       path : 'superadmin/hr-dashboard',
       component: DashboardComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-employee',
       component: HrEmployeeComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-daily-work',
       component: HrDailyWorkComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-leave-application',
       component: HrLeaveApplicationComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-holidays',
       component: HrHolidaysComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
 ];
 

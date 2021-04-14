@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { SuperadminService } from 'src/app/services/superadmin.service';
+import { RequestOptions, Headers, Http } from '@angular/http';
 
 @Component({
   selector: 'app-hr-employee',
@@ -9,8 +14,12 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
   styleUrls: ['./hr-employee.component.css']
 })
 export class HrEmployeeComponent implements OnInit {
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
+  isSubmit:any=false;
+  employeeError:any = false;
+  employeeErrorMessage:any = "";
   addUpdateEmployee:boolean = false;
-   session:boolean = false;
+  
    gridApi;
    gridColumnApi;
 
@@ -24,8 +33,9 @@ export class HrEmployeeComponent implements OnInit {
    month;
    year;
    cellDate;
-
-  constructor(private router : Router) {
+   employee_data;
+  constructor(private router : Router,private superadminService : SuperadminService,
+    private cookieService : CookieService) {
     this.columnDefs = [
       {
         headerName: 'Name',
@@ -115,21 +125,90 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.cookieService.get('superadmin')){
+      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
+      // this.router.navigate(['/superadmin/hr-employee']);
+      this.hrEmployeeList();
+    }
   }
 
   addEmployee(){
     this.addUpdateEmployee = true;
   }
 
-  addUpdateEmployeeDetails(){
+  //  uploadFileToServer(event) {
+  //   let fileList: FileList = event.target.files;
+  //   if (fileList.length > 0) {
+  //     let file: File = fileList[0];
+  //     let formData: FormData = new FormData();
+  //     formData.append('uploadFile', file, file.name);
+  //     formData.append('fileType', 'zip');
+  //     let headers = new Headers();
+  //     headers.append('Accept', 'application/json');
+  //     let options = new RequestOptions({ headers: headers });
+  //     this.superadminService.uploadZipDocument(options).subscribe(res => {
+  //       console.log(res);
+        
+  //     })
+  //   }
+  // } 
+
+  addUpdateEmployeeDetails(f:NgForm){
+    this.isSubmit = true;
+    this.employee_data = f;
+    if(f.status == "VALID"){
+      this.superadminService.addUpdateEmployeeDetails(this.employee_data).subscribe(res => {
+       console.log(res);
+       
+        if(res.status){
+          this.isSubmit = false;
+          f.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }
   }
 
-  endSession(){
-   this.session = true;
-  }
+  // onSave(empId:number,name:string,mobile:number,email:string,salary:number,start_date:number,increament_date:number,leave_credit:number,Document:string){
+  //   this.superadminService.addUpdateEmployeeDetails(empId).subscribe(res => {
+  //       name =  res.name;
+  //       mobile =  res.mobile
+  //       email = res.email;
+  //       salary = res.salary;
+  //       start_date = res.start_date;
+  //       increament_date = res.increament_date;
+  //       leave_credit = res.leave_credit;
+  //       document = res.document;
+  //     })
+  // }
+  
 
   onDelete(){
+  }
+
+
+  hrEmployeeList(){
+    
+     this.employee_data = {};
+      this.superadminService.getEmployeeList(this.employee_data).subscribe(res => {
+        if(res.status){
+          console.log(res.data);
+          
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }
+  
+
+    alertSuccessErrorMsg(status,message,navigationEvent){
+      this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+    }
+  
 
   }
 
-}
+  
+ 

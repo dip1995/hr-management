@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { SuperadminService } from 'src/app/services/superadmin.service';
 
 @Component({
   selector: 'app-hr-holidays',
@@ -7,6 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./hr-holidays.component.css']
 })
 export class HrHolidaysComponent implements OnInit {
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
+  isSubmit:any=false;
+  hrHolidayError:any = false;
+  hrHolidayErrorMessage:any = "";
 
   data;
   holiday = false;
@@ -25,7 +33,8 @@ export class HrHolidaysComponent implements OnInit {
   year;
   cellDate;
 
-  constructor(private router : Router) {
+  constructor(private router : Router,private superadminService : SuperadminService,
+    private cookieService : CookieService) {
    this.columnDefs = [
      {
        headerName: 'Sno',
@@ -93,6 +102,11 @@ export class HrHolidaysComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.cookieService.get('superadmin')){
+      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
+      // this.router.navigate(['/superadmin/hr-employee']);
+      // this.hrEmployeeList();
+    }
   }
 
   addHoliday(){
@@ -100,15 +114,52 @@ export class HrHolidaysComponent implements OnInit {
 
   }
 
-  onDelete(){
-    
+  onDelete(f){
+    this.isSubmit = true;
+    let holiday_data = f.taget.id;
+    if(f.status == "VALID"){
+      this.superadminService.deleteBusinessHolidays(holiday_data).subscribe(res => {
+        if(res.status){
+          this.isSubmit = false;
+          f.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    } 
   }
 
-  addUpdateBusinessHolidays(f){
-    if(f.valid){
-      this.data = f.value;
-      console.log(this.data);
+  addUpdateBusinessHolidays(f:NgForm){
+    this.isSubmit = true;
+    let holiday_data = f.value;
+    if(f.status == "VALID"){
+      this.superadminService.addUpdateBusinessHolidays(holiday_data).subscribe(res => {
+        if(res.status){
+          this.isSubmit = false;
+          f.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
     }
   }
+
+   hrHolidayList(){
+    let holiday_data = {};
+    this.superadminService.getBusinessHolidayList(holiday_data).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+   }
+
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+  }
+
 
 }

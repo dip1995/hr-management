@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { SuperadminService } from 'src/app/services/superadmin.service';
 
 @Component({
   selector: 'app-hr-leave-application',
@@ -9,6 +13,10 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
   styleUrls: ['./hr-leave-application.component.css']
 })
 export class HrLeaveApplicationComponent implements OnInit {
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
+  isSubmit:any=false;
+  leaveError:any = false;
+  leaveErrorMessage:any = "";
 
   gridApi;
   gridColumnApi;
@@ -24,7 +32,8 @@ export class HrLeaveApplicationComponent implements OnInit {
   year;
   cellDate;
 
- constructor(private router : Router) {
+ constructor(private router : Router,private superadminService : SuperadminService,
+  private cookieService : CookieService) {
    this.columnDefs = [
      {
        headerName: 'Name',
@@ -99,7 +108,30 @@ export class HrLeaveApplicationComponent implements OnInit {
  }
 
   ngOnInit(){
+    if(this.cookieService.get('superadmin')){
+      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
+    }
 
   }
+
+  approveLeaveApplication(f){
+    this.isSubmit = true;
+    let leaveApplication_data = f.target.value;
+    if(f.status == "VALID"){
+      this.superadminService.approveLeaveApplication(leaveApplication_data).subscribe(res => {
+        if(res.status){
+          this.isSubmit = false;
+          f.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }
+  }
  
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+  }
+
 }

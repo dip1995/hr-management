@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -77,15 +77,6 @@ export class HrDailyWorkComponent implements OnInit {
   floatingFilter: true,
   resizable: true,
 };
-
-
-//  this.autoGroupColumnDef = {
-//   headerName: 'Sno',
-//   field: 'Sno',
-//   minWidth: 250,
-//   cellRenderer: 'agGroupCellRenderer',
-//   cellRendererParams: { checkbox: true },
-// };
    
    this.rowSelection = 'multiple',
   
@@ -126,13 +117,7 @@ export class HrDailyWorkComponent implements OnInit {
  
 
 ngOnInit(): void {
+
 }
-
-// onTeamRowSelected(event) {
-
-//   $(function () {
-//   $('[data-toggle="popover"]').popover()
-//   })
-//   }
 
 }
