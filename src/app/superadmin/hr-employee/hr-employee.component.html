@@ -100,8 +100,9 @@
  						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
              <div class="import_file_upload">
                <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
-               <input type="file" #file="ngModel" ngModel class="form-control" accept="" (change)="uploadFile($event,f)" placeholder="Upload Document">
-             </div>
+               <input type="file" #file="ngModel" ngModel id="file-upload" class="form-control" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" (change)="uploadFile($event,f)" placeholder="Upload Document">
+               <div id="file-upload-filename"></div>
+              </div>
  		       </div>
          </div>
          <div class="form-group row">
@@ -144,7 +145,7 @@
    </div>
   <div class="row">
     <div class="col-sm-12">
-      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete()">DELETE</button>
+      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="deleteEmployee()">DELETE</button>
       <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
       <button class="pull-right btn btn-primary mr-6" type="button" (click)="openEndSessionModal()">End Session</button>
     </div>
@@ -152,7 +153,8 @@
   <br>
 
     <div style="height: 100%; box-sizing: border-box; width: 100%;">
-    <ag-grid-angular
+   
+      <ag-grid-angular
       #agGrid
       style="width: 100%; height: 500px;"
       id="myGrid"
@@ -161,7 +163,7 @@
       [defaultColDef]="defaultColDef"
       [defaultColGroupDef]="defaultColGroupDef"
       [columnTypes]="columnTypes"
-      [rowData]="rowData"
+      [rowData]="employee_data1"
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
 </div>

@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { EmployeeService } from 'src/app/services/employee.service';
+declare var $:any;
 
 @Component({
   selector: 'app-daily-work',
@@ -9,6 +13,11 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
   styleUrls: ['./daily-work.component.css']
 })
 export class DailyWorkComponent implements OnInit {
+
+  isSubmit:any=false;
+  daily_work_Error:any = false;
+  daily_work_ErrorMessage:any = "";
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
 
   selectMonth;
    gridApi;
@@ -24,8 +33,9 @@ export class DailyWorkComponent implements OnInit {
    month;
    year;
    cellDate;
-
-  constructor(private router : Router) {
+   dailyWork_data = [];
+  constructor(private router : Router, private employeeService : EmployeeService,
+    private cookieService : CookieService) {
     this.columnDefs = [
       {
         headerName: 'Sno',
@@ -110,10 +120,44 @@ export class DailyWorkComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  this.dailyWorkData();
   }
 
-  onAdd(){
-  this.router.navigate(['daily-work-detail']);
+  addUpdateDailyWorkData(myForm){
+    this.isSubmit = true;
+      this.dailyWork_data = myForm.value;
+    if(myForm.status == "VALID"){
+      this.employeeService.employeeLogin(this.dailyWork_data).subscribe(res => {
+        if(res.status){
+          this.dailyWorkData();
+          this.isSubmit = false;
+          myForm.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }
+   this.router.navigate(['daily-work-detail']);
+  }
+
+  dailyWorkData(){
+    let obj = {};
+    this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
+      console.log(res.data);
+      if(res.status){
+        console.log(res.data);  
+
+        this.dailyWork_data = res.data;
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+
+    });
+  }
+
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }
 
 }

@@ -41,7 +41,7 @@ export class LeaveApplicationComponent implements OnInit {
     console.log(obj);
   }
 
-  onCancel(f: NgForm){
+  cancelLeaveApplication(f: NgForm){
    f.form.reset();
   }
 }

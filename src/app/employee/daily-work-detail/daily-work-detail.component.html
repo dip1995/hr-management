@@ -2,9 +2,9 @@
 <br><br><br><br>
 <section class="main-section">
   <div class="container-fluid main-container">
-   <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+   <form [formGroup]="myForm" (ngSubmit)="saveDailyWorkDetail()">
         
-    <button class="pull-right btn btn-medium btn-primary block-btn" type="button" (click)="addItem()" style="background-color: #086d92;">Add</button>     
+    <button class="pull-right btn btn-medium btn-primary block-btn" type="button" style="background-color: #086d92;" (click)="addDailyWorkDetail()">Add</button>     
     <br>
     <div class="col-3">
       <label for="date">Start Date</label>
@@ -38,7 +38,7 @@
        <div class="col-sm-3">
         <label for="description">Description:</label>
         <textarea name="description" formControlName="description" class="form-control"></textarea>
-        <button class="pull-right btn btn-small btn-primary block-btn" type="button" (click)="removeItem(i)" style="background-color: #086d92;" >x</button>
+        <button class="pull-right btn btn-small btn-primary block-btn" type="button" (click)="removeDailyWorkDetail(i)" style="background-color: #086d92;" >x</button>
       </div>
        
 
@@ -47,7 +47,7 @@
     </div>
 
     <button type="submit" class="btn btn-medium btn-success" style="background-color: #086d92; margin-right: 2px;">Save</button>
-    <button type="button" name="button" class="btn-small btn btn-secondary" (click)="onCancel()">CANCEL</button>
+    <button type="button" name="button" class="btn-small btn btn-secondary" (click)="cancelDailyWorkDetail()">CANCEL</button>
   </form>
 </div>
 </section>

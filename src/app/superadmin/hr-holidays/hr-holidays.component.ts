@@ -32,19 +32,21 @@ export class HrHolidaysComponent implements OnInit {
   month;
   year;
   cellDate;
-
+  holiday_data1 = [];
   constructor(private router : Router,private superadminService : SuperadminService,
     private cookieService : CookieService) {
    this.columnDefs = [
      {
        headerName: 'Sno',
        field: 'Sno',
+       valueGetter: "node.rowIndex + 1",
      },
      {
        headerName: 'Date',
        field: 'date',
-       type: ['dateColumn', 'nonEditableColumn'],
+       type: ['dateColumn'],
        width: 220,
+       filter: "agTextColumnFilter",
      },
      {
        headerName: 'Day',
@@ -52,7 +54,7 @@ export class HrHolidaysComponent implements OnInit {
      },
      {
        headerName: 'Holiday/Events',
-       field: 'Holiday/Events',
+       field: 'name',
        // type: 'numberColumn',
      },
 
@@ -130,6 +132,7 @@ export class HrHolidaysComponent implements OnInit {
     if(f.status == "VALID"){
       this.superadminService.addUpdateBusinessHolidays(holiday_data).subscribe(res => {
         if(res.status){
+          this.hrHolidayList()
           this.isSubmit = false;
           this.holiday = false;
           f.reset();
@@ -146,6 +149,7 @@ export class HrHolidaysComponent implements OnInit {
     this.superadminService.getBusinessHolidayList(holiday_data).subscribe(res => {
       if(res.status){
         console.log(res.data);
+        this.holiday_data1 = res.data;
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -157,8 +161,9 @@ export class HrHolidaysComponent implements OnInit {
    this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
      if(res.status){
        console.log(res.data);
+       this.holiday_data1 = res.data;
      }else{
-       // this.alertSuccessErrorMsg(res.status, res.message,false);
+       this.alertSuccessErrorMsg(res.status, res.message,false);
      }
    });
   }
