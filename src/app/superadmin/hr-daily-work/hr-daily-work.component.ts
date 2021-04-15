@@ -29,7 +29,7 @@ export class HrDailyWorkComponent implements OnInit {
   month;
   year;
   cellDate;
-  // autoGroupColumnDef;
+  daily_work_data = [];
 
  constructor(private router : Router,private superadminService : SuperadminService) {
     this.columnDefs = [
@@ -125,6 +125,7 @@ export class HrDailyWorkComponent implements OnInit {
     let obj = {};
     this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
+        this.daily_work_data = res.data;
         console.log(res.data);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -136,6 +137,7 @@ export class HrDailyWorkComponent implements OnInit {
     let obj = {};
     this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
       if(res.status){
+        this.daily_work_data = res.data;
         console.log(res.data);
       }else{
         // this.alertSuccessErrorMsg(res.status, res.message,false);

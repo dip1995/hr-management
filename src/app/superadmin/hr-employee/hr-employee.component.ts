@@ -37,48 +37,49 @@ export class HrEmployeeComponent implements OnInit {
    year;
    cellDate;
    employee_data;
+   employee_data1 = [];
   constructor(private router : Router,private superadminService : SuperadminService,
     private cookieService : CookieService) {
     this.columnDefs = [
       {
         headerName: 'Name',
-        field: 'Name',
+        field: 'name',
       },
       {
         headerName: 'Mobile',
-        field: 'Mobile',
+        field: 'mobile',
         type: 'numberColumn',
       },
       {
         headerName: 'Email',
-        field: 'Email',
+        field: 'email',
 
       },
       {
         headerName: 'Salary',
-        field: 'Salary',
-        type: 'numberColumn',
-      },
-      {
-        headerName: 'Leave Credit',
-        field: 'Leave Credit',
+        field: 'salary',
         type: 'numberColumn',
       },
       {
         headerName: 'Joining Date',
-        field: 'Joining Date',
+        field: 'start_date',
         type: ['dateColumn', 'nonEditableColumn'],
         width: 220,
       },
       {
         headerName: 'Increment Date',
-        field: 'Increment Date',
+        field: 'increament_date',
         type: ['dateColumn', 'nonEditableColumn'],
         width: 220,
       },
       {
+        headerName: 'Leave Credit',
+        field: 'leave_credit',
+        type: 'numberColumn',
+      },
+      {
         headerName: 'Document Upload',
-        field: 'Document Upload',
+        field: 'file',
         // type: 'file',
       },
 
@@ -128,9 +129,7 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.cookieService.get('superadmin')){
       this.hrEmployeeList();
-    }
   }
 
   openEndSessionModal(){
@@ -144,10 +143,14 @@ export class HrEmployeeComponent implements OnInit {
   addUpdateEmployeeDetails(f:NgForm){
     this.isSubmit = true;
     this.employee_data = f.value;
+     console.log(this.employee_data);
     if(f.status == "VALID"){
-      this.employee_data.document = this.fileName;
+      this.employee_data.document = this.fileName;         
       this.superadminService.addUpdateEmployeeDetails(this.employee_data).subscribe(res => {
+        console.log(res);
+        
         if(res.status){
+          this.hrEmployeeList(); 
           this.isSubmit = false;
           this.addUpdateEmployee = false;
           f.reset();
@@ -168,6 +171,8 @@ export class HrEmployeeComponent implements OnInit {
       this.superadminService.uploadZipDocument(formdata).subscribe(res => {
         if(res.status){
           this.fileName = res.data.filename;
+          console.log(this.fileName);
+          
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
@@ -178,17 +183,17 @@ export class HrEmployeeComponent implements OnInit {
     }
   }
 
-  onDelete(){
-
-  }
 
 
   hrEmployeeList(){
     let obj = {};
     this.superadminService.getEmployeeList(obj).subscribe(res => {
-      if(res.status){
-        console.log(res.data);
+      console.log(res.data);  
 
+      if(res.status){
+        console.log(res.data);  
+
+        this.employee_data1 = res.data;
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -196,6 +201,10 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   endEmployeeSession(){
+    
+  }
+
+  deleteEmployee(){
     
   }
 

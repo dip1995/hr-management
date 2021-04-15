@@ -8,16 +8,16 @@
           <div class="row">
             <div class="col-sm-6">
               <label>Holiday Name:</label>
-              <input #txtholidayName="ngModel" ngModel type="text" name="txtholidayName" class="form-control" required>
-              <div class="text-danger" *ngIf="f.submitted && txtholidayName.invalid">
-                <span *ngIf="txtholidayName.errors.required">* Name Required</span>
+              <input #name="ngModel" ngModel type="text" name="name" class="form-control" required>
+              <div class="text-danger" *ngIf="f.submitted && name.invalid">
+                <span *ngIf="name.errors.required">* Name Required</span>
               </div>
             </div>
             <div class="col-sm-6">
               <label>Holiday Date:</label>
-              <input type="date" #txtholidayDate="ngModel" ngModel name="txtholidayDate" class="form-control" required>
-              <div class="text-danger" *ngIf="f.submitted && txtholidayDate.invalid">
-                <span *ngIf="txtholidayDate.errors.required">* Date Required</span>
+              <input type="date" #date="ngModel" ngModel name="date" class="form-control" required>
+              <div class="text-danger" *ngIf="f.submitted && date.invalid">
+                <span *ngIf="date.errors.required">* Date Required</span>
               </div>
             </div>
           </div>
@@ -56,7 +56,7 @@
         [defaultColDef]="defaultColDef"
         [defaultColGroupDef]="defaultColGroupDef"
         [columnTypes]="columnTypes"
-        [rowData]="rowData"
+        [rowData]="holiday_data1"
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
   </div>

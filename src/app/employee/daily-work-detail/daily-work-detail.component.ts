@@ -31,21 +31,21 @@ export class DailyWorkDetailComponent implements OnInit {
   }
  
  
-  addItem() {
+  addDailyWorkDetail(){
     this.arr = this.myForm.get('arr') as FormArray;
     this.arr.push(this.createItem());
   }
 
   
-removeItem(i:number) {
+  removeDailyWorkDetail(i:number) {
   this.arr.removeAt(i);
 }
 
-  onSubmit() { 
+saveDailyWorkDetail(){ 
     console.log(this.myForm.value);
   }
 
-  onCancel(){
+  cancelDailyWorkDetail(){
     this.myForm.reset();
    }
  
