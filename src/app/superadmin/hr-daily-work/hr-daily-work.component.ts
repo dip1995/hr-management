@@ -2,6 +2,8 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { SuperadminService } from 'src/app/services/superadmin.service';
 // declare var $:any;
 // import * as $ from "jquery";
 
@@ -11,7 +13,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
   styleUrls: ['./hr-daily-work.component.css']
 })
 export class HrDailyWorkComponent implements OnInit {
-
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   selectMonth;
   gridApi;
   gridColumnApi;
@@ -29,11 +31,11 @@ export class HrDailyWorkComponent implements OnInit {
   cellDate;
   // autoGroupColumnDef;
 
- constructor(private router : Router) {
+ constructor(private router : Router,private superadminService : SuperadminService) {
     this.columnDefs = [
      {
        headerName: 'Sno',
-       field: 'Sno', 
+       field: 'Sno',
       //  checkboxSelection:true,
      },
      {
@@ -68,18 +70,18 @@ export class HrDailyWorkComponent implements OnInit {
        field: 'year',
        type: 'numberColumn',
      },
- ]
+  ]
 
- this.defaultColDef = {
-  width: 150,
-  editable: true,
-  filter: 'agTextColumnFilter',
-  floatingFilter: true,
-  resizable: true,
-};
-   
+  this.defaultColDef = {
+    width: 150,
+    editable: true,
+    filter: 'agTextColumnFilter',
+    floatingFilter: true,
+    resizable: true,
+  };
+
    this.rowSelection = 'multiple',
-  
+
     this.defaultColGroupDef = { marryChildren: true };
    this.columnTypes = {
      numberColumn: {
@@ -109,15 +111,40 @@ export class HrDailyWorkComponent implements OnInit {
    };
   }
 
- onGridReady(params) {
+  onGridReady(params) {
    this.gridApi = params.api;
    this.gridColumnApi = params.columnApi;
- }
+  }
 
- 
+  ngOnInit(): void {
+    this.getWorkingMonthsList();
+    this.dailyWorkList();
+  }
 
-ngOnInit(): void {
+  dailyWorkList(){
+    let obj = {};
+    this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
 
-}
+  getWorkingMonthsList(){
+    let obj = {};
+    this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+      }else{
+        // this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+  }
 
 }

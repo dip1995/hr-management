@@ -97,24 +97,18 @@ export class HrHolidaysComponent implements OnInit {
   onGridReady(params) {
    this.gridApi = params.api;
    this.gridColumnApi = params.columnApi;
-
-
   }
 
   ngOnInit(): void {
-    if(this.cookieService.get('superadmin')){
-      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
-      // this.router.navigate(['/superadmin/hr-employee']);
-      // this.hrEmployeeList();
-    }
+    this.getWorkingMonthsList();
+    this.hrHolidayList();
   }
 
   addHoliday(){
      this.holiday = true;
-
   }
 
-  onDelete(f){
+  deleteLeaveApplication(f){
     this.isSubmit = true;
     let holiday_data = f.taget.id;
     if(f.status == "VALID"){
@@ -127,7 +121,7 @@ export class HrHolidaysComponent implements OnInit {
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
       });
-    } 
+    }
   }
 
   addUpdateBusinessHolidays(f:NgForm){
@@ -137,6 +131,7 @@ export class HrHolidaysComponent implements OnInit {
       this.superadminService.addUpdateBusinessHolidays(holiday_data).subscribe(res => {
         if(res.status){
           this.isSubmit = false;
+          this.holiday = false;
           f.reset();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
@@ -146,7 +141,7 @@ export class HrHolidaysComponent implements OnInit {
     }
   }
 
-   hrHolidayList(){
+  hrHolidayList(){
     let holiday_data = {};
     this.superadminService.getBusinessHolidayList(holiday_data).subscribe(res => {
       if(res.status){
@@ -155,7 +150,18 @@ export class HrHolidaysComponent implements OnInit {
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
     });
-   }
+  }
+
+  getWorkingMonthsList(){
+   let obj = {};
+   this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
+     if(res.status){
+       console.log(res.data);
+     }else{
+       // this.alertSuccessErrorMsg(res.status, res.message,false);
+     }
+   });
+  }
 
   alertSuccessErrorMsg(status,message,navigationEvent){
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);

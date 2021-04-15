@@ -15,6 +15,7 @@ import { SuperadminService } from 'src/app/services/superadmin.service';
 export class HrLeaveApplicationComponent implements OnInit {
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   isSubmit:any=false;
+  selectMonth:any;
   leaveError:any = false;
   leaveErrorMessage:any = "";
 
@@ -108,10 +109,8 @@ export class HrLeaveApplicationComponent implements OnInit {
  }
 
   ngOnInit(){
-    if(this.cookieService.get('superadmin')){
-      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
-    }
-
+    this.getWorkingMonthsList();
+    this.getLeaveApplicationList();
   }
 
   approveLeaveApplication(f){
@@ -129,7 +128,29 @@ export class HrLeaveApplicationComponent implements OnInit {
       });
     }
   }
- 
+
+  getLeaveApplicationList(){
+    let obj = {};
+    this.superadminService.getLeaveApplicationList(obj).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
+  getWorkingMonthsList(){
+    let obj = {};
+    this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+      }else{
+        // this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
   alertSuccessErrorMsg(status,message,navigationEvent){
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }

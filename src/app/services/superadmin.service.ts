@@ -76,4 +76,19 @@ export class SuperadminService {
     return this.http.get<any>(this.local_url+'/api/superadmin/getBusinessHolidayList',{ params: body});
   }
 
+  getLeaveApplicationList(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(this.local_url+'/api/superadmin/getLeaveApplicationList',{ params: body});
+  }
+
+  getEmployeesDailyWorksheetData(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(this.local_url+'/api/employee/getEmployeesDailyWorksheetData',{ params: body});
+  }
+
+  getWorkingMonthsList(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(this.local_url+'/api/employee/getWorkingMonthsList',{ params: body});
+  }
+
 }

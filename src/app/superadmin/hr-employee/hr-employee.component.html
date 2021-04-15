@@ -6,23 +6,30 @@
 <!-- <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
 
 <!-- Modal -->
-<div id="endSessionModal" class="modal fade" role="dialog">
+<div id="endSessionModal" class="modal" role="dialog">
   <div class="modal-dialog">
-
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">End Employee Session</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <label >End Date:</label><span class="text-danger">*</span>
+            <input type="date"  ngModel name="end_date" class="form-control" required placeholder="enter end date">
+            <!-- <div class="text-danger" *ngIf="f.submitted && end_date.invalid">
+              <span *ngIf="end_date.errors.required">End date required</span>
+            </div> -->
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary btn-medium" (click)="endEmployeeSession()">SAVE</button>
+        <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
       </div>
     </div>
-
   </div>
 </div>
    <!-- </div> -->
@@ -31,18 +38,18 @@
        <br/>
        <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
        <br/>
-       <form #f="ngForm" (submit)="addUpdateEmployeeDetails(f.value)">
+       <form #f="ngForm" (submit)="addUpdateEmployeeDetails(f)">
          <div class="form-group row">
            <div class="col-sm-6">
              <label>Name:</label><span class="text-danger">*</span>
-             <input #name="ngModel" ngModel type="text" name="name" class="form-control" required>
+             <input #name="ngModel" ngModel type="text" name="name" class="form-control" required placeholder="enter name">
              <div class="text-danger" *ngIf="f.submitted && name.invalid">
                <span *ngIf="name.errors.required">Name Required</span>
              </div>
            </div>
            <div class="col-sm-6">
              <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
-             <input #mobile="ngModel" ngModel type="number" name="mobile" class="form-control" required pattern="\+91[0-9]{10}">
+             <input #mobile="ngModel" ngModel type="number" name="mobile" class="form-control" required pattern="[0-9]{10}" placeholder="enter mobile no">
              <div class="text-danger" *ngIf="f.submitted && mobile.invalid">
                <span *ngIf="mobile.errors.required">Mobile Required</span>
                <span *ngIf="mobile.errors.pattern">Invalid Mobile</span>
@@ -52,14 +59,14 @@
          <div class="form-group row">
            <div class="col-sm-6">
              <label>Email:</label><span class="text-danger">*</span>
-             <input #email="ngModel" ngModel type="text" name="email" class="form-control" required>
+             <input #email="ngModel" ngModel type="text" name="email" class="form-control" required placeholder="enter email">
              <div class="text-danger" *ngIf="f.submitted && email.invalid">
                <span *ngIf="email.errors.required">Email Required</span>
              </div>
            </div>
            <div class="col-sm-6">
              <label >Salary:</label><span class="text-danger">*</span>
-             <input #salary="ngModel" ngModel type="number" name="salary" class="form-control" required>
+             <input #salary="ngModel" ngModel type="number" name="salary" class="form-control" required placeholder="enter salary">
              <div class="text-danger" *ngIf="f.submitted && salary.invalid">
                <span *ngIf="salary.errors.required">Salary Required</span>
              </div>
@@ -68,14 +75,14 @@
          <div class="form-group row">
            <div class="col-sm-6">
              <label >Joining Date:</label><span class="text-danger">*</span>
-             <input type="date" #start_date="ngModel" ngModel name="start_date" class="form-control" required>
+             <input type="date" #start_date="ngModel" ngModel name="start_date" class="form-control" required placeholder="enter joining date">
              <div class="text-danger" *ngIf="f.submitted && start_date.invalid">
                <span *ngIf="start_date.errors.required">Joining date required</span>
              </div>
            </div>
            <div class="col-sm-6">
              <label >Increament Date:</label><span class="text-danger">*</span>
-             <input type="date" #increament_date="ngModel" ngModel name="increament_date" class="form-control" required>
+             <input type="date" #increament_date="ngModel" ngModel name="increament_date" class="form-control" required placeholder="enter increament date">
              <div class="text-danger" *ngIf="f.submitted && increament_date.invalid">
                <span *ngIf="increament_date.errors.required">Increament date required</span>
              </div>
@@ -84,7 +91,7 @@
          <div class="form-group row">
            <div class="col-sm-6">
              <label>Leave Credit:</label>
-             <input #leave_credit="ngModel" ngModel type="number" name="leave_credit" class="form-control" required min="0" value="0">
+             <input #leave_credit="ngModel" ngModel type="number" name="leave_credit" class="form-control" required min="0" value="0" placeholder="enter leave credit">
              <div class="text-danger" *ngIf="f.submitted && leave_credit.invalid">
                <span *ngIf="leave_credit.errors.required"> required</span>
              </div>
@@ -93,14 +100,38 @@
  						<label class="text-muted" for="company_address ">Upload Document (.zip)</label>
              <div class="import_file_upload">
                <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
-               <input type="file" #document="ngModel" ngModel class="form-control" accept="application/octet-stream" flow-btn="">
-               <!-- (change)="uploadFileToServer($event)" -->
+               <input type="file" #file="ngModel" ngModel class="form-control" accept="" (change)="uploadFile($event,f)" placeholder="Upload Document">
              </div>
-             <!-- <div class="ng-scope" flow-transfers=""> -->
-               <!-- ngRepeat: file in transfers -->
-             <!-- </div> -->
- 		      </div>
+ 		       </div>
          </div>
+         <div class="form-group row">
+           <div class="col-sm-6">
+             <label for="password"> Password</label>
+             <input #password="ngModel" ngModel type="password" name="password" class="form-control" required placeholder="enter password">
+             <div class="text-danger" *ngIf="f.submitted && password.invalid">
+               <span *ngIf="password.errors.required">password required</span>
+             </div>
+           </div>
+         </div>
+         <!-- <div>
+              <label class="text-muted" for="password"  ng-if="!company_id"> Password</label>
+							<span class="pull-right">
+								<div ng-messages="addChildcompanyForm.$submitted && addChildcompanyForm.password.$error" role="alert">
+					      			<div ng-message="required" class="alert-danger" > Enter Password </div>
+					    		</div>
+					    		<div ng-messages="addChildcompanyForm.$submitted && addChildcompanyForm.password.$error" role="alert">
+							      <div ng-message="maxlength" class="alert-danger">Enter Password Upto 30 Char</div>
+							    </div>
+				    		</span>
+                <input  ng-if="!company_id" type="password" name="password" class="form-control" tabindex="10" ng-maxlength="40"  data-ng-model="company.password" required>
+                <!-- FOr CHange PassWord EPSHIV-->
+                <!-- <div ng-if="company_id">
+                  <input type="checkbox" name="password" ng-click="changepassword=!changepassword">
+                  <label class="text-muted" for="password">Change Password</label>
+                  <input ng-if="changepassword" type="password" name="password" placeholder="Create new password" class="form-control" tabindex="10" ng-maxlength="40"  data-ng-model="company.password" required>
+                </div>
+					    </div> -->
+
          <br>
          <div class="row">
            <div class="col-sm-12 text-center">
@@ -115,7 +146,7 @@
     <div class="col-sm-12">
       <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete()">DELETE</button>
       <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
-      <button class="pull-right btn btn-primary mr-6" type="button" data-toggle="modal" data-target="#endSessionModal">End Session</button>
+      <button class="pull-right btn btn-primary mr-6" type="button" (click)="openEndSessionModal()">End Session</button>
     </div>
   </div>
   <br>

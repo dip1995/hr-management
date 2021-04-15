@@ -38,7 +38,7 @@ export class TokenInterceptorService  implements HttpInterceptor {
     if(request.method == 'GET'){
       user_type = request.params.get('user_type');
     }else{
-      user_type = request.body.user_type; 
+      user_type = request.body.user_type;
     }
     let newHeaders = request.headers;
     // check user type and set token accordingly
@@ -63,7 +63,7 @@ export class TokenInterceptorService  implements HttpInterceptor {
       if (err) {
         if (err.status === 401) {
           if(user_type == 'superadmin'){
-            window.open(this.externalUrl+"/superadmin", '_self');
+            window.open(this.externalUrl+"/superadmin/login", '_self');
           }else{
             window.open(this.externalUrl, '_self');
           }

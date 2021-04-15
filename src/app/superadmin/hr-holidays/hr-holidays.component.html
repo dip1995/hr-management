@@ -3,7 +3,7 @@
   <div class="row mb-20 margin-0" *ngIf="holiday">
     <div class="col-sm-12 rounded-border">
       <h2 style="text-align: center;">Add/Update Holiday</h2>
-      <form #f="ngForm" (submit)="addUpdateBusinessHolidays(f.value)">
+      <form #f="ngForm" (submit)="addUpdateBusinessHolidays(f)">
         <div class="form-group">
           <div class="row">
             <div class="col-sm-6">
@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="col-sm-8">
-      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="onDelete($event)">DELETE</button>
+      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="deleteLeaveApplication($event)">DELETE</button>
       <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addHoliday()">Add Holiday</button>
     </div>
   </div>

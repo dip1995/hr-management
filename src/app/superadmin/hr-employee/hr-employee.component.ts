@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { SuperadminService } from 'src/app/services/superadmin.service';
 import { RequestOptions, Headers, Http } from '@angular/http';
+declare var $:any;
 
 @Component({
   selector: 'app-hr-employee',
@@ -16,10 +17,12 @@ import { RequestOptions, Headers, Http } from '@angular/http';
 export class HrEmployeeComponent implements OnInit {
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   isSubmit:any=false;
+  file:any;
+  fileName:any = "";
   employeeError:any = false;
   employeeErrorMessage:any = "";
   addUpdateEmployee:boolean = false;
-  
+
    gridApi;
    gridColumnApi;
 
@@ -49,7 +52,7 @@ export class HrEmployeeComponent implements OnInit {
       {
         headerName: 'Email',
         field: 'Email',
-        
+
       },
       {
         headerName: 'Salary',
@@ -126,42 +129,27 @@ export class HrEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.cookieService.get('superadmin')){
-      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin'))
-      // this.router.navigate(['/superadmin/hr-employee']);
       this.hrEmployeeList();
     }
+  }
+
+  openEndSessionModal(){
+    $("#endSessionModal").modal('show');
   }
 
   addEmployee(){
     this.addUpdateEmployee = true;
   }
 
-  //  uploadFileToServer(event) {
-  //   let fileList: FileList = event.target.files;
-  //   if (fileList.length > 0) {
-  //     let file: File = fileList[0];
-  //     let formData: FormData = new FormData();
-  //     formData.append('uploadFile', file, file.name);
-  //     formData.append('fileType', 'zip');
-  //     let headers = new Headers();
-  //     headers.append('Accept', 'application/json');
-  //     let options = new RequestOptions({ headers: headers });
-  //     this.superadminService.uploadZipDocument(options).subscribe(res => {
-  //       console.log(res);
-        
-  //     })
-  //   }
-  // } 
-
   addUpdateEmployeeDetails(f:NgForm){
     this.isSubmit = true;
-    this.employee_data = f;
+    this.employee_data = f.value;
     if(f.status == "VALID"){
+      this.employee_data.document = this.fileName;
       this.superadminService.addUpdateEmployeeDetails(this.employee_data).subscribe(res => {
-       console.log(res);
-       
         if(res.status){
           this.isSubmit = false;
+          this.addUpdateEmployee = false;
           f.reset();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
@@ -171,44 +159,48 @@ export class HrEmployeeComponent implements OnInit {
     }
   }
 
-  // onSave(empId:number,name:string,mobile:number,email:string,salary:number,start_date:number,increament_date:number,leave_credit:number,Document:string){
-  //   this.superadminService.addUpdateEmployeeDetails(empId).subscribe(res => {
-  //       name =  res.name;
-  //       mobile =  res.mobile
-  //       email = res.email;
-  //       salary = res.salary;
-  //       start_date = res.start_date;
-  //       increament_date = res.increament_date;
-  //       leave_credit = res.leave_credit;
-  //       document = res.document;
-  //     })
-  // }
-  
-
-  onDelete(){
-  }
-
-
-  hrEmployeeList(){
-    
-     this.employee_data = {};
-      this.superadminService.getEmployeeList(this.employee_data).subscribe(res => {
+  uploadFile(event){
+    if(event.target.files && event.target.files.length > 0){
+      this.fileName = event.target.files[0].name;
+      this.file = event.target.files[0];
+      let formdata = new FormData();
+      formdata.append("file", this.file);
+      this.superadminService.uploadZipDocument(formdata).subscribe(res => {
         if(res.status){
-          console.log(res.data);
-          
+          this.fileName = res.data.filename;
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
       });
+    }else{
+      this.fileName = "";
+      this.file = {};
     }
-  
+  }
 
-    alertSuccessErrorMsg(status,message,navigationEvent){
-      this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
-    }
-  
+  onDelete(){
 
   }
 
-  
- 
+
+  hrEmployeeList(){
+    let obj = {};
+    this.superadminService.getEmployeeList(obj).subscribe(res => {
+      if(res.status){
+        console.log(res.data);
+
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
+  endEmployeeSession(){
+    
+  }
+
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+  }
+
+}
