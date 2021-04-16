@@ -36,4 +36,8 @@ export class HeaderComponent implements OnInit {
         // });
     });
   }
+
+  changePassword(){
+    this.router.navigate(['change-password']);
+  }
 }

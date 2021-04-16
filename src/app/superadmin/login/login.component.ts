@@ -31,8 +31,8 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if(this.cookieService.get('superadmin')){
-      console.warn(this.cookieService.get('superadmin'),this.cookieService.get('superadmin1'))
+    if(this.cookieService.get('epsuperadmin')){
+      console.warn(this.cookieService.get('epsuperadmin'))
       this.router.navigate(['/superadmin/hr-employee']);
     }
   }

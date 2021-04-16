@@ -1,6 +1,66 @@
 <app-header></app-header>
 <section class="home-section" type="dropdown">
-  <div class="row">
+  <div *ngIf="dailyWorkAdd">
+    <div class="container-fluid main-container">
+     <form [formGroup]="myForm" (ngSubmit)="saveDailyWorkDetail()">
+          <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
+      <div class="col-sm-3">
+        <label for="date">Start Date</label>
+        <input type="date" name="date" formControlName="date" class="form-control">    
+      </div> 
+      <div class="col-sm-9">
+        <button class="pull-right btn btn-medium btn-primary block-btn" type="button" style="background-color: #086d92;" (click)="addDailyWorkDetail()">Add</button>     
+      </div>     
+    </div>
+      
+      <div formArrayName="arr" *ngFor="let a of myForm.get('arr')['controls']; let i = index">     
+        <div [formGroupName]="i" style="margin-bottom: 10px;">
+          <!-- <div class="row mb-20 margin-0">
+            <div class="col-sm-12 rounded-border"> -->
+      
+          <div class="form-group row">                  
+      
+            <div class="col-sm-3">
+              <label for="starttime">Start Time:</label>
+              <input type="time" name="starttime" class="form-control" formControlName="starttime"> 
+              </div>
+      
+      
+              <div class="col-sm-3">
+              <label for="endtime">End Time:</label>
+              <input type="time" name="endtime" formControlName="endtime" class="form-control">
+              </div>
+      
+  
+            <div class="col-sm-3">
+          <label for="moduleName">Module Name:</label>
+          <input type="text"  name="moduleName" formControlName="moduleName" class="form-control">
+         </div>
+  
+         <div class="col-sm-3">
+          <label for="description">Description:</label>
+          <textarea name="description" formControlName="description" class="form-control"></textarea>
+          <button class="pull-right btn btn-small btn-primary block-btn" type="button" (click)="removeDailyWorkDetail(i)" style="background-color: #086d92;" >x</button>
+        </div>
+         
+  
+      </div>
+        <!-- </div>
+          </div>  -->
+      </div>
+      </div>
+      <div class="row" style="margin-bottom: 10px;">
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-medium btn-success text-center" style="background-color: #086d92; margin-right: 2px;">Save</button>
+          <button type="button" name="button" class="btn-small btn btn-secondary text-center" (click)="cancelDailyWorkDetail()">CANCEL</button>
+    
+        </div>
+      </div>
+          </form>
+  </div>
+  </div>
+
+  <div class="row" style="margin-top: 10px;">
     <div class="col-sm-4">
       <div class="form-group">
         <label class="d-inline-block mr-10">Select Month:</label>
@@ -20,10 +80,14 @@
         </select>
       </div>
     </div>
+     <div class="col-sm-8">
+      <button class="pull-right btn btn-medium btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="addUpdateDailyWorkData()">ADD</button>
+     </div>
   </div>
 
+  
+  
 
-  <button class="pull-right btn btn-medium btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="addUpdateDailyWorkData($event)">ADD</button>
   <br><br>
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
       <ag-grid-angular
@@ -39,4 +103,10 @@
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
     </div>
+
+
+
+
+
+   
 </section>

@@ -1,15 +1,58 @@
 <app-header></app-header>
 <section class="home-section">
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label class="d-inline-block mr-10">Select Month:</label>
-        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
-          <option selected value='1'>Janaury</option>
-          <option value='2'>February</option>
-          <option value='3'>March</option>
-          <option value='4'>April</option>
-          <option value='5'>May</option>
+
+  <div *ngIf="approveapplication">
+          <div class="container-fluid main-container">
+              <form #f="ngForm" (submit)="submitLeaveApplication(f.value)">
+                <h2 style="text-align: center; margin-top: 5px;" >Apply Leave Application</h2>
+                <div class="form-group">
+                  <div class="row" style="margin-top: 10px;">
+                      <div class="col-sm-6">
+                           <label for="txtdatefrom">Date From:</label><span class="text-danger">*</span>
+                           <input #txtdatefrom="ngModel" ngModel type="date" name="txtdatefrom" class="form-control" required min=dateFrom()>
+                           <div class="text-danger" *ngIf="f.submitted && txtdatefrom.invalid">
+                              <span *ngIf="txtdatefrom.errors.required">Date Required</span>
+                          </div>
+                        </div>
+                          <div class="col-sm-6">
+                           <label for="txtdateto">Date To:</label><span class="text-danger">*</span>
+                               <input #txtdateto="ngModel" ngModel type="date" name="txtdateto" class="form-control" required min="toFrom()">
+                               <div class="text-danger" *ngIf="f.submitted && txtdateto.invalid">
+                                  <span *ngIf="txtdateto.errors.required">Date Required</span>
+                              </div>
+                          </div>
+                   </div>
+                    <br>
+                        <div class="row">
+                            <div class="col-sm-12">
+                            <label for="txtdescription">Description</label><span class="text-danger">*</span>
+                            <textarea #txtdescription="ngModel" ngModel type="text" name="txtdescription" class="form-control" required></textarea>
+                            <div class="text-danger" *ngIf="f.submitted && txtdescription.invalid">
+                              <span *ngIf="txtdescription.errors.required">* Required</span>
+                            </div>
+                          </div>
+                        </div>
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-sm-12 text-center">
+                          <button class="btn btn-primary" style="background-color:#086d92; margin-right: 5px;">Save</button>
+                          <button type="button" name="button" class="btn-medium btn btn-secondary" (click)="cancelLeaveApplication(f)">CANCEL</button>
+                        </div>
+                      </div>
+              </div>
+          </form>
+        </div>
+      </div>  
+
+   <div class="row" style="margin-top: 10px;">
+      <div class="col-sm-4">
+       <div class="form-group">
+         <label class="d-inline-block mr-10">Select Month:</label>
+         <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
+           <option selected value='1'>Janaury</option>
+           <option value='2'>February</option>
+           <option value='3'>March</option>
+           <option value='4'>April</option>
+           <option value='5'>May</option>
           <option value='6'>June</option>
           <option value='7'>July</option>
           <option value='8'>August</option>
@@ -20,46 +63,25 @@
         </select>
       </div>
     </div>
+    <div class="col-sm-8">
+      <button class="pull-right btn btn-primary" type="button" (click)="applyLeaveApplication()">Apply Application</button>
+    </div>
   </div>
-    <br>
-      <h2 style="text-align: center; color: white; background-color: #086d92;">Apply Leave Application</h2>
-       <br><br>
-      <div class="container main-container">
-          <form #f="ngForm" (submit)="submitLeaveApplication(f.value)">
-          <div class="form-group">
-              <div class="row">
-                  <div class="col-sm-6">
-                       <label for="txtdatefrom">Date From:</label><span class="text-danger">*</span>
-                       <input #txtdatefrom="ngModel" ngModel type="date" name="txtdatefrom" class="form-control" required min=dateFrom()>
-                       <div class="text-danger" *ngIf="f.submitted && txtdatefrom.invalid">
-                          <span *ngIf="txtdatefrom.errors.required">Date Required</span>
-                      </div>
-                    </div>
-                      <div class="col-sm-6">
-                       <label for="txtdateto">Date To:</label><span class="text-danger">*</span>
-                           <input #txtdateto="ngModel" ngModel type="date" name="txtdateto" class="form-control" required min="toFrom()">
-                           <div class="text-danger" *ngIf="f.submitted && txtdateto.invalid">
-                              <span *ngIf="txtdateto.errors.required">Date Required</span>
-                          </div>
-                      </div>
-               </div>
-                <br>
-               <div class="row">
-                      <div class="col-sm-12">
-                       <label for="txtdescription">Description</label><span class="text-danger">*</span>
-                        <textarea #txtdescription="ngModel" ngModel type="text" name="txtdescription" class="form-control" required></textarea>
-                        <div class="text-danger" *ngIf="f.submitted && txtdescription.invalid">
-                          <span *ngIf="txtdescription.errors.required">* Required</span>
-                      </div>
-                  </div>
-              </div>
 
-                   <br>
-                  <div class="form-group">
-                   <button class="btn btn-primary" style="background-color:#086d92; margin-right: 5px;">Save</button>
-                   <button type="button" name="button" class="btn-medium btn btn-secondary" (click)="cancelLeaveApplication(f)">CANCEL</button>
-                  </div>
-          </div>
-      </form>
+  <br/>
+  <div style="height: 100%; box-sizing: border-box; width: 100%;">
+    <ag-grid-angular
+      #agGrid
+      style="width: 100%; height: 500px;"
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [defaultColGroupDef]="defaultColGroupDef"
+      [columnTypes]="columnTypes"
+      [rowData]="leave_data"
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
   </div>
 </section>
+
