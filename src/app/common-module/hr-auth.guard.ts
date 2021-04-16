@@ -16,11 +16,13 @@ export class HrAuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
     {
       let externalUrl = environment.SOCKET_ENDPOINT;
-     let isLoggedIn = (this.cookieService.get('superadmin')) ? JSON.parse(this.cookieService.get('superadmin')).login : false ;
+     let isLoggedIn = (this.cookieService.get('epsuperadmin')) ? JSON.parse(this.cookieService.get('epsuperadmin')).login : false ;
 
      if(isLoggedIn)
           return true;
 
+      this.cookieService.delete('epsuperadmin',  ' / ' ,  'localhost');
+      this.cookieService.delete('epsuperadmin');
       window.open(externalUrl+'/superadmin/login', '_self');
       return false;
   }

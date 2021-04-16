@@ -31,10 +31,10 @@ export class EmployeeLoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if(this.cookieService.get('user')){
-      console.warn(this.cookieService.get('user'));
-      this.router.navigate(['/daily-work']);
-    }
+    // if(this.cookieService.get('epuser')){
+    //   console.warn(this.cookieService.get('epuser'));
+    //   this.router.navigate(['/daily-work']);
+    // }
   }
 
   employeeLogin(){
@@ -52,7 +52,7 @@ export class EmployeeLoginComponent implements OnInit {
           var date_now = +new Date();
           var coockie_expire = new Date(date_now+days_90_ms);
           let opts = {expires:coockie_expire};
-          this.cookieService.set('user',JSON.stringify(cookieData),opts);
+          this.cookieService.set('epuser',JSON.stringify(cookieData),opts);
           this.router.navigate(['/daily-work']);
         }else{
           this.loginError = true;

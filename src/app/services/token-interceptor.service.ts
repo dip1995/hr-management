@@ -17,15 +17,15 @@ export class TokenInterceptorService  implements HttpInterceptor {
   constructor(private cookieService : CookieService){
     this.externalUrl = environment.SOCKET_ENDPOINT;
     // get employee cookie
-    if(this.cookieService.get('user')){
-      this.cookie = JSON.parse(this.cookieService.get('user')) ;
+    if(this.cookieService.get('epuser')){
+      this.cookie = JSON.parse(this.cookieService.get('epuser')) ;
       this.token = this.cookie['token'];
     }else{
       console.log('no employee cookie present!!')
     }
     // get hr login cookie
-    if(this.cookieService.get('superadmin')){
-      this.hrCookie = JSON.parse(this.cookieService.get('superadmin')) ;
+    if(this.cookieService.get('epsuperadmin')){
+      this.hrCookie = JSON.parse(this.cookieService.get('epsuperadmin')) ;
       this.hrToken = this.hrCookie['token'];
     }else{
       console.log('no superadmin cookie present!!')
@@ -63,6 +63,8 @@ export class TokenInterceptorService  implements HttpInterceptor {
       if (err) {
         if (err.status === 401) {
           if(user_type == 'superadmin'){
+            this.cookieService.delete('epsuperadmin',  ' / ' ,  'localhost');
+            this.cookieService.delete('epsuperadmin');
             window.open(this.externalUrl+"/superadmin/login", '_self');
           }else{
             window.open(this.externalUrl, '_self');

@@ -28,8 +28,8 @@ export class HrHeaderComponent implements OnInit {
 
   logoutHR() {
     this.superadminService.superadminLogout({}).subscribe(res=> {
-      this.cookieService.delete('superadmin',  ' / ' ,  'localhost');
-      this.cookieService.delete('superadmin');
+      this.cookieService.delete('epsuperadmin',  ' / ' ,  'localhost');
+      this.cookieService.delete('epsuperadmin');
       this.router.navigate(['/superadmin/login']);
         // this.userinfoService.clearTimer(obj).subscribe(res=> {
         // });

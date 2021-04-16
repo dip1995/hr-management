@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
           var date_now = +new Date();
           var coockie_expire = new Date(date_now+days_90_ms);
           let opts = {expires:coockie_expire};
-          this.cookieService.set('superadmin',JSON.stringify(cookieData),opts);
+          this.cookieService.set('epsuperadmin',JSON.stringify(cookieData),opts);
           this.router.navigate(['/superadmin/hr-employee']);
         }else{
           this.loginError = true;

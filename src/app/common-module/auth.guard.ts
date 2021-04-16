@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
     {
       let externalUrl = environment.hr_api;
-     let isLoggedIn = (this.cookieService.get('user')) ? JSON.parse(this.cookieService.get('user')).login : false ;
+     let isLoggedIn = (this.cookieService.get('epuser')) ? JSON.parse(this.cookieService.get('epuser')).login : false ;
 
      if(isLoggedIn)
           return true;

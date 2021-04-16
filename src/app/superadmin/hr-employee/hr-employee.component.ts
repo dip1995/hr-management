@@ -129,7 +129,7 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.hrEmployeeList();
+    this.hrEmployeeList();
   }
 
   openEndSessionModal(){
@@ -145,12 +145,12 @@ export class HrEmployeeComponent implements OnInit {
     this.employee_data = f.value;
      console.log(this.employee_data);
     if(f.status == "VALID"){
-      this.employee_data.document = this.fileName;         
+      this.employee_data.document = this.fileName;
       this.superadminService.addUpdateEmployeeDetails(this.employee_data).subscribe(res => {
         console.log(res);
-        
+
         if(res.status){
-          this.hrEmployeeList(); 
+          this.hrEmployeeList();
           this.isSubmit = false;
           this.addUpdateEmployee = false;
           f.reset();
@@ -172,7 +172,7 @@ export class HrEmployeeComponent implements OnInit {
         if(res.status){
           this.fileName = res.data.filename;
           console.log(this.fileName);
-          
+
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
@@ -188,10 +188,10 @@ export class HrEmployeeComponent implements OnInit {
   hrEmployeeList(){
     let obj = {};
     this.superadminService.getEmployeeList(obj).subscribe(res => {
-      console.log(res.data);  
+      console.log(res.data);
 
       if(res.status){
-        console.log(res.data);  
+        console.log(res.data);
 
         this.employee_data1 = res.data;
       }else{
@@ -201,11 +201,11 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   endEmployeeSession(){
-    
+
   }
 
   deleteEmployee(){
-    
+
   }
 
   alertSuccessErrorMsg(status,message,navigationEvent){

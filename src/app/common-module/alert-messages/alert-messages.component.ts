@@ -8,7 +8,6 @@ declare var $:any;
 })
 export class AlertMessagesComponent implements OnInit {
   @Output('navigateAfterMsgAlert') "navigateAfterMsgAlert": EventEmitter<any> = new EventEmitter();
-  @Input('showSalesShareField') "showSalesShareField":boolean;
   @ViewChild('closeAlertModelEvent' , {static : false})
   private "closeAlertModelEvent" : ElementRef;
   status:any;
