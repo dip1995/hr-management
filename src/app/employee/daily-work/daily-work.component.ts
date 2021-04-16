@@ -1,4 +1,5 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
+import { FormControl, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -13,12 +14,17 @@ declare var $:any;
   styleUrls: ['./daily-work.component.css']
 })
 export class DailyWorkComponent implements OnInit {
-
+  name = 'Angular';
+  myForm: FormGroup;
+  arr: FormArray;
+  dailyWorkAdd : boolean = false
+  // constructor(private fb: FormBuilder) { }
   isSubmit:any=false;
   daily_work_Error:any = false;
   daily_work_ErrorMessage:any = "";
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
 
+  isShow = false;
   selectMonth;
    gridApi;
    gridColumnApi;
@@ -34,27 +40,49 @@ export class DailyWorkComponent implements OnInit {
    year;
    cellDate;
    dailyWork_data = [];
-  constructor(private router : Router, private employeeService : EmployeeService,
+  constructor(private fb: FormBuilder,private router : Router, private employeeService : EmployeeService,
     private cookieService : CookieService) {
-    this.columnDefs = [
+  this.columnDefs = [
+    {
+      maxWidth: 50,
+      minWidth: 50,
+      field: 'RowSelect',
+      headerName: ' ',
+      checkboxSelection: true,
+      filter: false,
+      suppressMenu: true,
+      suppressSorting: true,
+      flex:1,
+      cellClass: 'ag-grid-cell-border'
+    },
       {
         headerName: 'Sno',
         field: 'Sno',
+        valueGetter: "node.rowIndex + 1",
+        filter: false,
+        maxWidth: 100,
+        minWidth: 100,
+        cellClass: 'ag-grid-cell-border'
+ 
       },
       {
         headerName: 'Date',
         field: 'date',
-        type: ['dateColumn', 'nonEditableColumn'],
+        type: ['dateColumn'],
         width: 220,
+        flex:1,
+        filter: "agTextColumnFilter",
+        cellClass: 'ag-grid-cell-border'
       },
       {
         headerName: 'Module Name',
         field: 'Module Name',
+        flex:1,
       },
       {
         headerName: 'Description',
         field: 'Description',
-        // type: 'numberColumn',
+        flex:1,
       },
 
       {
@@ -119,45 +147,107 @@ export class DailyWorkComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-  this.dailyWorkData();
+
+  ngOnInit() {
+    this.myForm = this.fb.group({
+      arr: this.fb.array([this.createItem()])
+    }),
+    this.dailyWorkData();
   }
 
-  addUpdateDailyWorkData(myForm){
+  createItem() {
+    return this.fb.group({
+      date:'',
+      starttime: [''],
+      endtime: [''],
+      moduleName: [''],
+      description: ['']
+    })
+  }
+ 
+ 
+  addDailyWorkDetail(){
+    this.arr = this.myForm.get('arr') as FormArray;
+    this.arr.push(this.createItem());
+  }
+
+  
+  removeDailyWorkDetail(i:number) {
+  this.arr.removeAt(i);
+}
+
+saveDailyWorkDetail(myForm){ 
+    console.log(this.myForm.value);
     this.isSubmit = true;
-      this.dailyWork_data = myForm.value;
-    if(myForm.status == "VALID"){
-      this.employeeService.employeeLogin(this.dailyWork_data).subscribe(res => {
-        if(res.status){
-          this.dailyWorkData();
-          this.isSubmit = false;
-          myForm.reset();
-          this.alertSuccessErrorMsg(res.status, res.message,false);
-        }else{
-          this.alertSuccessErrorMsg(res.status, res.message,false);
-        }
-      });
-    }
-   this.router.navigate(['daily-work-detail']);
-  }
-
-  dailyWorkData(){
-    let obj = {};
-    this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
-      console.log(res.data);
+    this.dailyWork_data = myForm.value;
+  if(myForm.status == "VALID"){
+    this.employeeService.addUpdateDailyWorkData(this.dailyWork_data).subscribe(res => {
+      console.log(res.status);
+      
       if(res.status){
-        console.log(res.data);  
-
-        this.dailyWork_data = res.data;
+        this.dailyWorkData();
+        this.isSubmit = false;
+        myForm.reset();
+        this.alertSuccessErrorMsg(res.status, res.message,false);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
-      }
-
-    });
+         }
+       });
+     }
   }
 
-  alertSuccessErrorMsg(status,message,navigationEvent){
+  cancelDailyWorkDetail(){
+    this.myForm.reset();
+   }
+ 
+   addUpdateDailyWorkData(){
+  //   this.isSubmit = true;
+  //   this.dailyWork_data = myForm.value;
+  // if(myForm.status == "VALID"){
+  //   this.employeeService.employeeLogin(this.dailyWork_data).subscribe(res => {
+  //     if(res.status){
+  //       this.dailyWorkData();
+  //       this.isSubmit = false;
+  //       myForm.reset();
+  //       this.alertSuccessErrorMsg(res.status, res.message,false);
+  //     }else{
+  //       this.alertSuccessErrorMsg(res.status, res.message,false);
+  //        }
+  //      });
+  //    }
+    this.dailyWorkAdd = true;
+    this.isShow = !this.isShow;
+   }
+
+
+   dailyWorkData(){
+    // let obj = {};
+    // this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
+    //   console.log(res.data);
+    //   if(res.status){
+    //     console.log(res.data);  
+
+    //     this.dailyWork_data = res.data;
+    //   }else{
+    //     this.alertSuccessErrorMsg(res.status, res.message,false);
+    //   }
+
+    // });
+  }
+
+  getWorkingMonthsList(){
+    // let obj = {};
+    // this.employeeService.getWorkingMonthsList(obj).subscribe(res => {
+    //   if(res.status){
+    //     this.dailyWork_data = res.data;
+    //     console.log(res.data);
+    //   }else{
+    //     // this.alertSuccessErrorMsg(res.status, res.message,false);
+    //   }
+    // });
+  }
+
+   alertSuccessErrorMsg(status,message,navigationEvent){
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }
-
 }

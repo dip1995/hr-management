@@ -11,9 +11,10 @@ import { HolidaysComponent } from './holidays/holidays.component';
 import { EmployeeLoginComponent } from './employee-login/employee-login.component';
 import { DailyWorkDetailComponent } from './daily-work-detail/daily-work-detail.component';
 import { AgGridModule } from 'ag-grid-angular';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
-  declarations: [DailyWorkComponent, LeaveApplicationComponent, HolidaysComponent, EmployeeLoginComponent, DailyWorkDetailComponent],
+  declarations: [DailyWorkComponent, LeaveApplicationComponent, HolidaysComponent, EmployeeLoginComponent, DailyWorkDetailComponent, ChangePasswordComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -30,7 +31,8 @@ import { AgGridModule } from 'ag-grid-angular';
     DailyWorkComponent,
     LeaveApplicationComponent,
     HolidaysComponent,
-    EmployeeLoginComponent
+    EmployeeLoginComponent,
+    ChangePasswordComponent
   ]
 })
 export class EmployeeModule { }

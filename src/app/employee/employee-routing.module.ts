@@ -6,6 +6,7 @@ import { HolidaysComponent } from './holidays/holidays.component';
 import { EmployeeLoginComponent } from './employee-login/employee-login.component';
 import { AuthGuard } from '../common-module/auth.guard';
 import { DailyWorkDetailComponent } from './daily-work-detail/daily-work-detail.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {
@@ -36,6 +37,11 @@ const routes: Routes = [
     {
       path : 'holidays',
       component: HolidaysComponent,
+      // canActivate: [AuthGuard]
+    },
+    {
+      path : 'change-password',
+      component: ChangePasswordComponent,
       // canActivate: [AuthGuard]
     },
 ];
