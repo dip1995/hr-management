@@ -44,25 +44,15 @@
   </div>
 
    <div class="row" style="margin-top: 10px;">
-      <div class="col-sm-4">
-       <div class="form-group">
-         <label class="d-inline-block mr-10">Select Month:</label>
-         <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
-           <option selected value='1'>Janaury</option>
-           <option value='2'>February</option>
-           <option value='3'>March</option>
-           <option value='4'>April</option>
-           <option value='5'>May</option>
-          <option value='6'>June</option>
-          <option value='7'>July</option>
-          <option value='8'>August</option>
-          <option value='9'>September</option>
-          <option value='10'>October</option>
-          <option value='11'>November</option>
-          <option value='12'>December</option>
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label class="d-inline-block mr-10">Select Month:</label>
+        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
+          <!-- <option value="" style="display:none;" selected>Select Month</option> -->
+          <option *ngFor="let obj of monthList" [value]="obj.date" [selected]="obj.date">{{obj.name}}</option>
         </select>
       </div>
-    </div>
+    </div> 
     <div class="col-sm-8">
       <button class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteLeaveModal()">DELETE</button>
       <button class="pull-right btn btn-primary mr-6" type="button" (click)="applyLeaveApplication()">Apply Application</button>

@@ -4,24 +4,14 @@
     <div class="col-sm-4">
       <div class="form-group">
         <label class="d-inline-block mr-10">Select Month:</label>
-        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
-          <option selected value='1'>Janaury</option>
-          <option value='2'>February</option>
-          <option value='3'>March</option>
-          <option value='4'>April</option>
-          <option value='5'>May</option>
-          <option value='6'>June</option>
-          <option value='7'>July</option>
-          <option value='8'>August</option>
-          <option value='9'>September</option>
-          <option value='10'>October</option>
-          <option value='11'>November</option>
-          <option value='12'>December</option>
+        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
+          <!-- <option value="" style="display:none;" selected>Select Month</option> -->
+          <option *ngFor="let obj of monthList" [value]="obj.date" [selected]="obj.date">{{obj.name}}</option>
         </select>
       </div>
     </div>
     <div class="col-sm-8">
-      <button class="pull-right btn btn-primary" type="button" data-toggle="modal" data-target="#approveLeaveApplicationModal" (click)="approveLeaveApplication($event)">Approve Application</button>
+      <button class="pull-right btn btn-small" style="background-color: #086d92; color: white;" role="button" (click)="approveLeaveApplication()">Approve Application</button>
     </div>
   </div>
   <br/>
@@ -35,27 +25,32 @@
       [defaultColDef]="defaultColDef"
       [defaultColGroupDef]="defaultColGroupDef"
       [columnTypes]="columnTypes"
+      rowSelection='single'
       [rowData]="rowData"
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
   </div>
-</section>
-<div id="approveLeaveApplicationModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+  <div id="approveLeaveApplication" class="modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Approve Leave Application?</h4>
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p>Are you sure you want to save</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-medium" (click)="saveApproveLeaveApplication()">Save</button>
+        </div>
       </div>
     </div>
-
   </div>
-</div>
+</section>
 <app-alert-messages></app-alert-messages>

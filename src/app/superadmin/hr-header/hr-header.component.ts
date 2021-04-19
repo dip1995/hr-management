@@ -35,4 +35,8 @@ export class HrHeaderComponent implements OnInit {
         // });
     });
   }
+
+  changePasswordHR(){
+   this.router.navigate(['superadmin/hr-change-password']);    
+  }
 }

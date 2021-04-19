@@ -6,6 +6,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { SuperadminService } from 'src/app/services/superadmin.service';
+declare var $:any;
 
 @Component({
   selector: 'app-hr-leave-application',
@@ -32,7 +33,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   month;
   year;
   cellDate;
-
+  monthList = [];
  constructor(private router : Router,private superadminService : SuperadminService,
   private cookieService : CookieService) {
    this.columnDefs = [
@@ -143,26 +144,73 @@ export class HrLeaveApplicationComponent implements OnInit {
     this.getLeaveApplicationList();
   }
 
-  approveLeaveApplication(f){
-    this.isSubmit = true;
-    let leaveApplication_data = f.target.value;
-    if(f.status == "VALID"){
-      this.superadminService.approveLeaveApplication(leaveApplication_data).subscribe(res => {
-        if(res.status){
-          this.isSubmit = false;
-          f.reset();
+  // approveLeaveApplicationModal(){
+  //   let selected = this.gridApi.getSelectedRows();
+  //   if(selected && selected.length > 0){
+  //     $("#approveLeaveApplication").modal('show');
+  //   }else{
+  //     this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+  //   }
+  // }
+
+  // saveApproveLeaveApplication(){
+  //   let selected = this.gridApi.getSelectedRows();
+  //   if(selected && selected.length > 0){
+  //     let obj = {
+  //       row_id:selected[0].row_id
+  //     };
+  //     this.superadminService.approveLeaveApplication(obj).subscribe(res => {
+  //       if(res.status){
+  //         $("#approveLeaveApplication").modal('hide');
+  //         this.getLeaveApplicationList();
+  //         this.alertSuccessErrorMsg(res.status, res.message,false);
+  //       }else{
+  //         this.alertSuccessErrorMsg(res.status, res.message,false);
+  //       }
+  //     });
+  //   }else{
+  //     $("#approveLeaveApplication").modal('hide');
+  //     this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+  //   }
+  // }
+
+  approveLeaveApplication(){
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      $("#approveLeaveApplication").modal('show');
+    }else{
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
+
+  saveApproveLeaveApplication(){
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      // let obj = {
+      //   row_id:selected[0].row_id
+      // };
+      this.superadminService.approveLeaveApplication(selected).subscribe(res => {
+        console.log(res);
+        if(res.status){  
+          $("#approveLeaveApplication").modal('hide');
+          this.getLeaveApplicationList();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
       });
+    }else{
+      $("#approveLeaveApplication").modal('hide');
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
     }
   }
+
 
   getLeaveApplicationList(){
     let obj = {};
     this.superadminService.getLeaveApplicationList(obj).subscribe(res => {
       if(res.status){
+        this.rowData = res.data;
         console.log(res.data);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -174,6 +222,7 @@ export class HrLeaveApplicationComponent implements OnInit {
     let obj = {};
     this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
       if(res.status){
+        this.monthList = res.data;
         console.log(res.data);
       }else{
         // this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -185,4 +234,7 @@ export class HrLeaveApplicationComponent implements OnInit {
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }
 
+  selectMonthChange(selectMonth){
+    console.log('selectMonth--',selectMonth)
+  }
 }
