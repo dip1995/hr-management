@@ -37,33 +37,63 @@ export class HrLeaveApplicationComponent implements OnInit {
   private cookieService : CookieService) {
    this.columnDefs = [
      {
-       headerName: 'Name',
-       field: 'Name',
+       maxWidth: 50,
+       minWidth: 50,
+       field: 'RowSelect',
+       headerName: ' ',
+       checkboxSelection: true,
+       filter: false,
+       suppressMenu: true,
+       suppressSorting: true,
+       flex:1,
+       cellClass: 'ag-grid-cell-border'
+     },
+     {
+       headerName: 'Sr No',
+       field: 'Sno',
+       valueGetter: "node.rowIndex + 1",
+       filter: false,
+       maxWidth: 100,
+       minWidth: 100,
+       cellClass: 'ag-grid-cell-border'
      },
      {
        headerName: 'Date From',
-       field: 'Date From',
-       type: ['dateColumn', 'nonEditableColumn'],
+       field: 'date_from',
+       type: ['dateColumn'],
        width: 220,
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border',
+       // onCellClicked: (params)=> {
+       //   this.editLeaveApplication(params);
+       // },
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+       }
      },
      {
        headerName: 'Date To',
-       field: 'Date To',
-       type: ['dateColumn', 'nonEditableColumn'],
-       width: 220,
+       field: 'date_to',
+       type: ['dateColumn'],
+       // width: 220,
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border',
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : "";
+       }
      },
      {
        headerName: 'Description',
-       field: 'Description',
-      //  type: 'file',
-     },
-     {
-      headerName: 'Total Leave',
-      field: 'Total Leave',
-      type: 'numberType',
-    },
+       field: 'description',
+       // width: 220,
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border'
 
-     ]
+     },
+   ]
 
    this.defaultColDef = {
      width: 150,

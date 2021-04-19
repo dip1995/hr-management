@@ -23,9 +23,6 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     CommonModuleModule,
     EmployeeRoutingModule,
     AgGridModule.withComponents([])
-
-
-
   ],
   exports: [
     DailyWorkComponent,

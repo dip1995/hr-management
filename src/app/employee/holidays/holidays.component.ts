@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
   selector: 'app-holidays',
@@ -10,7 +13,7 @@ export class HolidaysComponent implements OnInit {
   data;
   holiday = false;
   selectYear;
-
+  @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   gridApi;
   gridColumnApi;
   columnDefs;
@@ -19,25 +22,15 @@ export class HolidaysComponent implements OnInit {
   columnTypes;
   rowData: [];
   dateParts;
-  day;
-  month;
-  year;
   cellDate;
-  holiday_data1 = [];
-  constructor(private router : Router) {
+  holidayList:any = [];
+  monthList:any = [];
+  daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  constructor(private router : Router,
+    private employeeService : EmployeeService,
+    private cookieService : CookieService
+  ) {
    this.columnDefs = [
-    {
-      maxWidth: 50,
-      minWidth: 50,
-      field: 'RowSelect',
-      headerName: ' ',
-      checkboxSelection: true,
-      filter: false,
-      suppressMenu: true,
-      suppressSorting: true,
-      flex:1,
-      cellClass: 'ag-grid-cell-border'
-    },
    {
      headerName: 'Sr No',
      field: 'Sno',
@@ -54,12 +47,18 @@ export class HolidaysComponent implements OnInit {
      width: 220,
      flex:1,
      filter: "agTextColumnFilter",
-     cellClass: 'ag-grid-cell-border'
+     cellClass: 'ag-grid-cell-border',
+     cellRenderer: (data) => {
+       return data.value ? (new Date(data.value)).toLocaleDateString() : "";
+     }
    },
    {
      headerName: 'Day',
      flex:1,
-     field: 'Day',
+     field: 'day',
+     cellRenderer: (data) => {
+       return this.daysOfWeek[data.value - 1];
+     }
    },
    {
      headerName: 'Holiday/Events',
@@ -75,7 +74,7 @@ export class HolidaysComponent implements OnInit {
      floatingFilter: true,
      resizable: true,
    };
- 
+
   }
 
   onGridReady(params) {
@@ -85,6 +84,34 @@ export class HolidaysComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.getWorkingMonthsList();
+    this.getHolidayList();
+  }
+
+  getHolidayList(){
+    let holiday_data = {};
+    this.employeeService.getBusinessHolidayList(holiday_data).subscribe(res => {
+      if(res.status){
+        this.holidayList = res.data;
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
+  getWorkingMonthsList(){
+   let obj = {};
+   this.employeeService.getWorkingMonthsList(obj).subscribe(res => {
+     if(res.status){
+       this.monthList = res.data;
+     }else{
+       this.alertSuccessErrorMsg(res.status, res.message,false);
+     }
+   });
+  }
+
+  alertSuccessErrorMsg(status,message,navigationEvent){
+    this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }
 
 }

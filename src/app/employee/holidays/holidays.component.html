@@ -9,7 +9,7 @@
         </select>
       </div>
     </div>
-  </div>   
+  </div>
 
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
     <ag-grid-angular
@@ -21,10 +21,10 @@
       [defaultColDef]="defaultColDef"
       [defaultColGroupDef]="defaultColGroupDef"
       [columnTypes]="columnTypes"
-      [rowData]="holiday_data1"
-      rowSelection='single'
+      [rowData]="holidayList"
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
 </div>
 
-</section>  
+</section>
+<app-alert-messages></app-alert-messages>

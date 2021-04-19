@@ -1,12 +1,14 @@
-/* .home-section{
-    border: 1px solid #086d92;
-    margin-top: 50px;
-    width: 100%;
-    /* height: 500px; */
-/* } */
-
-.main-container{
-    border-radius: 25px;
-    border: 1px solid #086d92;
-    width: 100%;
+.daily-work-textarea{
+  display: inline-block;
+  width: 90%;
+}
+.daily-work-trash{
+  font-size: 24px;
+  color: #dc3545;
+  cursor: pointer;
+}
+.daily-work-plus{
+  font-size: 30px;
+  color: #086D92;
+  cursor: pointer;
 }

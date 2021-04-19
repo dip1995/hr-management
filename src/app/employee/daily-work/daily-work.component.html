@@ -1,112 +1,116 @@
 <app-header></app-header>
-<section class="home-section" type="dropdown">
-  <div *ngIf="dailyWorkAdd">
-    <div class="container-fluid main-container">
-     <form [formGroup]="myForm" (ngSubmit)="saveDailyWorkDetail()">
-          <div class="row" style="margin-top: 10px; margin-bottom: 10px;">
-      <div class="col-sm-3">
-        <label for="date">Start Date</label>
-        <input type="date" name="date" formControlName="date" class="form-control">    
-      </div> 
-      <div class="col-sm-9">
-        <button class="pull-right btn btn-medium btn-primary block-btn" type="button" style="background-color: #086d92;" (click)="addDailyWorkDetail()">Add</button>     
-      </div>     
-    </div>
-      
-      <div formArrayName="arr" *ngFor="let a of myForm.get('arr')['controls']; let i = index">     
-        <div [formGroupName]="i" style="margin-bottom: 10px;">
-          <!-- <div class="row mb-20 margin-0">
-            <div class="col-sm-12 rounded-border"> -->
-      
-          <div class="form-group row">                  
-      
-            <div class="col-sm-3">
-              <label for="starttime">Start Time:</label>
-              <input type="time" name="starttime" class="form-control" formControlName="starttime"> 
-              </div>
-      
-      
-              <div class="col-sm-3">
-              <label for="endtime">End Time:</label>
-              <input type="time" name="endtime" formControlName="endtime" class="form-control">
-              </div>
-      
-  
-            <div class="col-sm-3">
-          <label for="moduleName">Module Name:</label>
-          <input type="text"  name="moduleName" formControlName="moduleName" class="form-control">
+<section class="home-section">
+  <div class="row mb-20 margin-0" *ngIf="dailyWorkAdd">
+    <div class="col-sm-12 rounded-border">
+      <br/>
+      <h2 style="text-align: center;margin-top:10px">Add/Update Daily Work</h2>
+      <br/>
+      <form [formGroup]="dailyWorkForm" (ngSubmit)="saveDailyWorkDetail(dailyWorkForm)">
+         <div class="form-group row">
+           <div class="col-sm-4">
+             <label for="date">Date</label>
+             <input type="date" name="date" formControlName="date" class="form-control" required>
+             <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.controls.date.errors?.required">
+               <span>Date Required</span>
+             </div>
+           </div>
+           <div class="col-sm-8" style="padding-top:24px;">
+             <i class="fa fa-plus-square pull-right daily-work-plus" (click)="addDailyWorkDetail()"></i>
+             <!-- <button class="pull-right btn btn-medium btn-primary block-btn" type="button" style="background-color: #086d92;" (click)="addDailyWorkDetail()">Add</button> -->
+           </div>
          </div>
-  
-         <div class="col-sm-3">
-          <label for="description">Description:</label>
-          <textarea name="description" formControlName="description" class="form-control"></textarea>
-          <button class="pull-right btn btn-small btn-primary block-btn" type="button" (click)="removeDailyWorkDetail(i)" style="background-color: #086d92;" >x</button>
-        </div>
-         
-  
-      </div>
-        <!-- </div>
-          </div>  -->
-      </div>
-      </div>
-      <div class="row" style="margin-bottom: 10px;">
-        <div class="col-sm-12 text-center">
-          <button type="submit" class="btn btn-medium btn-success text-center" style="background-color: #086d92; margin-right: 2px;">Save</button>
-          <button type="button" name="button" class="btn-small btn btn-secondary text-center" (click)="cancelDailyWorkDetail()">CANCEL</button>
-    
-        </div>
-      </div>
-          </form>
-  </div>
+
+         <div formArrayName="workArray" *ngFor="let a of dailyWorkForm.get('workArray')['controls']; let i = index">
+           <div [formGroupName]="i" class="form-group row">
+             <input type="hidden" formControlName="row_id"/>
+             <div class="col-sm-2">
+               <label for="date">Start Time</label>
+               <input type="time" name="start_time" class="form-control" formControlName="start_time" (change)="startTimeChanged(i)">
+             </div>
+             <div class="col-sm-2">
+               <label for="date">End Time</label>
+               <input type="time" name="end_time" class="form-control" formControlName="end_time" min="" id="{{ 'work_end_time_'+i}}">
+             </div>
+             <div class="col-sm-3">
+               <label for="date">Module Name</label>
+               <input type="text" name="module" class="form-control" formControlName="module" required>
+               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['module'].errors.required">
+                 <span>Module Name Required</span>
+               </div>
+             </div>
+             <div class="col-sm-5">
+               <label for="date">Description</label>
+               <textarea name="description" formControlName="description" class="form-control daily-work-textarea" required></textarea>
+               <i class="fa fa-trash pull-right daily-work-trash" *ngIf="i!=0" (click)="removeDailyWorkDetail(i)"></i>
+               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['description'].errors.required">
+                 <span>Description Required</span>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div class="row" style="margin-bottom: 10px;">
+           <div class="col-sm-12 text-center">
+             <button type="submit" class="btn btn-medium btn-success text-center" style="background-color: #086d92; margin-right: 2px;">Save</button>
+             <button type="button" name="button" class="btn-small btn btn-secondary text-center" (click)="cancelDailyWorkDetail()">CANCEL</button>
+           </div>
+         </div>
+      </form>
+    </div>
   </div>
 
   <div class="row" style="margin-top: 10px;">
     <div class="col-sm-4">
       <div class="form-group">
         <label class="d-inline-block mr-10">Select Month:</label>
-        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" style="width:auto;min-width:200px;">
-          <option selected value='1'>Janaury</option>
-          <option value='2'>February</option>
-          <option value='3'>March</option>
-          <option value='4'>April</option>
-          <option value='5'>May</option>
-          <option value='6'>June</option>
-          <option value='7'>July</option>
-          <option value='8'>August</option>
-          <option value='9'>September</option>
-          <option value='10'>October</option>
-          <option value='11'>November</option>
-          <option value='12'>December</option>
+        <select [(ngModel)]="selectMonth" class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
+          <!-- <option value="" style="display:none;" selected>Select Month</option> -->
+          <option *ngFor="let obj of monthList" [value]="obj.date">{{obj.name}}</option>
         </select>
       </div>
     </div>
      <div class="col-sm-8">
-      <button class="pull-right btn btn-medium btn-primary block-btn" style="background-color: #086d92;" tabindex="0" (click)="addUpdateDailyWorkData()">ADD</button>
+       <button class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteWorkModal()">DELETE</button>
+       <button class="pull-right btn  btn-primary block-btn mr-6" tabindex="0" (click)="addUpdateDailyWorkData()">ADD WORK DATA</button>
      </div>
   </div>
-
-  
-  
-
-  <br><br>
+  <br>
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
-      <ag-grid-angular
-        #agGrid
-        style="width: 100%; height: 500px;"
-        id="myGrid"
-        class="ag-theme-alpine"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [defaultColGroupDef]="defaultColGroupDef"
-        [columnTypes]="columnTypes"
-        [rowData]="dailyWork_data"
-        (gridReady)="onGridReady($event)"
-      ></ag-grid-angular>
+    <ag-grid-angular
+      #agGrid
+      style="width: 100%; height: 500px;"
+      id="myGrid"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [defaultColGroupDef]="defaultColGroupDef"
+      [columnTypes]="columnTypes"
+      [rowData]="dailyWork_data"
+      rowSelection='multiple'
+      (gridReady)="onGridReady($event)"
+    ></ag-grid-angular>
+  </div>
+
+  <div id="deleteWorkDataModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Work Data?</h4>
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p>Are you sure you want to delete these work data?</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-medium" (click)="deleteWorkData()">DELETE</button>
+          <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+        </div>
+      </div>
     </div>
-
-
-
-
-
-   
+  </div>
 </section>
+<app-alert-messages></app-alert-messages>

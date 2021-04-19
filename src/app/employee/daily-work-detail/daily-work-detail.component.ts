@@ -63,7 +63,7 @@ export class DailyWorkDetailComponent implements OnInit {
         maxWidth: 100,
         minWidth: 100,
         cellClass: 'ag-grid-cell-border'
- 
+
       },
       {
         headerName: 'Date',
@@ -164,42 +164,44 @@ export class DailyWorkDetailComponent implements OnInit {
       description: ['']
     })
   }
- 
- 
+
+
   addDailyWorkDetail(){
     this.arr = this.myForm.get('arr') as FormArray;
     this.arr.push(this.createItem());
   }
 
-  
-  removeDailyWorkDetail(i:number) {
-  this.arr.removeAt(i);
-}
 
-saveDailyWorkDetail(myForm){ 
+  removeDailyWorkDetail(i:number) {
+    this.arr.removeAt(i);
+  }
+
+  saveDailyWorkDetail(myForm){
     console.log(this.myForm.value);
     this.isSubmit = true;
     this.dailyWork_data = myForm.value;
-  if(myForm.status == "VALID"){
-    this.employeeService.addUpdateDailyWorkData(this.dailyWork_data).subscribe(res => {
-      console.log(res.status);
-      
-      if(res.status){
-        this.dailyWorkData();
-        this.isSubmit = false;
-        myForm.reset();
-        this.alertSuccessErrorMsg(res.status, res.message,false);
-      }else{
-        this.alertSuccessErrorMsg(res.status, res.message,false);
-         }
-       });
-     }
+    if(myForm.status == "VALID"){
+      this.employeeService.addUpdateDailyWorkData(this.dailyWork_data).subscribe(res => {
+        console.log(res.status);
+
+        if(res.status){
+          this.dailyWorkData();
+          this.isSubmit = false;
+          myForm.reset();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }else{
+
+    }
   }
 
   cancelDailyWorkDetail(){
     this.myForm.reset();
    }
- 
+
    addUpdateDailyWorkData(){
   //   this.isSubmit = true;
   //   this.dailyWork_data = myForm.value;
@@ -224,7 +226,7 @@ saveDailyWorkDetail(myForm){
     // this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
     //   console.log(res.data);
     //   if(res.status){
-    //     console.log(res.data);  
+    //     console.log(res.data);
 
     //     this.dailyWork_data = res.data;
     //   }else{

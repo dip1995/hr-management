@@ -2,3 +2,10 @@
   width: max-content;
   min-width: 500px;
 }
+.modalBodyPadding {
+    padding: 40px 57px 0px !important;
+    text-align: center;
+}
+.table_all_side_border {
+    border: none !important;
+}

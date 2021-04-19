@@ -2,22 +2,24 @@
 <section class="home-section">
   <div class="row mb-20 margin-0" *ngIf="holiday">
     <div class="col-sm-12 rounded-border">
-      <h2 style="text-align: center;">Add/Update Holiday</h2>
-      <form #f="ngForm" (submit)="addUpdateBusinessHolidays(f)">
+      <br/>
+      <h2 style="text-align: center;margin-top:10px">Add/Update Holiday</h2>
+      <br/>
+      <form [formGroup]="addUpdateHolidayForm" (ngSubmit)="addUpdateBusinessHolidays(addUpdateHolidayForm)">
         <div class="form-group">
           <div class="row">
             <div class="col-sm-6">
               <label>Holiday Name:</label>
-              <input #name="ngModel" ngModel type="text" name="name" class="form-control" required>
-              <div class="text-danger" *ngIf="f.submitted && name.invalid">
-                <span *ngIf="name.errors.required">* Name Required</span>
+              <input type="text" formControlName="name" class="form-control" required placeholder="enter holiday name">
+              <div class="text-danger" *ngIf="isSubmit && addUpdateHolidayForm.controls.name.errors?.required">
+                <span>* Name Required</span>
               </div>
             </div>
             <div class="col-sm-6">
               <label>Holiday Date:</label>
-              <input type="date" #date="ngModel" ngModel name="date" class="form-control" required>
-              <div class="text-danger" *ngIf="f.submitted && date.invalid">
-                <span *ngIf="date.errors.required">* Date Required</span>
+              <input type="date" formControlName="date" class="form-control" required placeholder="enter date">
+              <div class="text-danger" *ngIf="isSubmit && addUpdateHolidayForm.controls.date.errors?.required">
+                <span>* Date Required</span>
               </div>
             </div>
           </div>
@@ -27,6 +29,7 @@
               <button type="submit" class="btn btn-medium btn-primary">Save</button>
             </div>
           </div>
+          <br/>
         </div>
       </form>
     </div>
@@ -41,7 +44,7 @@
       </div>
     </div>
     <div class="col-sm-8">
-      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="deleteLeaveApplication($event)">DELETE</button>
+      <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteHolidayModal()">DELETE</button>
       <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addHoliday()">Add Holiday</button>
     </div>
   </div>
@@ -56,9 +59,33 @@
         [defaultColDef]="defaultColDef"
         [defaultColGroupDef]="defaultColGroupDef"
         [columnTypes]="columnTypes"
-        [rowData]="holiday_data1"
+        [rowData]="holidayList"
         rowSelection='single'
         (gridReady)="onGridReady($event)"
       ></ag-grid-angular>
   </div>
+
+  <div id="deleteHolidayModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Holiday?</h4>
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p>Are you sure you want to delete these holiday(s)?</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-medium" (click)="deleteLeaveApplication()">DELETE</button>
+          <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+<app-alert-messages></app-alert-messages>

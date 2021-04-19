@@ -36,39 +36,60 @@ export class HrDailyWorkComponent implements OnInit {
      {
        headerName: 'Sno',
        field: 'Sno',
-      //  checkboxSelection:true,
+       valueGetter: "node.rowIndex + 1",
+       filter: false,
+       maxWidth: 100,
+       minWidth: 100,
+       cellClass: 'ag-grid-cell-border'
      },
      {
        headerName: 'Date',
        field: 'date',
        type: ['dateColumn', 'nonEditableColumn'],
-       width: 220,
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border',
+       // onCellClicked: (params)=> {
+       //   this.editWorkByDate(params);
+       // },
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+         // return data.value ? '<a class="ag-grid-link">'+(new Date(data.value)).toLocaleDateString()+'</a>' : '';
+       }
      },
      {
        headerName: 'Module Name',
-       field: 'Module Name',
+       field: 'module',
+       flex:1,
      },
      {
        headerName: 'Description',
-       field: 'Description',
-       // type: 'numberColumn',
+       field: 'description',
+       flex:1,
      },
-
      {
        headerName: 'Start Time',
-       field: 'Start Time',
+       field: 'start_time',
        type: 'numberColumn',
+       cellRenderer: (data) => {
+         return data.value ? this.formatAMPM(new Date(data.value)) : '';
+       }
      },
-
      {
        headerName: 'End Time',
-       field: 'End Time',
+       field: 'end_time',
        type: 'numberColumn',
+       cellRenderer: (data) => {
+         return data.value ? this.formatAMPM(new Date(data.value)) : '';
+       }
      },
      {
-       headerName: 'Year',
-       field: 'year',
+       headerName: 'Created On',
+       field: 'created_on',
        type: 'numberColumn',
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+       }
      },
   ]
 
@@ -122,7 +143,9 @@ export class HrDailyWorkComponent implements OnInit {
   }
 
   dailyWorkList(){
-    let obj = {};
+    let obj = {
+      monthly:true
+    };
     this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
         this.daily_work_data = res.data;
@@ -147,6 +170,17 @@ export class HrDailyWorkComponent implements OnInit {
 
   alertSuccessErrorMsg(status,message,navigationEvent){
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
+  }
+
+  formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
   }
 
 }

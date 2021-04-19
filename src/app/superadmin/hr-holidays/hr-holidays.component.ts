@@ -1,9 +1,10 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormArray, FormsModule, NgForm, FormBuilder , Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { SuperadminService } from 'src/app/services/superadmin.service';
+declare var $:any;
 import * as _ from 'lodash';
 @Component({
   selector: 'app-hr-holidays',
@@ -32,9 +33,11 @@ export class HrHolidaysComponent implements OnInit {
   month;
   year;
   cellDate;
-  holiday_data1 = [];
+  holidayList = [];
+  monthList = [];
+  daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   constructor(private router : Router,private superadminService : SuperadminService,
-    private cookieService : CookieService) {
+    private cookieService : CookieService,private fb : FormBuilder) {
     this.columnDefs = [
      {
         maxWidth: 50,
@@ -61,20 +64,47 @@ export class HrHolidaysComponent implements OnInit {
        headerName: 'Date',
        field: 'date',
        type: ['dateColumn'],
-       width: 220,
        flex:1,
        filter: "agTextColumnFilter",
-       cellClass: 'ag-grid-cell-border'
+       cellClass: 'ag-grid-cell-border',
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+       }
      },
      {
        headerName: 'Day',
        flex:1,
-       field: 'Day',
+       field: 'day',
+       cellRenderer: (data) => {
+         return this.daysOfWeek[data.value - 1];
+       }
      },
      {
        headerName: 'Holiday/Events',
        field: 'name',
        flex:1,
+     },
+     {
+       headerName: 'Created On',
+       field: 'created_on',
+       type: ['dateColumn'],
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border',
+       cellRenderer: (data) => {
+         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+       }
+     },{
+       headerName: 'Action',
+       field: 'row_id',
+       flex:1,
+       cellClass: 'ag-grid-cell-border',
+       onCellClicked: (params)=> {
+         this.editHolidays(params);
+       },
+       cellRenderer: (params)=> {
+         return '<a class="ag-grid-link"><i class="fa fa-pencil"></i></a>'
+       },
      },
    ]
 
@@ -114,6 +144,12 @@ export class HrHolidaysComponent implements OnInit {
    };
   }
 
+  addUpdateHolidayForm = this.fb.group({
+    row_id: 0,
+    name : ['' ,Validators.required],
+    date : ['' ,Validators.required]
+  });
+
   onGridReady(params) {
    this.gridApi = params.api;
    this.gridColumnApi = params.columnApi;
@@ -128,7 +164,16 @@ export class HrHolidaysComponent implements OnInit {
      this.holiday = true;
   }
 
-  deleteLeaveApplication(f){
+  openDeleteHolidayModal(){
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      $("#deleteHolidayModal").modal('show');
+    }else{
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
+
+  deleteLeaveApplication(){
     let selected = this.gridApi.getSelectedRows();
     if(selected && selected.length > 0){
       let row_ids = selected.map(function(d){ return d.row_id;});
@@ -143,20 +188,21 @@ export class HrHolidaysComponent implements OnInit {
         }
       });
     }else{
+      $("#deleteHolidayModal").modal('hide');
       this.alertSuccessErrorMsg(false, "Please select a row!!",false);
     }
   }
 
-  addUpdateBusinessHolidays(f:NgForm){
+  addUpdateBusinessHolidays(addUpdateHolidayForm){
     this.isSubmit = true;
-    let holiday_data = f.value;
-    if(f.status == "VALID"){
+    let holiday_data = addUpdateHolidayForm.value;
+    if(addUpdateHolidayForm.status == "VALID"){
       this.superadminService.addUpdateBusinessHolidays(holiday_data).subscribe(res => {
         if(res.status){
           this.hrHolidayList()
           this.isSubmit = false;
           this.holiday = false;
-          f.reset();
+          this.addUpdateHolidayForm.reset();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -169,8 +215,7 @@ export class HrHolidaysComponent implements OnInit {
     let holiday_data = {};
     this.superadminService.getBusinessHolidayList(holiday_data).subscribe(res => {
       if(res.status){
-        console.log(res.data);
-        this.holiday_data1 = res.data;
+        this.holidayList = res.data;
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -181,17 +226,42 @@ export class HrHolidaysComponent implements OnInit {
    let obj = {};
    this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
      if(res.status){
-       console.log(res.data);
-       this.holiday_data1 = res.data;
+       this.monthList = res.data;
      }else{
        this.alertSuccessErrorMsg(res.status, res.message,false);
      }
    });
   }
 
+  editHolidays(params){
+    let holiday = this.holidayList.filter(function(d){
+      if(d.row_id == params.value){
+        return d;
+      }
+    });
+    this.isSubmit = false;
+    this.holiday = true;
+    let holiday_data = {
+      row_id: holiday[0].row_id,
+      name : holiday[0].name,
+      date : this.convertDateToReadableString(holiday[0].date),
+    };
+    this.addUpdateHolidayForm.patchValue(holiday_data);
+  }
+
+  convertDateToReadableString(date){
+    let readable_date = "";
+    if(date){
+      let newdate = new Date(date);
+      let day = newdate.getDate() > 9 ? newdate.getDate() : "0"+newdate.getDate();
+      let month = newdate.getMonth() > 8 ? (newdate.getMonth() + 1) : "0"+(newdate.getMonth() + 1);
+      let year = newdate.getFullYear();
+      return year+"-"+month+"-"+day;//"2021-04-17"
+    }
+    return readable_date;
+  }
+
   alertSuccessErrorMsg(status,message,navigationEvent){
     this.alertmessage.callAlertMsgMethod(true,message,navigationEvent);
   }
-
-
 }

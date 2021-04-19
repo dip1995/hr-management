@@ -43,7 +43,7 @@ const routes: Routes = [
     {
       path : 'superadmin/hr-holidays',
       component: HrHolidaysComponent,
-      // canActivate: [HrAuthGuard]
+      canActivate: [HrAuthGuard]
     },
 ];
 

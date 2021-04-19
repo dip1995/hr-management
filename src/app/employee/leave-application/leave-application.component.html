@@ -2,46 +2,46 @@
 <section class="home-section">
 
   <div *ngIf="approveapplication">
-          <div class="container-fluid main-container">
-              <form #f="ngForm" (submit)="submitLeaveApplication(f.value)">
-                <h2 style="text-align: center; margin-top: 5px;" >Apply Leave Application</h2>
-                <div class="form-group">
-                  <div class="row" style="margin-top: 10px;">
-                      <div class="col-sm-6">
-                           <label for="txtdatefrom">Date From:</label><span class="text-danger">*</span>
-                           <input #txtdatefrom="ngModel" ngModel type="date" name="txtdatefrom" class="form-control" required min=dateFrom()>
-                           <div class="text-danger" *ngIf="f.submitted && txtdatefrom.invalid">
-                              <span *ngIf="txtdatefrom.errors.required">Date Required</span>
-                          </div>
-                        </div>
-                          <div class="col-sm-6">
-                           <label for="txtdateto">Date To:</label><span class="text-danger">*</span>
-                               <input #txtdateto="ngModel" ngModel type="date" name="txtdateto" class="form-control" required min="toFrom()">
-                               <div class="text-danger" *ngIf="f.submitted && txtdateto.invalid">
-                                  <span *ngIf="txtdateto.errors.required">Date Required</span>
-                              </div>
-                          </div>
-                   </div>
-                    <br>
-                        <div class="row">
-                            <div class="col-sm-12">
-                            <label for="txtdescription">Description</label><span class="text-danger">*</span>
-                            <textarea #txtdescription="ngModel" ngModel type="text" name="txtdescription" class="form-control" required></textarea>
-                            <div class="text-danger" *ngIf="f.submitted && txtdescription.invalid">
-                              <span *ngIf="txtdescription.errors.required">* Required</span>
-                            </div>
-                          </div>
-                        </div>
-                      <div class="row" style="margin-top: 10px;">
-                        <div class="col-sm-12 text-center">
-                          <button class="btn btn-primary" style="background-color:#086d92; margin-right: 5px;">Save</button>
-                          <button type="button" name="button" class="btn-medium btn btn-secondary" (click)="cancelLeaveApplication(f)">CANCEL</button>
-                        </div>
-                      </div>
+    <div class="container-fluid main-container">
+      <form [formGroup]="leaveForm" (ngSubmit)="submitLeaveApplication(leaveForm)">
+        <h2 style="text-align: center; margin-top: 5px;" >Apply Leave Application</h2>
+        <div class="form-group">
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-6">
+               <label for="date_from">Date From:</label><span class="text-danger">*</span>
+               <input type="date" name="date_from" formControlName="date_from" class="form-control" required min="{{minDate|date:'yyyy-MM-dd'}}" (change)="dateFromChanged()">
+               <div class="text-danger" *ngIf="isSubmit && leaveForm.controls.date_from.errors?.required">
+                 <span>Date from is Required</span>
+               </div>
+            </div>
+            <div class="col-sm-6">
+              <label for="date_to">Date To:</label><span class="text-danger">*</span>
+              <input formControlName="date_to" type="date" name="date_to" class="form-control" required min="{{maxDate|date:'yyyy-MM-dd'}}">
+              <div class="text-danger" *ngIf="isSubmit && leaveForm.controls.date_to.errors?.required">
+                <span>Date from is Required</span>
               </div>
-          </form>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12">
+              <label for="txtdescription">Description</label><span class="text-danger">*</span>
+              <textarea formControlName="description" type="text" name="description" class="form-control" required></textarea>
+              <div class="text-danger" *ngIf="isSubmit && leaveForm.controls.description.errors?.required">
+                <span>Description is Required</span>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-12 text-center">
+              <button class="btn btn-primary" style="background-color:#086d92; margin-right: 5px;">Save</button>
+              <button type="button" name="button" class="btn-medium btn btn-secondary" (click)="cancelLeaveApplication(f)">CANCEL</button>
+            </div>
+          </div>
         </div>
-      </div>  
+      </form>
+    </div>
+  </div>
 
    <div class="row" style="margin-top: 10px;">
       <div class="col-sm-4">
@@ -64,7 +64,8 @@
       </div>
     </div>
     <div class="col-sm-8">
-      <button class="pull-right btn btn-primary" type="button" (click)="applyLeaveApplication()">Apply Application</button>
+      <button class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteLeaveModal()">DELETE</button>
+      <button class="pull-right btn btn-primary mr-6" type="button" (click)="applyLeaveApplication()">Apply Application</button>
     </div>
   </div>
 
@@ -79,9 +80,33 @@
       [defaultColDef]="defaultColDef"
       [defaultColGroupDef]="defaultColGroupDef"
       [columnTypes]="columnTypes"
-      [rowData]="leave_data"
+      [rowData]="leaveList"
+      rowSelection='single'
       (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
   </div>
-</section>
 
+  <div id="deleteLeaveModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Leave Application?</h4>
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <p>Are you sure you want to delete these leave application?</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-medium" (click)="deleteLeaveApplication()">DELETE</button>
+          <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-alert-messages></app-alert-messages>

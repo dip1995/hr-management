@@ -22,27 +22,27 @@ const routes: Routes = [
     {
       path : 'daily-work',
       component: DailyWorkComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'daily-work-detail',
       component: DailyWorkDetailComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'leave-application',
       component: LeaveApplicationComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'holidays',
       component: HolidaysComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'change-password',
       component: ChangePasswordComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
 ];
 

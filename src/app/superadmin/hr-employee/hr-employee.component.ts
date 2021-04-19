@@ -1,5 +1,5 @@
 import { Component, OnInit,ViewChild} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormArray, FormsModule, NgForm, FormBuilder , Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -17,6 +17,7 @@ declare var $:any;
 export class HrEmployeeComponent implements OnInit {
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   isSubmit:any=false;
+  isEndSessionSubmit:any=false;
   file:any;
   fileName:any = "";
   employeeError:any = false;
@@ -36,54 +37,125 @@ export class HrEmployeeComponent implements OnInit {
    month;
    year;
    cellDate;
-   employee_data;
-   employee_data1 = [];
+   employee_data:any = {};
+   employeeList = [];
+   employeeEndDate = "";
+   importFile = false;
+   userCookie:any;
   constructor(private router : Router,private superadminService : SuperadminService,
-    private cookieService : CookieService) {
+    private cookieService : CookieService,private fb : FormBuilder) {
     this.columnDefs = [
+      {
+         maxWidth: 50,
+         minWidth: 50,
+         field: 'RowSelect',
+         headerName: ' ',
+         checkboxSelection: true,
+         filter: false,
+         suppressMenu: true,
+         suppressSorting: true,
+         cellClass: 'ag-grid-cell-border'
+       },
+      {
+        headerName: 'Sr No',
+        field: 'Sno',
+        valueGetter: "node.rowIndex + 1",
+        filter: false,
+        maxWidth: 100,
+        minWidth: 100,
+        cellClass: 'ag-grid-cell-border'
+      },
       {
         headerName: 'Name',
         field: 'name',
+        flex:1,
+        cellClass: 'ag-grid-cell-border',
       },
       {
         headerName: 'Mobile',
         field: 'mobile',
         type: 'numberColumn',
+        flex:1,
+        cellClass: 'ag-grid-cell-border',
       },
       {
         headerName: 'Email',
         field: 'email',
-
+        flex:1,
+        cellClass: 'ag-grid-cell-border',
       },
       {
         headerName: 'Salary',
         field: 'salary',
         type: 'numberColumn',
+        flex:1,
+        cellClass: 'ag-grid-cell-border',
       },
       {
         headerName: 'Joining Date',
         field: 'start_date',
         type: ['dateColumn', 'nonEditableColumn'],
-        width: 220,
+        // width: 220,
+        cellClass: 'ag-grid-cell-border',
+        flex:1,
+        cellRenderer: (data) => {
+          return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+        }
       },
       {
         headerName: 'Increment Date',
         field: 'increament_date',
         type: ['dateColumn', 'nonEditableColumn'],
-        width: 220,
+        // width: 220,
+        cellClass: 'ag-grid-cell-border',
+        flex:1,
+        cellRenderer: (data) => {
+          return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+        }
       },
       {
         headerName: 'Leave Credit',
         field: 'leave_credit',
         type: 'numberColumn',
+        cellClass: 'ag-grid-cell-border',
+        flex:1,
       },
       {
         headerName: 'Document Upload',
-        field: 'file',
-        // type: 'file',
+        field: 'document',
+        cellClass: 'ag-grid-cell-border',
+        flex:1,
+        onCellClicked: (params)=> {
+          this.downloadDocument(params);
+        },
+        cellRenderer: (params)=> {
+          return params.value ? '<a class="ag-grid-link"><i class="fa fa-download"></i> Download</a>' : "";
+        },
       },
-
-      ]
+      {
+        headerName: 'Created On',
+        field: 'created_on',
+        type: ['dateColumn'],
+        flex:1,
+        filter: "agTextColumnFilter",
+        cellClass: 'ag-grid-cell-border',
+        cellRenderer: (data) => {
+          return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+        }
+      },
+      {
+        headerName: 'Action',
+        field: 'userid',
+        flex:1,
+        cellClass: 'ag-grid-cell-border',
+        onCellClicked: (params)=> {
+          this.editEmployee(params);
+        },
+        cellRenderer: (params)=> {
+          return '<a class="ag-grid-link"><i class="fa fa-pencil"></i></a>'
+        },
+      },
+    ]
 
     this.defaultColDef = {
       width: 150,
@@ -124,36 +196,58 @@ export class HrEmployeeComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-
-
   }
 
+  exportEmployeeGrid() {
+    const params = {
+      columnGroups: true,
+      allColumns: false,
+      columnKeys:['Sno','name','mobile','email','salary','start_date','increament_date','leave_credit','document','created_on'],
+      fileName: 'employee_data',
+    };
+    this.gridApi.exportDataAsCsv(params);
+  }
+
+  addUpdateEmployeeForm = this.fb.group({
+    id: 0,
+    name : ['' ,Validators.required],
+    mobile : ['' ,Validators.required],
+    email : ['' ,Validators.required],
+    salary : ['' ,Validators.required],
+    start_date : ['' ,Validators.required],
+    increament_date : ['' ,Validators.required],
+    leave_credit : ['' ,Validators.required],
+    document : [''],
+    file : [''],
+    password : [''],
+    changePassword:['']
+  });
+
   ngOnInit(): void {
+    this.userCookie = (this.cookieService.get('epsuperadmin')) ? JSON.parse(this.cookieService.get('epsuperadmin')) : {} ;
     this.hrEmployeeList();
   }
 
-  openEndSessionModal(){
-    $("#endSessionModal").modal('show');
+  downloadDocument(params) {
+    console.log('selected_scenario--',params.value)
   }
 
   addEmployee(){
-    this.addUpdateEmployee = true;
+    this.addUpdateEmployeeForm.reset();
+    this.addUpdateEmployee = !this.addUpdateEmployee;
   }
 
-  addUpdateEmployeeDetails(f:NgForm){
+  addUpdateEmployeeDetails(addUpdateEmployeeForm){
     this.isSubmit = true;
-    this.employee_data = f.value;
-     console.log(this.employee_data);
-    if(f.status == "VALID"){
+    this.employee_data = addUpdateEmployeeForm.value;
+    if(addUpdateEmployeeForm.status == "VALID"){
       this.employee_data.document = this.fileName;
       this.superadminService.addUpdateEmployeeDetails(this.employee_data).subscribe(res => {
-        console.log(res);
-
         if(res.status){
-          this.hrEmployeeList();
           this.isSubmit = false;
           this.addUpdateEmployee = false;
-          f.reset();
+          this.addUpdateEmployeeForm.reset();
+          this.hrEmployeeList();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -170,9 +264,10 @@ export class HrEmployeeComponent implements OnInit {
       formdata.append("file", this.file);
       this.superadminService.uploadZipDocument(formdata).subscribe(res => {
         if(res.status){
+          this.employee_data = this.addUpdateEmployeeForm.value;
+          this.employee_data.document = res.data.filename;
           this.fileName = res.data.filename;
-          console.log(this.fileName);
-
+          this.addUpdateEmployeeForm.patchValue(this.employee_data);
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
@@ -183,29 +278,124 @@ export class HrEmployeeComponent implements OnInit {
     }
   }
 
-
-
   hrEmployeeList(){
     let obj = {};
     this.superadminService.getEmployeeList(obj).subscribe(res => {
-      console.log(res.data);
-
       if(res.status){
-        console.log(res.data);
-
-        this.employee_data1 = res.data;
+        this.employeeList = res.data;
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
     });
   }
 
-  endEmployeeSession(){
+  openEndSessionModal(){
+    this.isEndSessionSubmit = false;
+    this.employeeEndDate = "";
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      $("#endSessionModal").modal('show');
+    }else{
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
 
+  endEmployeeSession(){
+    this.isEndSessionSubmit = true;
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      let obj = {
+        id:selected[0].userid
+      };
+      this.superadminService.endEmployeeSession(obj).subscribe(res => {
+        if(res.status){
+          $("#endSessionModal").modal('hide');
+          this.hrEmployeeList();
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
+    }else{
+      $("#endSessionModal").modal('hide');
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
   }
 
   deleteEmployee(){
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      let row_ids = selected.map(function(d){ return d.row_id;});
+      let obj = {
+        row_ids:row_ids
+      };
+      // this.superadminService.deleteEmployee(obj).subscribe(res => {
+      //   if(res.status){
+      //     this.alertSuccessErrorMsg(res.status, res.message,false);
+      //   }else{
+      //     this.alertSuccessErrorMsg(res.status, res.message,false);
+      //   }
+      // });
+    }else{
+      $("#deleteEmployeeModal").modal('hide');
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
 
+  openDeleteEmployeeModal(){
+    let selected = this.gridApi.getSelectedRows();
+    if(selected && selected.length > 0){
+      $("#deleteEmployeeModal").modal('show');
+    }else{
+      this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
+
+  editEmployee(params){
+    let obj = {id:params.value};
+    this.superadminService.getEmployeeDetailsById(obj).subscribe(res => {
+      if(res.status){
+        if(res.data && res.data.length > 0){
+          this.isSubmit = false;
+          this.addUpdateEmployee = true;
+          this.employee_data = {
+            id: res.data[0].userid,
+            name : res.data[0].name,
+            mobile : res.data[0].mobile,
+            email : res.data[0].email,
+            salary : res.data[0].salary,
+            start_date : this.convertDateToReadableString(res.data[0].start_date),
+            increament_date : this.convertDateToReadableString(res.data[0].increament_date),
+            leave_credit : res.data[0].leave_credit,
+            document : res.data[0].document,
+            password : '',
+            changePassword:false,
+          };
+          this.importFile = res.data[0].document ? true : false;
+          this.addUpdateEmployeeForm.patchValue(this.employee_data);
+        }else{
+          this.alertSuccessErrorMsg(false, "Employee not found!!",false);
+        }
+      }else{
+        this.alertSuccessErrorMsg(res.status, res.message,false);
+      }
+    });
+  }
+
+  changeImportFile(){
+    this.importFile = !this.importFile;
+  }
+
+  convertDateToReadableString(date){
+    let readable_date = "";
+    if(date){
+      let newdate = new Date(date);
+      let day = newdate.getDate() > 9 ? newdate.getDate() : "0"+newdate.getDate();
+      let month = newdate.getMonth() > 8 ? (newdate.getMonth() + 1) : "0"+(newdate.getMonth() + 1);
+      let year = newdate.getFullYear();
+      return year+"-"+month+"-"+day;//"2021-04-17"
+    }
+    return readable_date;
   }
 
   alertSuccessErrorMsg(status,message,navigationEvent){

@@ -58,4 +58,19 @@ export class EmployeeService {
     return this.http.post<any>(this.local_url+'/api/employee/updatePassword',body);
   }
 
+  deleteDailyWorkData(body:any) : Observable<any> {
+    return this.http.post<any>(this.local_url+'/api/employee/deleteDailyWorkData',body);
+  }
+
+  deleteLeaveApplication(body:any) : Observable<any> {
+    return this.http.post<any>(this.local_url+'/api/employee/deleteLeaveApplication',body);
+  }
+
+  getLeaveApplicationListByEmployee(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getLeaveApplicationListByEmployee',{ params: body});
+  }
+  
+  getBusinessHolidayList(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/superadmin/getBusinessHolidayList',{ params: body});
+  }
 }
