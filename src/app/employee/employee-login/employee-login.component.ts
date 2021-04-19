@@ -42,6 +42,9 @@ export class EmployeeLoginComponent implements OnInit {
     let login_data = this.EmployeeLoginForm.value;
     if(this.EmployeeLoginForm.status == "VALID"){
       this.employeeService.employeeLogin(login_data).subscribe(res => {
+        
+        console.log(res);
+        
         if(res.status){
           this.isSubmit = false;
           this.EmployeeLoginForm.reset();

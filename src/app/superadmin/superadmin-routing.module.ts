@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { HrAuthGuard } from '../common-module/hr-auth.guard';
 import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
+import { HrChangePasswordComponent } from './hr-change-password/hr-change-password.component';
 
 const routes: Routes = [
     {
@@ -43,6 +44,11 @@ const routes: Routes = [
     {
       path : 'superadmin/hr-holidays',
       component: HrHolidaysComponent,
+      canActivate: [HrAuthGuard]
+    },
+    {
+      path : 'superadmin/hr-change-password',
+      component: HrChangePasswordComponent,
       canActivate: [HrAuthGuard]
     },
 ];

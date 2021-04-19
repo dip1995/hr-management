@@ -30,7 +30,7 @@ export class HrDailyWorkComponent implements OnInit {
   year;
   cellDate;
   daily_work_data = [];
-
+  monthList = [];
  constructor(private router : Router,private superadminService : SuperadminService) {
     this.columnDefs = [
      {
@@ -160,7 +160,7 @@ export class HrDailyWorkComponent implements OnInit {
     let obj = {};
     this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
       if(res.status){
-        this.daily_work_data = res.data;
+        this.monthList = res.data;
         console.log(res.data);
       }else{
         // this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -181,6 +181,10 @@ export class HrDailyWorkComponent implements OnInit {
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
+  }
+
+  selectMonthChange(selectMonth){
+    console.log('selectMonth--',selectMonth)
   }
 
 }

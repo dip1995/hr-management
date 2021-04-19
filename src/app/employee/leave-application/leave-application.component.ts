@@ -234,4 +234,8 @@ export class LeaveApplicationComponent implements OnInit {
     return readable_date;
   }
 
+  selectMonthChange(selectMonth){
+    console.log('selectMonth--',selectMonth)
+  }
+
 }

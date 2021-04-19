@@ -64,7 +64,7 @@
         <label class="d-inline-block mr-10">Select Month:</label>
         <select [(ngModel)]="selectMonth" class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
           <!-- <option value="" style="display:none;" selected>Select Month</option> -->
-          <option *ngFor="let obj of monthList" [value]="obj.date">{{obj.name}}</option>
+          <option *ngFor="let obj of monthList" [value]="obj.date" [selected]="obj.date">{{obj.name}}</option>
         </select>
       </div>
     </div>

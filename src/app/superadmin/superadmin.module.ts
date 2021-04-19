@@ -12,11 +12,12 @@ import { LoginComponent } from './login/login.component';
 import { HrHeaderComponent } from './hr-header/hr-header.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
+import { HrChangePasswordComponent } from './hr-change-password/hr-change-password.component';
 // import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
-  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent],
+  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent, HrChangePasswordComponent],
   imports: [
     BrowserModule,
     FormsModule,

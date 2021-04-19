@@ -95,5 +95,10 @@ export class SuperadminService {
     body.user_type = 'superadmin';
     return this.http.get<any>(this.local_url+'/api/employee/getEmployeeDetailsById',{ params: body});
   }
+  
+  updatePassword(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/employee/updatePassword',{ params: body});
+  }
 
 }
