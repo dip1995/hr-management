@@ -25,7 +25,7 @@ export class DailyWorkComponent implements OnInit {
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
 
   isShow = false;
-  selectMonth = {};
+  selectMonth:any;
    gridApi;
    gridColumnApi;
 
@@ -46,7 +46,7 @@ export class DailyWorkComponent implements OnInit {
    userCookie:any = {};
    monthlyRadio:any = 1;
    daily_date:any;
- 
+   deletedRowIds:any = [];
    constructor(private fb: FormBuilder,private router : Router, private employeeService : EmployeeService,
     private cookieService : CookieService) {
     this.columnDefs = [
@@ -191,6 +191,11 @@ export class DailyWorkComponent implements OnInit {
   }
 
   removeDailyWorkDetail(i:number) {
+    if(this.workArray.controls && this.workArray.controls.length>0 && this.workArray.controls[i] && this.workArray.controls[i].value){
+      if(this.workArray.controls[i].value.row_id){
+        this.deletedRowIds.push(this.workArray.controls[i].value.row_id);
+      }
+    }
     this.workArray.removeAt(i);
   }
 
@@ -202,9 +207,10 @@ export class DailyWorkComponent implements OnInit {
 
   saveDailyWorkDetail(dailyWorkForm){
     this.isSubmit = true;
-    this.dailyWorkFormData = dailyWorkForm.value;
+    let dailyWorkFormData = dailyWorkForm.value;
+    dailyWorkFormData.deleted_ids = this.deletedRowIds;
     if(dailyWorkForm.status == "VALID"){
-      this.employeeService.addUpdateDailyWorkData(this.dailyWorkFormData).subscribe(res => {
+      this.employeeService.addUpdateDailyWorkData(dailyWorkFormData).subscribe(res => {
         if(res.status){
           this.dailyWorkData();
           this.isSubmit = false;
@@ -219,12 +225,14 @@ export class DailyWorkComponent implements OnInit {
   }
 
   cancelDailyWorkDetail(){
+    this.deletedRowIds = [];
     this.dailyWorkAdd = false;
     this.dailyWorkForm.reset();
   }
 
   addUpdateDailyWorkData(){
     this.isSubmit = false;
+    this.deletedRowIds = [];
     this.cancelDailyWorkDetail();
     this.dailyWorkAdd = true;
     this.isShow = !this.isShow;
@@ -234,7 +242,9 @@ export class DailyWorkComponent implements OnInit {
   dailyWorkData(){
     let obj = {
       id:this.userCookie.userid,
-      monthly:true
+      monthly: this.monthlyRadio ? true : false,
+      daily: this.monthlyRadio ? false : true,
+      date: this.monthlyRadio ? (this.selectMonth ? +this.selectMonth : "") : this.daily_date
     };
     this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
@@ -261,6 +271,7 @@ export class DailyWorkComponent implements OnInit {
     let obj = {
       date:(+params.value)
     };
+    this.deletedRowIds = [];
     this.employeeService.getEmployeesDailyWorkByDate(obj).subscribe(res => {
       if(res.status){
         this.isSubmit = false;
@@ -286,7 +297,11 @@ export class DailyWorkComponent implements OnInit {
         };
         this.dailyWorkForm.patchValue(this.dailyWorkFormData);
         this.workArray = this.dailyWorkForm.get('workArray') as FormArray;
-        this.removeDailyWorkDetail(0);
+        if(this.workArray.controls && this.workArray.controls.length>0){
+          this.workArray.controls.forEach((d,i) => {
+            this.removeDailyWorkDetail(i);
+          });
+        }
         workData.forEach((d) => {
           this.workArray.push(this.createItem(d.row_id,d.start_time,d.end_time,d.module,d.description));
         });
@@ -313,9 +328,8 @@ export class DailyWorkComponent implements OnInit {
         row_ids:row_ids
       };
       this.employeeService.deleteDailyWorkData(obj).subscribe(res => {
-        $("#deleteWorkDataModal .close").click();
         if(res.status){
-          $("#deleteLeaveModal").modal('hide');
+          $("#deleteWorkDataModal").modal('hide');
           this.dailyWorkData();
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }else{
@@ -344,7 +358,7 @@ export class DailyWorkComponent implements OnInit {
   }
 
   selectMonthChange(selectMonth){
-    console.log('selectMonth--',selectMonth)
+    this.dailyWorkData();
   }
 
   onItemChange(){

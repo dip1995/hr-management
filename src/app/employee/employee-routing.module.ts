@@ -21,28 +21,29 @@ const routes: Routes = [
     {
       path : 'daily-work',
       component: DailyWorkComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'leave-application',
       component: LeaveApplicationComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'holidays',
       component: HolidaysComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
     {
       path : 'change-password',
       component: ChangePasswordComponent,
-      // canActivate: [AuthGuard]
+      canActivate: [AuthGuard]
     },
 ];
 
 @NgModule({
   imports: [RouterModule,RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 
 export class EmployeeRoutingModule { }

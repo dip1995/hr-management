@@ -54,6 +54,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule,RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [HrAuthGuard]
 })
 export class SuperadminRoutingModule { }

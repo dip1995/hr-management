@@ -34,7 +34,7 @@
              <div class="col-sm-3">
                <label for="date">Module Name</label>
                <input type="text" name="module" class="form-control" formControlName="module" required>
-               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['module'].errors.required">
+               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['module'].errors && dailyWorkForm.get('workArray')['controls'][i].controls['module'].errors.required">
                  <span>Module Name Required</span>
                </div>
              </div>
@@ -42,7 +42,7 @@
                <label for="date">Description</label>
                <textarea name="description" formControlName="description" class="form-control daily-work-textarea" required></textarea>
                <i class="fa fa-trash pull-right daily-work-trash" *ngIf="i!=0" (click)="removeDailyWorkDetail(i)"></i>
-               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['description'].errors.required">
+               <div class="text-danger" *ngIf="isSubmit && dailyWorkForm.get('workArray')['controls'][i].controls['description'].errors && dailyWorkForm.get('workArray')['controls'][i].controls['description'].errors.required">
                  <span>Description Required</span>
                </div>
              </div>
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  
+
 
   <div class="row">
    <div class="col-sm-6">
@@ -75,11 +75,11 @@
         </div>
     </div>
   </div>
-    
+
     <div class="col-sm-6" >
       <button class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteWorkModal()">DELETE</button>
       <button class="pull-right btn btn-primary block-btn mr-6" tabindex="0" (click)="addUpdateDailyWorkData()">ADD WORK DATA</button>
-    
+
       <div class="form-group pull-right" style="padding-right: 5px;" *ngIf="monthlyRadio">
     <label class="d-inline-block mr-10">Select Month:</label>
     <select class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
@@ -95,7 +95,7 @@
     </div>
     </div>
 
-  
+
   <div style="height: 100%; box-sizing: border-box; width: 100%;">
     <ag-grid-angular
       #agGrid

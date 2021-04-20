@@ -7,6 +7,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { SuperadminService } from 'src/app/services/superadmin.service';
 import { RequestOptions, Headers, Http } from '@angular/http';
+import { environment } from 'src/environments/environment';
 declare var $:any;
 
 @Component({
@@ -23,7 +24,7 @@ export class HrEmployeeComponent implements OnInit {
   employeeError:any = false;
   employeeErrorMessage:any = "";
   addUpdateEmployee:boolean = false;
-
+  local_url = environment.LOCAL_API_URL ; // localhost
    gridApi;
    gridColumnApi;
 
@@ -229,7 +230,19 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   downloadDocument(params) {
-    console.log('selected_scenario--',params.value)
+    var path = this.local_url+"/uploads/documents/"+params.value;
+    const linkElement = document.createElement('a');
+    var url = path+"?token="+this.userCookie.token;
+    linkElement.setAttribute('href', url);
+    linkElement.setAttribute("download", params.value);
+    var clickEvent = new MouseEvent("click", {
+        "view": window,
+        "bubbles": true,
+        "cancelable": false
+    });
+    setTimeout(() => {
+      linkElement.dispatchEvent(clickEvent);
+    }, 100);
   }
 
   addEmployee(){
@@ -267,6 +280,7 @@ export class HrEmployeeComponent implements OnInit {
           this.employee_data = this.addUpdateEmployeeForm.value;
           this.employee_data.document = res.data.filename;
           this.fileName = res.data.filename;
+          this.importFile = true;
           this.addUpdateEmployeeForm.patchValue(this.employee_data);
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
