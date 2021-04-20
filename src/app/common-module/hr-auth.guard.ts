@@ -21,8 +21,8 @@ export class HrAuthGuard implements CanActivate {
      if(isLoggedIn)
           return true;
 
-      this.cookieService.delete('epsuperadmin',  ' / ' ,  'localhost');
-      this.cookieService.delete('epsuperadmin');
+      // this.cookieService.delete('epsuperadmin',  ' / ' ,  'localhost');
+      // this.cookieService.delete('epsuperadmin');
       window.open(externalUrl+'/superadmin/login', '_self');
       return false;
   }

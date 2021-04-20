@@ -34,6 +34,8 @@ export class HrLeaveApplicationComponent implements OnInit {
   year;
   cellDate;
   monthList = [];
+  modalElements:any = {title:"",body:""};
+  approveStatus:any = 1;
  constructor(private router : Router,private superadminService : SuperadminService,
   private cookieService : CookieService) {
    this.columnDefs = [
@@ -94,6 +96,17 @@ export class HrLeaveApplicationComponent implements OnInit {
        cellClass: 'ag-grid-cell-border'
 
      },
+     {
+       headerName: 'Status',
+       field: 'approve_status',
+       // width: 220,
+       flex:1,
+       filter: "agTextColumnFilter",
+       cellClass: 'ag-grid-cell-border',
+       cellRenderer: (data) => {
+         return data.value == 1 ? "Approved" : data.value == 2 ? "Rejected" : "Pending";
+       }
+     },
    ]
 
    this.defaultColDef = {
@@ -132,51 +145,32 @@ export class HrLeaveApplicationComponent implements OnInit {
    };
  }
 
- onGridReady(params) {
+  onGridReady(params) {
    this.gridApi = params.api;
    this.gridColumnApi = params.columnApi;
-
-
- }
+  }
 
   ngOnInit(){
     this.getWorkingMonthsList();
     this.getLeaveApplicationList();
   }
 
-  // approveLeaveApplicationModal(){
-  //   let selected = this.gridApi.getSelectedRows();
-  //   if(selected && selected.length > 0){
-  //     $("#approveLeaveApplication").modal('show');
-  //   }else{
-  //     this.alertSuccessErrorMsg(false, "Please select a row!!",false);
-  //   }
-  // }
-
-  // saveApproveLeaveApplication(){
-  //   let selected = this.gridApi.getSelectedRows();
-  //   if(selected && selected.length > 0){
-  //     let obj = {
-  //       row_id:selected[0].row_id
-  //     };
-  //     this.superadminService.approveLeaveApplication(obj).subscribe(res => {
-  //       if(res.status){
-  //         $("#approveLeaveApplication").modal('hide');
-  //         this.getLeaveApplicationList();
-  //         this.alertSuccessErrorMsg(res.status, res.message,false);
-  //       }else{
-  //         this.alertSuccessErrorMsg(res.status, res.message,false);
-  //       }
-  //     });
-  //   }else{
-  //     $("#approveLeaveApplication").modal('hide');
-  //     this.alertSuccessErrorMsg(false, "Please select a row!!",false);
-  //   }
-  // }
-
-  approveLeaveApplication(){
+  approveLeaveApplication(reject:number){
     let selected = this.gridApi.getSelectedRows();
     if(selected && selected.length > 0){
+      if(reject){
+        this.approveStatus = 2;
+        this.modalElements = {
+          title:"Reject Leave Application",
+          body:"Are you sure you want to reject these leave application(s)"
+        };
+      }else{
+        this.approveStatus = 1;
+        this.modalElements = {
+          title:"Approve Leave Application",
+          body:"Are you sure you want to approve these leave application(s)"
+        };
+      }
       $("#approveLeaveApplication").modal('show');
     }else{
       this.alertSuccessErrorMsg(false, "Please select a row!!",false);
@@ -186,12 +180,13 @@ export class HrLeaveApplicationComponent implements OnInit {
   saveApproveLeaveApplication(){
     let selected = this.gridApi.getSelectedRows();
     if(selected && selected.length > 0){
-      // let obj = {
-      //   row_id:selected[0].row_id
-      // };
-      this.superadminService.approveLeaveApplication(selected).subscribe(res => {
-        console.log(res);
-        if(res.status){  
+      let row_ids = selected.map(function(d){ return d.row_id;});
+      let obj = {
+        row_ids:row_ids,
+        status:this.approveStatus
+      };
+      this.superadminService.approveLeaveApplication(obj).subscribe(res => {
+        if(res.status){
           $("#approveLeaveApplication").modal('hide');
           this.getLeaveApplicationList();
           this.alertSuccessErrorMsg(res.status, res.message,false);

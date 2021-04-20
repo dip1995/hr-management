@@ -31,6 +31,8 @@ export class HrDailyWorkComponent implements OnInit {
   cellDate;
   daily_work_data = [];
   monthList = [];
+  monthlyRadio:any = 1;
+  daily_date:any;
  constructor(private router : Router,private superadminService : SuperadminService) {
     this.columnDefs = [
      {
@@ -144,7 +146,9 @@ export class HrDailyWorkComponent implements OnInit {
 
   dailyWorkList(){
     let obj = {
-      monthly:true
+      monthly: this.monthlyRadio ? true : false,
+      daily: this.monthlyRadio ? false : true,
+      date: this.monthlyRadio ? (this.selectMonth ? +this.selectMonth : "") : this.daily_date
     };
     this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
@@ -184,7 +188,24 @@ export class HrDailyWorkComponent implements OnInit {
   }
 
   selectMonthChange(selectMonth){
-    console.log('selectMonth--',selectMonth)
+    this.dailyWorkList();
+  }
+
+  onItemChange(){
+    this.daily_date = this.convertDateToReadableString(+new Date());
+    this.dailyWorkList();
+  }
+
+  convertDateToReadableString(date){
+    let readable_date = "";
+    if(date){
+      let newdate = new Date(date);
+      let day = newdate.getDate() > 9 ? newdate.getDate() : "0"+newdate.getDate();
+      let month = newdate.getMonth() > 8 ? (newdate.getMonth() + 1) : "0"+(newdate.getMonth() + 1);
+      let year = newdate.getFullYear();
+      return year+"-"+month+"-"+day;//"2021-04-17"
+    }
+    return readable_date;
   }
 
 }

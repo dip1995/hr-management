@@ -22,7 +22,7 @@ export class HrChangePasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userCookie = (this.cookieService.get('epuser')) ? JSON.parse(this.cookieService.get('epuser')) : {} ;
+    this.userCookie = (this.cookieService.get('epsuperadmin')) ? JSON.parse(this.cookieService.get('epsuperadmin')) : {} ;
     this.changePasswordForm = this.fb.group({
       current: ['' ,Validators.required],
       password: ['' ,Validators.required],
@@ -42,8 +42,9 @@ export class HrChangePasswordComponent implements OnInit {
          this.isSubmit = false;
          this.changePasswordForm.reset();
          this.alertSuccessErrorMsg(res.status, res.message,false);
-         setTimeout(function(){
-           this.router.navigate(['/hr-daily-work']);
+         setTimeout(() =>{
+           this.alertmessage.close();
+           this.router.navigate(['superadmin/hr-daily-work']);
          },3000);
        }else{
          this.alertSuccessErrorMsg(res.status, res.message,false);

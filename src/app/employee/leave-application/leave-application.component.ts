@@ -98,6 +98,17 @@ export class LeaveApplicationComponent implements OnInit {
         cellClass: 'ag-grid-cell-border'
 
       },
+      {
+        headerName: 'Status',
+        field: 'approve_status',
+        // width: 220,
+        flex:1,
+        filter: "agTextColumnFilter",
+        cellClass: 'ag-grid-cell-border',
+        cellRenderer: (data) => {
+          return data.value == 1 ? "Approved" : data.value == 2 ? "Rejected" : "Pending";
+        }
+      },
     ]
 
     this.defaultColDef = {

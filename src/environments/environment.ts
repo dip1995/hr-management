@@ -3,13 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  LOCAL_API_URL : 'http://134.122.28.57:8005',
-  LINK_URL : 'http://134.122.28.57:8005',
-  hr_api : 'http://134.122.28.57:8005',
-  mediaURL : "http://localhost:4200/assets/",
-  exportUrl : "http://134.122.28.57:8005/user_downloads",
-  SOCKET_ENDPOINT: 'http://localhost:4200/'
-  };
+  LOCAL_API_URL : 'http://localhost:8001',
+  LINK_URL : 'http://localhost:8001',
+  hr_api : 'http://localhost:8001',
+  mediaURL : "http://localhost:4201/assets/",
+  exportUrl : "http://localhost:8001/user_downloads",
+  SOCKET_ENDPOINT: 'http://localhost:4201/'
+};
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

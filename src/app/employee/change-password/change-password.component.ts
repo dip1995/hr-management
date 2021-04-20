@@ -42,7 +42,8 @@ export class ChangePasswordComponent implements OnInit {
          this.isSubmit = false;
          this.changePasswordForm.reset();
          this.alertSuccessErrorMsg(res.status, res.message,false);
-         setTimeout(function(){
+         setTimeout(() =>{
+           this.alertmessage.close();
            this.router.navigate(['/daily-work']);
          },3000);
        }else{

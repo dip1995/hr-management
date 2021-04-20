@@ -1,13 +1,33 @@
 <app-hr-header></app-hr-header>
 <section class="home-section" type="dropdown">
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-8">
       <div class="form-group">
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" [value]="1" [(ngModel)]="monthlyRadio" name="monthlyRadio" (change)="onItemChange()">Monthly
+          </label>
+        </div>
+        <div class="form-check-inline">
+          <label class="form-check-label">
+            <input type="radio" class="form-check-input" [value]="0" [(ngModel)]="monthlyRadio" name="monthlyRadio" (change)="onItemChange()">Daily
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4" *ngIf="monthlyRadio">
+      <div class="form-group text-right">
         <label class="d-inline-block mr-10">Select Month:</label>
         <select [(ngModel)]="selectMonth" class="form-control d-inline-block" (change)="selectMonthChange(selectMonth)" style="width:auto;min-width:200px;">
           <!-- <option value="" style="display:none;" selected>Select Month</option> -->
           <option *ngFor="let obj of monthList" [value]="obj.date" [selected]="obj.date">{{obj.name}}</option>
         </select>
+      </div>
+    </div>
+    <div class="col-sm-4" *ngIf="!monthlyRadio">
+      <div class="form-group text-right">
+        <label class="d-inline-block mr-10">Select Date:</label>
+        <input type="date" [(ngModel)]="daily_date" name="daily_date" class="form-control" (change)="selectMonthChange(daily_date)" required style="width: auto;display: inline-block;">
       </div>
     </div>
   </div>

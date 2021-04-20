@@ -86,7 +86,7 @@ body{
   margin: 0px;
 }
 .form-group label{
-  font-size: 12px;
+  font-size: 14px;
 }
 .modal-content{
   width: 600px;
@@ -122,7 +122,7 @@ p{
   font-size: 16px;
   cursor: pointer;
 }
-.form-check-input {
+.form-margin-left .form-check-input {
   margin-left: -20px !important;
 }
 .form-check {
@@ -131,4 +131,7 @@ p{
 .navbar .dropdown-menu>li>a{
   padding: 8px 24px;
   font-size: 16px !important;
+}
+.form-check-label{
+  font-size: 14px !important;
 }
