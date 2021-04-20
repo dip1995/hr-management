@@ -12,14 +12,13 @@ import { HrChangePasswordComponent } from './hr-change-password/hr-change-passwo
 const routes: Routes = [
     {
         path: 'superadmin',
-        redirectTo: '/superadmin/login',
-        // component: LoginComponent,
+        redirectTo: 'superadmin/login',
         pathMatch: 'full'
     },
     {
         path: 'superadmin/login',
         component: LoginComponent,
-        // canActivate: [AuthGuard]
+        // canActivate: [HrAuthGuard]
     },
     {
       path : 'superadmin/hr-dashboard',

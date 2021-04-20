@@ -215,7 +215,8 @@ export class LeaveApplicationComponent implements OnInit {
         row_id:selected[0].row_id
       };
       this.employeeService.deleteLeaveApplication(obj).subscribe(res => {
-        if(res.status){
+        $("#deleteLeaveModal .close").click();
+        if(res.status){     
           $("#deleteLeaveModal").modal('hide');
           this.getLeaveApplicationList();
           this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -247,6 +248,11 @@ export class LeaveApplicationComponent implements OnInit {
 
   selectMonthChange(selectMonth){
     console.log('selectMonth--',selectMonth)
+  }
+
+  cancelLeaveApplication(){
+    this.approveapplication = false;
+    this.leaveForm.reset();
   }
 
 }

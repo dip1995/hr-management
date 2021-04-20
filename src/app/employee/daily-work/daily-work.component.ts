@@ -44,7 +44,10 @@ export class DailyWorkComponent implements OnInit {
    workByDate = [];
    monthList = [];
    userCookie:any = {};
-  constructor(private fb: FormBuilder,private router : Router, private employeeService : EmployeeService,
+   monthlyRadio:any = 1;
+   daily_date:any;
+ 
+   constructor(private fb: FormBuilder,private router : Router, private employeeService : EmployeeService,
     private cookieService : CookieService) {
     this.columnDefs = [
       {
@@ -310,6 +313,7 @@ export class DailyWorkComponent implements OnInit {
         row_ids:row_ids
       };
       this.employeeService.deleteDailyWorkData(obj).subscribe(res => {
+        $("#deleteWorkDataModal .close").click();
         if(res.status){
           $("#deleteLeaveModal").modal('hide');
           this.dailyWorkData();
@@ -342,6 +346,12 @@ export class DailyWorkComponent implements OnInit {
   selectMonthChange(selectMonth){
     console.log('selectMonth--',selectMonth)
   }
+
+  onItemChange(){
+    this.daily_date = this.convertDateToReadableString(+new Date());
+    this.dailyWorkData();
+  }
+
 
   convertDateToReadableString(date){
     let readable_date = "";

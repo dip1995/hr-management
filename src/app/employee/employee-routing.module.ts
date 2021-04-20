@@ -5,16 +5,15 @@ import { LeaveApplicationComponent } from './leave-application/leave-application
 import { HolidaysComponent } from './holidays/holidays.component';
 import { EmployeeLoginComponent } from './employee-login/employee-login.component';
 import { AuthGuard } from '../common-module/auth.guard';
-// import { DailyWorkDetailComponent } from './daily-work-detail/daily-work-detail.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        redirectTo: '/login',
-        // component: LoginComponent,
-        pathMatch: 'full'
-    },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
     {
         path: 'login',
         component: EmployeeLoginComponent,
@@ -24,11 +23,6 @@ const routes: Routes = [
       component: DailyWorkComponent,
       // canActivate: [AuthGuard]
     },
-    // {
-    //   path : 'daily-work-detail',
-    //   component: DailyWorkDetailComponent,
-    //   canActivate: [AuthGuard]
-    // },
     {
       path : 'leave-application',
       component: LeaveApplicationComponent,
