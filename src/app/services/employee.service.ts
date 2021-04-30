@@ -69,8 +69,12 @@ export class EmployeeService {
   getLeaveApplicationListByEmployee(body:any) : Observable<any> {
     return this.http.get<any>(this.local_url+'/api/employee/getLeaveApplicationListByEmployee',{ params: body});
   }
-  
+
   getBusinessHolidayList(body:any) : Observable<any> {
     return this.http.get<any>(this.local_url+'/api/superadmin/getBusinessHolidayList',{ params: body});
+  }
+
+  getEmployeeReportCard(body:any) : Observable<any> {
+    return this.http.get<any>(this.local_url+'/api/employee/getEmployeeReportCard',{ params: body});
   }
 }

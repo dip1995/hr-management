@@ -234,7 +234,7 @@ export class DailyWorkComponent implements OnInit {
     this.isSubmit = false;
     this.deletedRowIds = [];
     this.cancelDailyWorkDetail();
-    this.dailyWorkAdd = true;
+    this.dailyWorkAdd = this.dailyWorkAdd ? false : true;
     this.isShow = !this.isShow;
   }
 

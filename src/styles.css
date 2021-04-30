@@ -73,10 +73,13 @@ body{
   font-size: 14px;
 }
 .home-section{
-  padding-top: 100px;
+  padding-top: 30px;
   padding-bottom: 20px;
   padding-left: 30px;
   padding-right: 30px;
+}
+.employee-section{
+  padding-top: 30px !important;
 }
 .rounded-border{
   border-radius: 25px;
@@ -134,4 +137,21 @@ p{
 }
 .form-check-label{
   font-size: 14px !important;
+}
+.grdBG {
+    background: #ff9c00;
+    background: -moz-linear-gradient(-45deg, #086D92 0%, #b1eaff 100%);
+    background: -webkit-linear-gradient(-45deg, #086D92 0%,#b1eaff 100%);
+    background: linear-gradient(135deg, #086D92 0%,#b1eaff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9c00', endColorstr='#ed5e5d',GradientType=1 );
+    margin-top: 68px;
+    height: 34px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.border-right-white{
+  border-right: 1px solid white;
 }

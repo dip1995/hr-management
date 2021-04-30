@@ -13,7 +13,7 @@ export class HrHeaderComponent implements OnInit {
 
   linkUrl:any = environment.LINK_URL; // url
   userCookie:any;
-
+  employeeReport:any = {};
   constructor(
     private router: Router,
     private cookieService : CookieService,
@@ -23,7 +23,7 @@ export class HrHeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.getAllEmployeeReportCard();
   }
 
   logoutHR() {
@@ -36,7 +36,15 @@ export class HrHeaderComponent implements OnInit {
     });
   }
 
+  getAllEmployeeReportCard() {
+    this.superadminService.getAllEmployeeReportCard({}).subscribe(res=> {
+      if(res.data && res.data.length > 0){
+        this.employeeReport = res.data[0];
+      }
+    });
+  }
+
   changePasswordHR(){
-   this.router.navigate(['superadmin/hr-change-password']);    
+   this.router.navigate(['superadmin/hr-change-password']);
   }
 }

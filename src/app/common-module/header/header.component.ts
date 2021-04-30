@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   linkUrl:any = environment.LINK_URL; // url
   userCookie:any;
   shortname:any = "";
+  employeeReport:any = {};
   constructor(
     private router: Router,
     private cookieService : CookieService,
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit {
     let first_name = name.length > 0 && name[0] ? name[0] : "";
     let last_name = name.length > 0 && name[1] ? name[1] : "";
     this.shortname = this.firstLetter(first_name,last_name);
+    this.getEmployeeReportCard();
   }
 
   logoutEmployee() {
@@ -37,6 +39,16 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/login']);
         // this.userinfoService.clearTimer(obj).subscribe(res=> {
         // });
+    });
+  }
+
+  getEmployeeReportCard() {
+    this.employeeService.getEmployeeReportCard({}).subscribe(res=> {
+      if(res.data && res.data.length > 0){
+        this.employeeReport = res.data[0];
+        this.employeeReport.startdate = (new Date(this.employeeReport.start_date)).toLocaleDateString()
+        this.employeeReport.increamentdate = (new Date(this.employeeReport.increament_date)).toLocaleDateString()
+      }
     });
   }
 

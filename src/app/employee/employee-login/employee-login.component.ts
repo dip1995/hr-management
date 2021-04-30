@@ -31,10 +31,9 @@ export class EmployeeLoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // if(this.cookieService.get('epuser')){
-    //   console.warn(this.cookieService.get('epuser'));
-    //   this.router.navigate(['/daily-work']);
-    // }
+    if(this.cookieService.get('epuser')){
+      this.router.navigate(['/daily-work']);
+    }
   }
 
   employeeLogin(){
@@ -42,9 +41,6 @@ export class EmployeeLoginComponent implements OnInit {
     let login_data = this.EmployeeLoginForm.value;
     if(this.EmployeeLoginForm.status == "VALID"){
       this.employeeService.employeeLogin(login_data).subscribe(res => {
-        
-        console.log(res);
-        
         if(res.status){
           this.isSubmit = false;
           this.EmployeeLoginForm.reset();
