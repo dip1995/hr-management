@@ -16,6 +16,11 @@ export class TokenInterceptorService  implements HttpInterceptor {
   externalUrl:any;
   constructor(private cookieService : CookieService){
     this.externalUrl = environment.SOCKET_ENDPOINT;
+
+  }
+
+  intercept(request: HttpRequest<any>, next: HttpHandler):
+  Observable<HttpEvent<any>> {
     // get employee cookie
     if(this.cookieService.get('epuser')){
       this.cookie = JSON.parse(this.cookieService.get('epuser')) ;
@@ -30,10 +35,7 @@ export class TokenInterceptorService  implements HttpInterceptor {
     }else{
       console.log('no superadmin cookie present!!')
     }
-  }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler):
-  Observable<HttpEvent<any>> {
+    
     let user_type = '';
     if(request.method == 'GET'){
       user_type = request.params.get('user_type');
