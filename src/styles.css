@@ -145,12 +145,14 @@ p{
     background: linear-gradient(135deg, #086D92 0%,#b1eaff 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff9c00', endColorstr='#ed5e5d',GradientType=1 );
     margin-top: 68px;
-    height: 34px;
+    /* height: 34px; */
     color: white;
     font-weight: bold;
     font-size: 14px;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 .border-right-white{
   border-right: 1px solid white;
