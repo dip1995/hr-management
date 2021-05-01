@@ -40,6 +40,10 @@ export class HrHeaderComponent implements OnInit {
     this.superadminService.getAllEmployeeReportCard({}).subscribe(res=> {
       if(res.data && res.data.length > 0){
         this.employeeReport = res.data[0];
+        this.employeeReport.total_leave = this.employeeReport.total_leave ? this.employeeReport.total_leave : 0;
+        this.employeeReport.pending = this.employeeReport.pending ? this.employeeReport.pending : 0;
+        this.employeeReport.rejected = this.employeeReport.rejected ? this.employeeReport.rejected : 0;
+        this.employeeReport.approved = this.employeeReport.approved ? this.employeeReport.approved : 0;
       }
     });
   }

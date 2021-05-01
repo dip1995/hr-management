@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit {
     this.employeeService.getEmployeeReportCard({}).subscribe(res=> {
       if(res.data && res.data.length > 0){
         this.employeeReport = res.data[0];
+        this.employeeReport.total_leave = this.employeeReport.total_leave ? this.employeeReport.total_leave : 0;
         this.employeeReport.startdate = (new Date(this.employeeReport.start_date)).toLocaleDateString()
         this.employeeReport.increamentdate = (new Date(this.employeeReport.increament_date)).toLocaleDateString()
       }
