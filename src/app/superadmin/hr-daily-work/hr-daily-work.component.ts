@@ -45,6 +45,16 @@ export class HrDailyWorkComponent implements OnInit {
        cellClass: 'ag-grid-cell-border'
      },
      {
+       headerName: 'Employee Name',
+       field: 'name',
+       flex:1,
+     },
+     // {
+     //   headerName: 'Email',
+     //   field: 'email',
+     //   flex:1,
+     // },
+     {
        headerName: 'Date',
        field: 'date',
        type: ['dateColumn', 'nonEditableColumn'],

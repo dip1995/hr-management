@@ -61,6 +61,11 @@ export class HrLeaveApplicationComponent implements OnInit {
        cellClass: 'ag-grid-cell-border'
      },
      {
+       headerName: 'Employee Name',
+       field: 'name',
+       flex:1,
+     },
+     {
        headerName: 'Date From',
        field: 'date_from',
        type: ['dateColumn'],
