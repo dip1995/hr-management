@@ -35,7 +35,7 @@ export class TokenInterceptorService  implements HttpInterceptor {
     }else{
       console.log('no superadmin cookie present!!')
     }
-    
+
     let user_type = '';
     if(request.method == 'GET'){
       user_type = request.params.get('user_type');
@@ -69,6 +69,8 @@ export class TokenInterceptorService  implements HttpInterceptor {
             this.cookieService.delete('epsuperadmin');
             window.open(this.externalUrl+"/superadmin/login", '_self');
           }else{
+            this.cookieService.delete('epuser',  ' / ' ,  'localhost');
+            this.cookieService.delete('epuser');
             window.open(this.externalUrl, '_self');
           }
           // redirect to the login route
