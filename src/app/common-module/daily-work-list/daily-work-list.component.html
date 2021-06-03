@@ -1,0 +1,88 @@
+<section class="mt-20">
+  <div class="row mb-10">
+    <div class="col-sm-12 rounded-border pad-top-10 pad-bottom-10">
+      <label class="border-right-default width-20 font-bold">Total Working Days : {{reportData.total_working_days}}</label>
+      <label class="border-right-default width-20 font-bold pad-left-10">Total Days Worked : {{reportData.total_days}}</label>
+      <label class="border-right-default width-20 font-bold pad-left-10">Absent : {{reportData.absent}}</label>
+      <label class="border-right-default width-20 font-bold pad-left-10">Present : {{reportData.present}}</label>
+      <label class=" width-20 font-bold pad-left-10">Leaves Applied : {{reportData.total_leaves}}</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group" style="padding-right: 5px;display:inline-block;">
+        <label class="d-inline-block mr-10">From Date:</label>
+        <input type="date" [(ngModel)]="from_date" name="from_date" class="form-control" (change)="fromAndToDateChange(from_date,true)" required style="width: auto;display: inline-block;">
+      </div>
+      <div class="form-group" style="padding-right: 5px;display:inline-block;">
+        <label class="d-inline-block mr-10">To Date:</label>
+        <input type="date" [(ngModel)]="to_date" name="to_date" class="form-control" (change)="fromAndToDateChange(to_date,false)" required style="width: auto;display: inline-block;" min="{{maxDate|date:'yyyy-MM-dd'}}">
+      </div>
+      <div class="form-group" style="padding-right: 5px;display:inline-block;margin-left:10px;">
+        <button type="button" class="btn btn-medium btn-primary text-center" (click)="dailyWorkData()">Save</button>
+      </div>
+    </div>
+  </div>
+  <div class="row row-eq-height mb-10" *ngFor="let item of sorted_dates">
+    <div class="col-sm-2 same-height-column justify-content-center align-items-center" [ngClass]="{'absent-col': !grouped_dailyWork[item][0]['status']}" style="display: inline-flex;font-size:24px;font-weight:bold;">
+      {{grouped_dailyWork[item][0]['date_month']}}
+    </div>
+    <div class="col-sm-10 same-height-column padding-none" [ngClass]="{'absent-col': !grouped_dailyWork[item][0]['status']}">
+      <div class="text-center" style="font-size:16px;font-weight:bold;padding:10px;">
+        {{grouped_dailyWork[item][0]['status'] ? 'Present' : 'Absent'}}
+        <a *ngIf="user_type != 'employee' && grouped_dailyWork[item][0]['description'] && !grouped_dailyWork[item][0]['status']" class="pull-right" (click)="openPresentModal(grouped_dailyWork[item][0])" style="font-size:14px;cursor:pointer;position: absolute;right: 10px;"><i class="fa fa-pencil"></i> Add Present</a>
+      </div>
+      <table class="table table-bordered table-margin-font" *ngIf="grouped_dailyWork[item][0]['description']">
+        <thead>
+          <tr>
+            <th style="width:6%;">S. No.</th>
+            <th style="width:15%;">Module Name</th>
+            <th>Description</th>
+            <th style="width:20%;">Time</th>
+            <th *ngIf="user_type == 'employee'" style="width:10%;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let single_work of grouped_dailyWork[item]; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{single_work.module}}</td>
+            <td>{{single_work.description}}</td>
+            <td>{{single_work.formatted_start_time}} - {{single_work.formatted_end_time}}</td>
+            <td *ngIf="user_type == 'employee'">
+              <a class="mr-10 table-icon" (click)="editDailyWorkData(single_work)"><i class="fa fa-pencil"></i></a>
+              <a class="table-trash-icon table-icon" (click)="deletWorkProcess(single_work)"><i class="fa fa-trash"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row row-eq-height mb-10" *ngIf="!sorted_dates || !sorted_dates.length">
+    <div class="col-sm-12 text-center same-height-column justify-content-center align-items-center" style="font-size:16px;font-weight:bold;display: inline-flex;">
+      No data available!!
+    </div>
+  </div>
+</section>
+<div id="addPresentModal" class="modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Present?</h4>
+        <button type="button" class="close" data-dismiss="modal">X</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <p>Are you sure you want to make present to these work data?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-medium" (click)="makePresentProcess()">SAVE</button>
+        <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-alert-messages></app-alert-messages>

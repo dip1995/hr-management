@@ -164,7 +164,10 @@ export class LeaveApplicationComponent implements OnInit {
   }
 
   getLeaveApplicationList(){
-    let obj = {};
+    let obj = {
+      date: this.selectMonth ? +this.selectMonth : 0,
+      offset: this.employeeService.get_Time()
+    };
     this.employeeService.getLeaveApplicationListByEmployee(obj).subscribe(res => {
       if(res.status){
         this.leaveList = res.data;
@@ -216,7 +219,7 @@ export class LeaveApplicationComponent implements OnInit {
       };
       this.employeeService.deleteLeaveApplication(obj).subscribe(res => {
         $("#deleteLeaveModal .close").click();
-        if(res.status){     
+        if(res.status){
           $("#deleteLeaveModal").modal('hide');
           this.getLeaveApplicationList();
           this.alertSuccessErrorMsg(res.status, res.message,false);
@@ -247,7 +250,8 @@ export class LeaveApplicationComponent implements OnInit {
   }
 
   selectMonthChange(selectMonth){
-    console.log('selectMonth--',selectMonth)
+    // console.log('selectMonth--',selectMonth)
+    this.getLeaveApplicationList();
   }
 
   cancelLeaveApplication(){

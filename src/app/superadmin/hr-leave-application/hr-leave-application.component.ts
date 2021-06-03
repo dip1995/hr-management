@@ -207,11 +207,13 @@ export class HrLeaveApplicationComponent implements OnInit {
 
 
   getLeaveApplicationList(){
-    let obj = {};
+    let obj = {
+      date: this.selectMonth ? this.selectMonth : 0,
+      offset: this.superadminService.get_Time()
+    };
     this.superadminService.getLeaveApplicationList(obj).subscribe(res => {
       if(res.status){
         this.rowData = res.data;
-        console.log(res.data);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -223,7 +225,6 @@ export class HrLeaveApplicationComponent implements OnInit {
     this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
       if(res.status){
         this.monthList = res.data;
-        console.log(res.data);
       }else{
         // this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -235,6 +236,6 @@ export class HrLeaveApplicationComponent implements OnInit {
   }
 
   selectMonthChange(selectMonth){
-    console.log('selectMonth--',selectMonth)
+    this.getLeaveApplicationList();
   }
 }

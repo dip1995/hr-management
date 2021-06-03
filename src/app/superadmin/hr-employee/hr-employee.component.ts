@@ -71,6 +71,12 @@ export class HrEmployeeComponent implements OnInit {
         field: 'name',
         flex:1,
         cellClass: 'ag-grid-cell-border',
+        onCellClicked: (params)=> {
+          this.employeeDetails(params);
+        },
+        cellRenderer: (data) => {
+          return '<a class="ag-grid-link">'+data.value+'</a>';
+        }
       },
       {
         headerName: 'Mobile',
@@ -229,6 +235,10 @@ export class HrEmployeeComponent implements OnInit {
     this.hrEmployeeList();
   }
 
+  employeeDetails(params){
+    this.router.navigate(['superadmin/employee-details',params.data.userid]);
+  }
+
   downloadDocument(params) {
     var path = this.local_url+"/uploads/documents/"+params.value;
     const linkElement = document.createElement('a');
@@ -293,7 +303,9 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   hrEmployeeList(){
-    let obj = {};
+    let obj = {
+      offset: this.superadminService.get_Time()
+    };
     this.superadminService.getEmployeeList(obj).subscribe(res => {
       if(res.status){
         this.employeeList = res.data;
@@ -366,7 +378,7 @@ export class HrEmployeeComponent implements OnInit {
   }
 
   editEmployee(params){
-    let obj = {id:params.value};
+    let obj = {id:params.value,offset: this.superadminService.get_Time()};
     this.superadminService.getEmployeeDetailsById(obj).subscribe(res => {
       if(res.status){
         if(res.data && res.data.length > 0){

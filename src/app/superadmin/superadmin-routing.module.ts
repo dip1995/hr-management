@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HrDailyWorkComponent } from './hr-daily-work/hr-daily-work.component';
 import { HrLeaveApplicationComponent } from './hr-leave-application/hr-leave-application.component';
 import { HrHolidaysComponent } from './hr-holidays/hr-holidays.component';
+import { HrEmployeeDetailsComponent } from './hr-employee-details/hr-employee-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { HrAuthGuard } from '../common-module/hr-auth.guard';
@@ -28,6 +29,11 @@ const routes: Routes = [
     {
       path : 'superadmin/hr-employee',
       component: HrEmployeeComponent,
+      canActivate: [HrAuthGuard]
+    },
+    {
+      path: 'superadmin/employee-details/:userid',
+      component: HrEmployeeDetailsComponent ,
       canActivate: [HrAuthGuard]
     },
     {

@@ -4,6 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { SuperadminService } from 'src/app/services/superadmin.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 // declare var $:any;
 // import * as $ from "jquery";
 
@@ -33,7 +34,7 @@ export class HrDailyWorkComponent implements OnInit {
   monthList = [];
   monthlyRadio:any = 1;
   daily_date:any;
- constructor(private router : Router,private superadminService : SuperadminService) {
+ constructor(private router : Router,private superadminService : SuperadminService,private employeeService :  EmployeeService) {
     this.columnDefs = [
      {
        headerName: 'Sno',
@@ -56,7 +57,7 @@ export class HrDailyWorkComponent implements OnInit {
      // },
      {
        headerName: 'Date',
-       field: 'date',
+       field: 'formatted_date',
        type: ['dateColumn', 'nonEditableColumn'],
        flex:1,
        filter: "agTextColumnFilter",
@@ -64,10 +65,10 @@ export class HrDailyWorkComponent implements OnInit {
        // onCellClicked: (params)=> {
        //   this.editWorkByDate(params);
        // },
-       cellRenderer: (data) => {
-         return data.value ? (new Date(data.value)).toLocaleDateString() : '';
-         // return data.value ? '<a class="ag-grid-link">'+(new Date(data.value)).toLocaleDateString()+'</a>' : '';
-       }
+       // cellRenderer: (data) => {
+       //   return data.value ? (new Date(data.value)).toLocaleDateString() : '';
+       //   // return data.value ? '<a class="ag-grid-link">'+(new Date(data.value)).toLocaleDateString()+'</a>' : '';
+       // }
      },
      {
        headerName: 'Module Name',
@@ -81,19 +82,19 @@ export class HrDailyWorkComponent implements OnInit {
      },
      {
        headerName: 'Start Time',
-       field: 'start_time',
+       field: 'formatted_start_time',
        type: 'numberColumn',
-       cellRenderer: (data) => {
-         return data.value ? this.formatAMPM(new Date(data.value)) : '';
-       }
+       // cellRenderer: (data) => {
+       //   return data.value ? this.formatAMPM(new Date(data.value)) : '';
+       // }
      },
      {
        headerName: 'End Time',
-       field: 'end_time',
+       field: 'formatted_end_time',
        type: 'numberColumn',
-       cellRenderer: (data) => {
-         return data.value ? this.formatAMPM(new Date(data.value)) : '';
-       }
+       // cellRenderer: (data) => {
+       //   return data.value ? this.formatAMPM(new Date(data.value)) : '';
+       // }
      },
      {
        headerName: 'Created On',
@@ -158,7 +159,8 @@ export class HrDailyWorkComponent implements OnInit {
     let obj = {
       monthly: this.monthlyRadio ? true : false,
       daily: this.monthlyRadio ? false : true,
-      date: this.monthlyRadio ? (this.selectMonth ? +this.selectMonth : "") : this.daily_date
+      date: this.monthlyRadio ? (this.selectMonth ? +this.selectMonth : "") : this.daily_date,
+      offset:this.employeeService.get_Time()
     };
     this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){

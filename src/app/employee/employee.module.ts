@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CommonModuleModule } from '../common-module/common-module.module';
@@ -16,7 +16,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 @NgModule({
   declarations: [DailyWorkComponent, LeaveApplicationComponent, HolidaysComponent, EmployeeLoginComponent,ChangePasswordComponent],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,

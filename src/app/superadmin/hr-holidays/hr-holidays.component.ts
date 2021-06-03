@@ -35,6 +35,8 @@ export class HrHolidaysComponent implements OnInit {
   cellDate;
   holidayList = [];
   monthList = [];
+  allYears:any=[];
+  currentyear:any;
   daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   constructor(private router : Router,private superadminService : SuperadminService,
     private cookieService : CookieService,private fb : FormBuilder) {
@@ -212,7 +214,10 @@ export class HrHolidaysComponent implements OnInit {
   }
 
   hrHolidayList(){
-    let holiday_data = {};
+    let holiday_data = {
+      year:this.selectYear ? this.selectYear : 0,
+      offset: this.superadminService.get_Time()
+    };
     this.superadminService.getBusinessHolidayList(holiday_data).subscribe(res => {
       if(res.status){
         this.holidayList = res.data;
@@ -222,11 +227,24 @@ export class HrHolidaysComponent implements OnInit {
     });
   }
 
+  selectYearChange(selectYear){
+    this.hrHolidayList();
+  }
+
   getWorkingMonthsList(){
    let obj = {};
    this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
      if(res.status){
+       let todaydate = new Date();
+       this.currentyear = todaydate.getFullYear();
        this.monthList = res.data;
+       let years = _.uniq(_.map(this.monthList, 'year'));
+       years.forEach((d) => {
+         let find = _.find(this.monthList,{year:d});
+         if(find){
+           this.allYears.push(find);
+         }
+       });
      }else{
        this.alertSuccessErrorMsg(res.status, res.message,false);
      }
