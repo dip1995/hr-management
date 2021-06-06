@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
 import { EmployeeService } from 'src/app/services/employee.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-holidays',
@@ -12,7 +13,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 export class HolidaysComponent implements OnInit {
   data;
   holiday = false;
-  selectYear;
+  selectYear:any;
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
   gridApi;
   gridColumnApi;
@@ -25,6 +26,8 @@ export class HolidaysComponent implements OnInit {
   cellDate;
   holidayList:any = [];
   monthList:any = [];
+  allYears:any=[];
+  currentyear:any;
   daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   constructor(private router : Router,
     private employeeService : EmployeeService,
@@ -89,7 +92,10 @@ export class HolidaysComponent implements OnInit {
   }
 
   getHolidayList(){
-    let holiday_data = {};
+    let holiday_data = {
+      year:this.selectYear ? this.selectYear : 0,
+      offset: this.employeeService.get_Time()
+    };
     this.employeeService.getBusinessHolidayList(holiday_data).subscribe(res => {
       if(res.status){
         this.holidayList = res.data;
@@ -101,13 +107,27 @@ export class HolidaysComponent implements OnInit {
 
   getWorkingMonthsList(){
    let obj = {};
+   this.allYears = [];
    this.employeeService.getWorkingMonthsList(obj).subscribe(res => {
      if(res.status){
+       let todaydate = new Date();
+       this.currentyear = todaydate.getFullYear();
        this.monthList = res.data;
+       let years = _.uniq(_.map(this.monthList, 'year'));
+       years.forEach((d) => {
+         let find = _.find(this.monthList,{year:d});
+         if(find){
+           this.allYears.push(find);
+         }
+       });
      }else{
        this.alertSuccessErrorMsg(res.status, res.message,false);
      }
    });
+  }
+
+  selectYearChange(selectYear){
+    this.getHolidayList();
   }
 
   alertSuccessErrorMsg(status,message,navigationEvent){

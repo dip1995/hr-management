@@ -5,6 +5,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertMessagesComponent } from 'src/app/common-module/alert-messages/alert-messages.component';
+import { DailyWorkListComponent } from 'src/app/common-module/daily-work-list/daily-work-list.component';
 import { EmployeeService } from 'src/app/services/employee.service';
 declare var $:any;
 
@@ -23,6 +24,7 @@ export class DailyWorkComponent implements OnInit {
   daily_work_Error:any = false;
   daily_work_ErrorMessage:any = "";
   @ViewChild(AlertMessagesComponent,{static:false}) alertmessage: AlertMessagesComponent;
+  @ViewChild(DailyWorkListComponent,{static:false}) dailyWorkComponent: DailyWorkListComponent;
 
   isShow = false;
   selectMonth:any;
@@ -47,6 +49,7 @@ export class DailyWorkComponent implements OnInit {
    monthlyRadio:any = 1;
    daily_date:any;
    deletedRowIds:any = [];
+   deleteSelectedRows:any = [];
    constructor(private fb: FormBuilder,private router : Router, private employeeService : EmployeeService,
     private cookieService : CookieService) {
     this.columnDefs = [
@@ -171,8 +174,8 @@ export class DailyWorkComponent implements OnInit {
       date: ['' ,Validators.required],
       workArray: this.fb.array([this.createItem(0,'','','','')])
     });
-    this.getWorkingMonthsList();
-    this.dailyWorkData();
+    // this.getWorkingMonthsList();
+    // this.dailyWorkData();
   }
 
   createItem(id,start_time,end_time,moduleName,description) {
@@ -212,11 +215,11 @@ export class DailyWorkComponent implements OnInit {
     if(dailyWorkForm.status == "VALID"){
       this.employeeService.addUpdateDailyWorkData(dailyWorkFormData).subscribe(res => {
         if(res.status){
-          this.dailyWorkData();
           this.isSubmit = false;
           this.dailyWorkAdd = false;
           this.dailyWorkForm.reset();
           this.alertSuccessErrorMsg(res.status, res.message,false);
+          this.dailyWorkComponent.dailyWorkData();
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
@@ -234,6 +237,14 @@ export class DailyWorkComponent implements OnInit {
     this.isSubmit = false;
     this.deletedRowIds = [];
     this.cancelDailyWorkDetail();
+    this.workArray = this.dailyWorkForm.get('workArray') as FormArray;
+    if(this.workArray.controls && this.workArray.controls.length>1){
+      this.workArray.controls.forEach((d,i) => {
+        if(i != 0){
+          this.removeDailyWorkDetail(i);
+        }
+      });
+    }
     this.dailyWorkAdd = this.dailyWorkAdd ? false : true;
     this.isShow = !this.isShow;
   }
@@ -268,8 +279,9 @@ export class DailyWorkComponent implements OnInit {
   }
 
   editWorkByDate(params){
+    let date = (+params.value)-(this.employeeService.get_Time());
     let obj = {
-      date:(+params.value)
+      date:date
     };
     this.deletedRowIds = [];
     this.employeeService.getEmployeesDailyWorkByDate(obj).subscribe(res => {
@@ -305,14 +317,18 @@ export class DailyWorkComponent implements OnInit {
         workData.forEach((d) => {
           this.workArray.push(this.createItem(d.row_id,d.start_time,d.end_time,d.module,d.description));
         });
+        $('html,body').animate({
+          scrollTop: $(".daily-work-div").offset().top
+        },500);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
     });
   }
 
-  openDeleteWorkModal(){
-    let selected = this.gridApi.getSelectedRows();
+  openDeleteWorkModal(selected){
+    // let selected = this.gridApi.getSelectedRows();
+    this.deleteSelectedRows = selected;
     if(selected && selected.length > 0){
       $("#deleteWorkDataModal").modal('show');
     }else{
@@ -321,7 +337,7 @@ export class DailyWorkComponent implements OnInit {
   }
 
   deleteWorkData(){
-    let selected = this.gridApi.getSelectedRows();
+    let selected = this.deleteSelectedRows;
     if(selected && selected.length > 0){
       let row_ids = selected.map(function(d){ return d.row_id;});
       let obj = {
@@ -330,8 +346,9 @@ export class DailyWorkComponent implements OnInit {
       this.employeeService.deleteDailyWorkData(obj).subscribe(res => {
         if(res.status){
           $("#deleteWorkDataModal").modal('hide');
-          this.dailyWorkData();
+          this.deleteSelectedRows = [];
           this.alertSuccessErrorMsg(res.status, res.message,false);
+          this.dailyWorkComponent.dailyWorkData();
         }else{
           this.alertSuccessErrorMsg(res.status, res.message,false);
         }
@@ -358,6 +375,7 @@ export class DailyWorkComponent implements OnInit {
   }
 
   selectMonthChange(selectMonth){
+    console.log('selectMonth--',selectMonth);
     this.dailyWorkData();
   }
 

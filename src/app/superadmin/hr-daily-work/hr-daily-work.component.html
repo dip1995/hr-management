@@ -40,12 +40,10 @@
         class="ag-theme-alpine"
         [columnDefs]="columnDefs"
         [defaultColDef]="defaultColDef"
-        [defaultColGroupDef]="defaultColGroupDef"
-        [columnTypes]="columnTypes"
         [rowData]="daily_work_data"
         [rowSelection]="rowSelection"
-        [rowMultiSelectWithClick]="true"
         (gridReady)="onGridReady($event)"
+        [suppressDragLeaveHidesColumns]="true"
       ></ag-grid-angular>
 
   </div>

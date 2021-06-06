@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CommonModuleModule } from '../common-module/common-module.module';
@@ -13,13 +13,14 @@ import { HrHeaderComponent } from './hr-header/hr-header.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
 import { HrChangePasswordComponent } from './hr-change-password/hr-change-password.component';
+import { HrEmployeeDetailsComponent } from './hr-employee-details/hr-employee-details.component';
 // import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
-  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent, HrChangePasswordComponent],
+  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent, HrChangePasswordComponent, HrEmployeeDetailsComponent],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
@@ -33,7 +34,8 @@ import { HrChangePasswordComponent } from './hr-change-password/hr-change-passwo
     DashboardComponent,
     HrDailyWorkComponent,
     HrLeaveApplicationComponent,
-    HrHolidaysComponent
+    HrHolidaysComponent,
+    HrEmployeeDetailsComponent
   ]
 })
 export class SuperadminModule { }

@@ -20,6 +20,7 @@
 }
 body{
 	font-family: Montserrat-Regular !important;
+  font-size: 14px;
 }
 .pad-left-10 {
   padding-left: 10px;
@@ -54,8 +55,14 @@ body{
 .btn-medium {
   width: 80px;
 }
+.mt-20 {
+  margin-top: 20px !important;
+}
 .mb-20 {
   margin-bottom: 20px !important;
+}
+.mb-10 {
+  margin-bottom: 10px !important;
 }
 .mr-10 {
   margin-right: 10px;
@@ -156,4 +163,23 @@ p{
 }
 .border-right-white{
   border-right: 1px solid white;
+}
+.border-right-default{
+  border-right: 1px solid #086D92;
+}
+.same-height-column{
+  border: 1px solid #086D92;
+  min-height: 100px;
+}
+.default-border{
+  border: 1px solid #086D92;
+}
+.pad-top-10{
+  padding-top: 10px;
+}
+.pad-bottom-10{
+  padding-bottom: 10px;
+}
+.font-bold{
+  font-weight: bold;
 }

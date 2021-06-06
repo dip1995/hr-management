@@ -83,7 +83,7 @@ export class SuperadminService {
 
   getEmployeesDailyWorksheetData(body:any) : Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/employee/getEmployeesDailyWorksheetData',{ params: body});
+    return this.http.get<any>(this.local_url+'/api/superadmin/getEmployeesDailyWorksheetData',{ params: body});
   }
 
   getWorkingMonthsList(body:any) : Observable<any> {
@@ -99,6 +99,17 @@ export class SuperadminService {
   updatePassword(body:any) : Observable<any> {
     body.user_type = 'superadmin';
     return this.http.post<any>(this.local_url+'/api/superadmin/updatePassword',body);
+  }
+
+  addPresentByUser(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/addPresentByUser',body);
+  }
+
+  get_Time(){
+    var min=60;
+    var ms=1000;
+    return  new Date().getTimezoneOffset() * min * ms;
   }
 
 }

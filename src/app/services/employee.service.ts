@@ -77,4 +77,10 @@ export class EmployeeService {
   getEmployeeReportCard(body:any) : Observable<any> {
     return this.http.get<any>(this.local_url+'/api/employee/getEmployeeReportCard',{ params: body});
   }
+
+  get_Time(){
+    var min=60;
+    var ms=1000;
+    return  new Date().getTimezoneOffset() * min * ms;
+  }
 }
