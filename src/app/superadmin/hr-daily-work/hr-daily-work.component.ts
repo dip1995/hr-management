@@ -153,7 +153,7 @@ export class HrDailyWorkComponent implements OnInit {
   ngOnInit(): void {
     let date = new Date();
     let start_date = new Date(date.getFullYear(), date.getMonth(), 1); // get current month first date
-    this.selectMonth = start_date;
+    this.selectMonth = date;
     this.getWorkingMonthsList();
     this.dailyWorkList();
   }
@@ -168,7 +168,6 @@ export class HrDailyWorkComponent implements OnInit {
     this.superadminService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
         this.daily_work_data = res.data;
-        console.log(res.data);
       }else{
         this.alertSuccessErrorMsg(res.status, res.message,false);
       }
@@ -180,7 +179,6 @@ export class HrDailyWorkComponent implements OnInit {
     this.superadminService.getWorkingMonthsList(obj).subscribe(res => {
       if(res.status){
         this.monthList = res.data;
-        console.log(res.data);
       }else{
         // this.alertSuccessErrorMsg(res.status, res.message,false);
       }
