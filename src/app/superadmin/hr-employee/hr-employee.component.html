@@ -141,7 +141,7 @@
   <div class="row">
     <div class="col-sm-12">
       <!-- <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteEmployeeModal()">DELETE</button> -->
-      <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="exportEmployeeGrid()">Export Data</button>
+      <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="openExportReportModal()">Export Report</button>
       <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
       <button class="pull-right btn btn-primary mr-6" type="button" (click)="openEndSessionModal()">End Session</button>
     </div>
@@ -180,6 +180,42 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger btn-medium" (click)="deleteEmployee()">DELETE</button>
+          <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="exportReportModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Export Report</h4>
+          <button type="button" class="close" data-dismiss="modal">X</button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group" style="padding-right: 5px;display:inline-block;">
+                <label class="d-inline-block mr-10">From Date:</label>
+                <input type="date" [(ngModel)]="reportStartDate" name="reportStartDate" class="form-control" (change)="fromAndToDateChange(reportStartDate,true)" required style="width: auto;display: inline-block;">
+                <div class="text-danger" *ngIf="!reportStartDate && isReportSubmitted">
+                  <span>Start date required</span>
+                </div>
+              </div>
+              <div class="form-group" style="padding-right: 5px;display:inline-block;">
+                <label class="d-inline-block mr-10">To Date:</label>
+                <input type="date" [(ngModel)]="reportEndDate" name="reportEndDate" class="form-control" (change)="fromAndToDateChange(reportEndDate,false)" required style="width: auto;display: inline-block;" min="{{maxDate|date:'yyyy-MM-dd'}}">
+                <div class="text-danger" *ngIf="!reportEndDate && isReportSubmitted">
+                  <span>End date required</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-medium" (click)="exportEmployeeReport()">SAVE</button>
           <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
         </div>
       </div>

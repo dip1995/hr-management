@@ -106,6 +106,11 @@ export class SuperadminService {
     return this.http.post<any>(this.local_url+'/api/superadmin/addPresentByUser',body);
   }
 
+  exportEmployeeReport(body:any) : Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.post<any>(this.local_url+'/api/superadmin/exportEmployeeReport',body);
+  }
+
   get_Time(){
     var min=60;
     var ms=1000;

@@ -43,6 +43,10 @@ export class HrEmployeeComponent implements OnInit {
    employeeEndDate = "";
    importFile = false;
    userCookie:any;
+   reportEndDate:any;
+   reportStartDate:any;
+   isReportSubmitted:any = false;
+   maxDate:any = +new Date();
   constructor(private router : Router,private superadminService : SuperadminService,
     private cookieService : CookieService,private fb : FormBuilder) {
     this.columnDefs = [
@@ -315,6 +319,16 @@ export class HrEmployeeComponent implements OnInit {
     });
   }
 
+  fromAndToDateChange(date,from_date_changes){
+    if(from_date_changes){
+      this.maxDate = +new Date(this.reportStartDate);
+      let old_date = +new Date(this.reportEndDate);
+      if(this.maxDate > old_date){
+        this.reportEndDate = this.reportStartDate;
+      }
+    }
+  }
+
   openEndSessionModal(){
     this.isEndSessionSubmit = false;
     this.employeeEndDate = "";
@@ -323,6 +337,48 @@ export class HrEmployeeComponent implements OnInit {
       $("#endSessionModal").modal('show');
     }else{
       this.alertSuccessErrorMsg(false, "Please select a row!!",false);
+    }
+  }
+
+  openExportReportModal(){
+    let date = new Date();
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1); // get current month first date
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    this.reportStartDate = this.convertDateToReadableString(firstDay);
+    this.reportEndDate = this.convertDateToReadableString(lastDay);
+    this.maxDate = +firstDay;
+    this.isReportSubmitted = false;
+    $("#exportReportModal").modal('show');
+  }
+
+  exportEmployeeReport(){
+    if(this.reportStartDate && this.reportEndDate){
+      let obj = {
+        offset: this.superadminService.get_Time(),
+        from_date: this.reportStartDate,
+        to_date: this.reportEndDate,
+      };
+      this.superadminService.exportEmployeeReport(obj).subscribe(res => {
+        if(res.status){
+          $("#exportReportModal").modal('hide');
+          var path = this.local_url+"/uploads/reports/"+res.data;
+          const linkElement = document.createElement('a');
+          var url = path+"?token="+this.userCookie.token;
+          linkElement.setAttribute('href', url);
+          linkElement.setAttribute("download", res.data);
+          var clickEvent = new MouseEvent("click", {
+              "view": window,
+              "bubbles": true,
+              "cancelable": false
+          });
+          setTimeout(() => {
+            linkElement.dispatchEvent(clickEvent);
+          }, 100);
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }else{
+          this.alertSuccessErrorMsg(res.status, res.message,false);
+        }
+      });
     }
   }
 

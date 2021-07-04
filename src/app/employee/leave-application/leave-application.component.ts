@@ -133,6 +133,9 @@ export class LeaveApplicationComponent implements OnInit {
   });
 
   ngOnInit(){
+    let date = new Date();
+    let start_date = new Date(date.getFullYear(), date.getMonth(), 1); // get current month first date
+    this.selectMonth = start_date;
     this.getWorkingMonthsList();
     this.getLeaveApplicationList();
   }

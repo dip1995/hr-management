@@ -58,7 +58,8 @@ export class DailyWorkListComponent implements OnInit {
       id: this.userid,
       from_date: this.from_date ? +new Date(this.from_date) : 0,
       to_date: this.to_date ? +new Date(this.to_date) : 0,
-      offset: this.employeeService.get_Time()
+      offset: this.employeeService.get_Time(),
+      user_type: this.user_type,
     };
     this.employeeService.getEmployeesDailyWorksheetData(obj).subscribe(res => {
       if(res.status){
