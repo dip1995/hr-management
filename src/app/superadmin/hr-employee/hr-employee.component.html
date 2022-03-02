@@ -1,172 +1,161 @@
 <app-hr-header></app-hr-header>
 
 <section class="home-section">
-  <!-- <div *ngIf="session"> -->
+    <!-- <div *ngIf="session"> -->
     <!-- Trigger the modal with a button -->
-<!-- <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
+    <!-- <button type="button" class="btn btn-info btn-lg" >Open Modal</button> -->
 
-<!-- Modal -->
-<div id="endSessionModal" class="modal" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">End Employee Session</h4>
-        <button type="button" class="close" data-dismiss="modal">X</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group row">
-          <div class="col-sm-12">
-            <label >Session End Date:</label><span class="text-danger">*</span>
-            <input type="date" [(ngModel)]="employeeEndDate" name="employeeEndDate" class="form-control" required placeholder="enter end date">
-            <div class="text-danger" *ngIf="!employeeEndDate && isEndSessionSubmit">
-              <span>End date required</span>
+    <!-- Modal -->
+    <div id="endSessionModal" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">End Employee Session</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label>Session End Date:</label><span class="text-danger">*</span>
+                            <input type="date" [(ngModel)]="employeeEndDate" name="employeeEndDate" class="form-control" required placeholder="enter end date">
+                            <div class="text-danger" *ngIf="!employeeEndDate && isEndSessionSubmit">
+                                <span>End date required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-medium" (click)="endEmployeeSession()">SAVE</button>
+                    <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-medium" (click)="endEmployeeSession()">SAVE</button>
-        <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
-      </div>
     </div>
-  </div>
-</div>
-   <!-- </div> -->
-   <div class="row mb-20 margin-0" *ngIf="addUpdateEmployee">
-     <div class="col-sm-12 rounded-border">
-       <br/>
-       <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
-       <br/>
-       <form [formGroup]="addUpdateEmployeeForm" (ngSubmit)="addUpdateEmployeeDetails(addUpdateEmployeeForm)">
-         <input type="hidden" formControlName="id"/>
-         <div class="form-group row">
-           <div class="col-sm-6">
-             <label>Name:</label><span class="text-danger">*</span>
-             <input type="text" formControlName="name" class="form-control" required placeholder="enter name">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.name.errors?.required">
-               <span>Name Required</span>
-             </div>
-           </div>
-           <div class="col-sm-6">
-             <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
-             <input type="number" formControlName="mobile" class="form-control" required pattern="[0-9]{10}" placeholder="enter mobile no">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.mobile.errors?.required">
-               <span>Mobile Required</span>
-             </div>
-           </div>
-         </div>
-         <div class="form-group row">
-           <div class="col-sm-6">
-             <label>Email:</label><span class="text-danger">*</span>
-             <input type="text" formControlName="email" class="form-control" required placeholder="enter email">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.email.errors?.required">
-               <span>Email Required</span>
-             </div>
-           </div>
-           <div class="col-sm-6">
-             <label >Salary:</label><span class="text-danger">*</span>
-             <input type="number" formControlName="salary" class="form-control" required placeholder="enter salary">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.salary.errors?.required">
-               <span>Salary Required</span>
-             </div>
-           </div>
-         </div>
-         <div class="form-group row">
-           <div class="col-sm-6">
-             <label >Joining Date:</label><span class="text-danger">*</span>
-             <input type="date" formControlName="start_date" class="form-control" required placeholder="enter joining date">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.start_date.errors?.required">
-               <span>Joining date required</span>
-             </div>
-           </div>
-           <div class="col-sm-6">
-             <label >Increament Date:</label><span class="text-danger">*</span>
-             <input type="date" formControlName="increament_date" class="form-control" required placeholder="enter increament date">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.increament_date.errors?.required">
-               <span>Increament date required</span>
-             </div>
-           </div>
-         </div>
-         <div class="form-group row">
-           <div class="col-sm-6">
-             <label>Leave Credit:</label>
-             <input type="number" formControlName="leave_credit" class="form-control" required min="0" value="0" placeholder="enter leave credit">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.leave_credit.errors?.required">
-               <span>Leave Credit required</span>
-             </div>
-           </div>
-           <div class="col-sm-6" *ngIf="!importFile">
- 						 <label class="text-muted" for="company_address ">Upload Document (.zip)</label>
-             <div class="import_file_upload">
-               <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
-               <input type="file" formControlName="file" id="file-upload" class="form-control" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" (change)="uploadFile($event,f)" placeholder="Upload Document">
-               <div id="file-upload-filename"></div>
-              </div>
- 		       </div>
-           <div class="col-sm-6" *ngIf="importFile" style="padding-top: 24px;">
-             <label>File name :- {{addUpdateEmployeeForm.value.document}}</label>
-             <i class="fa fa-times pull-right" (click)="changeImportFile()" style="font-size: 16px;cursor: pointer;"></i>
-           </div>
-         </div>
-         <div class="form-group row">
-           <div class="col-sm-6" *ngIf="!addUpdateEmployeeForm.value.id">
-             <label for="password"> Password</label>
-             <input type="password" formControlName="password" class="form-control" required placeholder="enter password">
-             <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.password.errors?.required">
-               <span>password required</span>
-             </div>
-           </div>
-           <div class="col-sm-6" *ngIf="addUpdateEmployeeForm.value.id">
-             <div class="form-check">
-                <label class="form-check-label form-margin-left">
+    <!-- </div> -->
+    <div class="row mb-20 margin-0" *ngIf="addUpdateEmployee">
+        <div class="col-sm-12 rounded-border">
+            <br/>
+            <h2 style="text-align: center;margin-top:10px">Add/Update Employee</h2>
+            <br/>
+            <form [formGroup]="addUpdateEmployeeForm" (ngSubmit)="addUpdateEmployeeDetails(addUpdateEmployeeForm)">
+                <input type="hidden" formControlName="id" />
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>Name:</label><span class="text-danger">*</span>
+                        <input type="text" formControlName="name" class="form-control" required placeholder="enter name">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.name.errors?.required">
+                            <span>Name Required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtMobile">Mobile:</label><span class="text-danger">*</span>
+                        <input type="number" formControlName="mobile" class="form-control" required pattern="[0-9]{10}" placeholder="enter mobile no">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.mobile.errors?.required">
+                            <span>Mobile Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>Email:</label><span class="text-danger">*</span>
+                        <input type="text" formControlName="email" class="form-control" required placeholder="enter email">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.email.errors?.required">
+                            <span>Email Required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Salary:</label><span class="text-danger">*</span>
+                        <input type="number" formControlName="salary" class="form-control" required placeholder="enter salary">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.salary.errors?.required">
+                            <span>Salary Required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>Joining Date:</label><span class="text-danger">*</span>
+                        <input type="date" formControlName="start_date" class="form-control" required placeholder="enter joining date">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.start_date.errors?.required">
+                            <span>Joining date required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Increament Date:</label><span class="text-danger">*</span>
+                        <input type="date" formControlName="increament_date" class="form-control" required placeholder="enter increament date">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.increament_date.errors?.required">
+                            <span>Increament date required</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label>Leave Credit:</label>
+                        <input type="number" formControlName="leave_credit" class="form-control" required min="0" value="0" placeholder="enter leave credit">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.leave_credit.errors?.required">
+                            <span>Leave Credit required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" *ngIf="!importFile">
+                        <label class="text-muted" for="company_address ">Upload Document (.zip)</label>
+                        <div class="import_file_upload">
+                            <button type="button" class="btn" flow-btn="">Browse<input type="file" style="visibility: hidden; position: absolute; width: 1px; height: 1px;"></button>
+                            <input type="file" formControlName="file" id="file-upload" class="form-control" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" (change)="uploadFile($event,f)" placeholder="Upload Document">
+                            <div id="file-upload-filename"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" *ngIf="importFile" style="padding-top: 24px;">
+                        <label>File name :- {{addUpdateEmployeeForm.value.document}}</label>
+                        <i class="fa fa-times pull-right" (click)="changeImportFile()" style="font-size: 16px;cursor: pointer;"></i>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6" *ngIf="!addUpdateEmployeeForm.value.id">
+                        <label for="password"> Password</label>
+                        <input type="password" formControlName="password" class="form-control" required placeholder="enter password">
+                        <div class="text-danger" *ngIf="isSubmit && addUpdateEmployeeForm.controls.password.errors?.required">
+                            <span>password required</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" *ngIf="addUpdateEmployeeForm.value.id">
+                        <div class="form-check">
+                            <label class="form-check-label form-margin-left">
                   <input type="checkbox" class="form-check-input" formControlName="changePassword">Change Password
                 </label>
-             </div>
-             <div class="" *ngIf="addUpdateEmployeeForm.value.changePassword" style="margin-top:10px;">
-               <input type="password" formControlName="password" class="form-control" placeholder="enter password">
-             </div>
-           </div>
-         </div>
-         <br>
-         <div class="row">
-           <div class="col-sm-12 text-center">
-             <button type="submit" class="btn btn-medium btn-primary" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
-           </div>
-         </div>
-         <br/>
-       </form>
-     </div>
-   </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <!-- <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteEmployeeModal()">DELETE</button> -->
-      <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="openExportReportModal()">Export Report</button>
-      <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
-      <button class="pull-right btn btn-primary mr-6" type="button" (click)="openEndSessionModal()">End Session</button>
+                        </div>
+                        <div class="" *ngIf="addUpdateEmployeeForm.value.changePassword" style="margin-top:10px;">
+                            <input type="password" formControlName="password" class="form-control" placeholder="enter password">
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <button type="submit" class="btn btn-medium btn-primary" style="background-color: #086d92; margin-bottom: 2px;">Save</button>
+                    </div>
+                </div>
+                <br/>
+            </form>
+        </div>
     </div>
-  </div>
-  <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <button _ngcontent-bip-c5="" class="pull-right btn btn-medium btn-danger" role="button" (click)="openDeleteEmployeeModal()">DELETE</button> -->
+            <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="openExportReportModal()">Export Report</button>
+            <button class="pull-right btn btn-primary mr-6" tabindex="0" (click)="addEmployee()">Add Employee</button>
+            <button class="pull-right btn btn-primary mr-6" type="button" (click)="openEndSessionModal()">End Session</button>
+        </div>
+    </div>
+    <br>
 
-  <div style="height: 100%; box-sizing: border-box; width: 100%;">
-      <ag-grid-angular
-      #agGrid
-      style="width: 100%; height: 500px;"
-      id="myGrid"
-      class="ag-theme-alpine"
-      [columnDefs]="columnDefs"
-      [defaultColDef]="defaultColDef"
-      [defaultColGroupDef]="defaultColGroupDef"
-      [columnTypes]="columnTypes"
-      [rowData]="employeeList"
-      (gridReady)="onGridReady($event)"
-    ></ag-grid-angular>
-  </div>
-
+    <div style="height: 100%; box-sizing: border-box; width: 100%;">
+        <ag-grid-angular #agGrid style="width: 100%; height: 500px;" id="myGrid" class="ag-theme-alpine" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [defaultColGroupDef]="defaultColGroupDef" [columnTypes]="columnTypes" [rowData]="employeeList" (gridReady)="onGridReady($event)"></ag-grid-angular>
+    </div>
+    <!-- 
   <div id="deleteEmployeeModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
+    <div class="modal-dialog"> -->
+    <!-- Modal content-->
+    <!-- <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Delete Employee?</h4>
           <button type="button" class="close" data-dismiss="modal">X</button>
@@ -184,42 +173,42 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <div id="exportReportModal" class="modal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Export Report</h4>
-          <button type="button" class="close" data-dismiss="modal">X</button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group" style="padding-right: 5px;display:inline-block;">
-                <label class="d-inline-block mr-10">From Date:</label>
-                <input type="date" [(ngModel)]="reportStartDate" name="reportStartDate" class="form-control" (change)="fromAndToDateChange(reportStartDate,true)" required style="width: auto;display: inline-block;">
-                <div class="text-danger" *ngIf="!reportStartDate && isReportSubmitted">
-                  <span>Start date required</span>
+    <div id="exportReportModal" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Export Report</h4>
+                    <button type="button" class="close" data-dismiss="modal">X</button>
                 </div>
-              </div>
-              <div class="form-group" style="padding-right: 5px;display:inline-block;">
-                <label class="d-inline-block mr-10">To Date:</label>
-                <input type="date" [(ngModel)]="reportEndDate" name="reportEndDate" class="form-control" (change)="fromAndToDateChange(reportEndDate,false)" required style="width: auto;display: inline-block;" min="{{maxDate|date:'yyyy-MM-dd'}}">
-                <div class="text-danger" *ngIf="!reportEndDate && isReportSubmitted">
-                  <span>End date required</span>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group" style="padding-right: 5px;display:inline-block;">
+                                <label class="d-inline-block mr-10">From Date:</label>
+                                <input type="date" [(ngModel)]="reportStartDate" name="reportStartDate" class="form-control" (change)="fromAndToDateChange(reportStartDate,true)" required style="width: auto;display: inline-block;">
+                                <div class="text-danger" *ngIf="!reportStartDate && isReportSubmitted">
+                                    <span>Start date required</span>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-right: 5px;display:inline-block;">
+                                <label class="d-inline-block mr-10">To Date:</label>
+                                <input type="date" [(ngModel)]="reportEndDate" name="reportEndDate" class="form-control" (change)="fromAndToDateChange(reportEndDate,false)" required style="width: auto;display: inline-block;" min="{{maxDate|date:'yyyy-MM-dd'}}">
+                                <div class="text-danger" *ngIf="!reportEndDate && isReportSubmitted">
+                                    <span>End date required</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-medium" (click)="exportEmployeeReport()">SAVE</button>
+                    <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-medium" (click)="exportEmployeeReport()">SAVE</button>
-          <button type="button" class="btn btn-secondary btn-medium" data-dismiss="modal">CANCEL</button>
-        </div>
-      </div>
     </div>
-  </div>
- </section>
+</section>
 <app-alert-messages></app-alert-messages>
