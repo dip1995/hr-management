@@ -109,6 +109,7 @@ export class DailyWorkListComponent implements OnInit {
           ) {
             let sorted = _.sortBy(Object.keys(this.grouped_dailyWork));
             this.sorted_dates = sorted.reverse();
+            //this.alertSuccessErrorMsg(res.status, res.message, false);
           }
         } else {
           this.alertSuccessErrorMsg(res.status, res.message, false);

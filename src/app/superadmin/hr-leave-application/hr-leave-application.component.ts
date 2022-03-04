@@ -29,6 +29,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   defaultColGroupDef;
   columnTypes;
   rowData: [];
+
   dateParts;
   day;
   month;
@@ -37,6 +38,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   monthList = [];
   modalElements: any = { title: '', body: '' };
   approveStatus: any = 1;
+  gridOptions: any;
   constructor(
     private router: Router,
     private superadminService: SuperadminService,
@@ -49,6 +51,7 @@ export class HrLeaveApplicationComponent implements OnInit {
         field: 'RowSelect',
         headerName: ' ',
         checkboxSelection: true,
+
         filter: false,
         suppressMenu: true,
         suppressSorting: true,
@@ -108,10 +111,21 @@ export class HrLeaveApplicationComponent implements OnInit {
         headerName: 'Status',
         field: 'approve_status',
         // width: 220,
+
         flex: 1,
         filter: 'agTextColumnFilter',
-        cellClass: 'ag-grid-cell-border',
-        
+        cellStyle: (params) => {
+          // console.log(params);
+          if (params.data.approve_status == 1) {
+            //mark police cells as red
+            return { color: 'green' };
+          } else if (params.data.approve_status == 2) {
+            return { color: 'red' };
+          } else {
+            return { color: 'black' };
+          }
+        },
+
         cellRenderer: (data) => {
           return data.value == 1
             ? 'Approved'
@@ -119,6 +133,14 @@ export class HrLeaveApplicationComponent implements OnInit {
             ? 'Rejected'
             : 'Pending';
         },
+      },
+      {
+        headerName: 'Notification',
+        field: 'notification',
+        // width: 220,
+        flex: 1,
+        filter: 'agTextColumnFilter',
+        cellClass: 'ag-grid-cell-border',
       },
     ];
 
@@ -184,6 +206,7 @@ export class HrLeaveApplicationComponent implements OnInit {
           body: 'Are you sure you want to approve these leave application(s)',
         };
       }
+
       $('#approveLeaveApplication').modal('show');
     } else {
       this.alertSuccessErrorMsg(false, 'Please select a row!!', false);
@@ -247,4 +270,15 @@ export class HrLeaveApplicationComponent implements OnInit {
   selectMonthChange(selectMonth) {
     this.getLeaveApplicationList();
   }
+
+  // getRowStyle(value) {
+  //   console.log(value);
+  //   if (value.data.approve_status == 1) {
+  //     return { 'background-color': 'lightgreen' };
+  //   } else if (value.data.approve_status == 2) {
+  //     return { 'background-color': 'red' };
+  //   } else {
+  //     return { 'background-color': 'lightyellow' };
+  //   }
+  // }
 }

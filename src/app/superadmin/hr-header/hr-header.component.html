@@ -1,58 +1,62 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white py-0">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="">
-      <img src="assets/eplogo.png" style="width: auto; height: 66px;" class="logo header_logo">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">
+            <img src="assets/eplogo.png" style="width: auto; height: 66px;" class="logo header_logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-employee">Employee</a>
-        </li>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-employee">Employee</a>
+                </li>
 
-        <li class="nav-item active">
-          <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-daily-work">Daily Work</a>
-        </li>
+                <li class="nav-item active">
+                    <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-daily-work">Daily Work</a>
+                </li>
 
-        <li class="nav-item active">
-          <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-leave-application">Leave Application</a>
-        </li>
+                <li class="nav-item active">
+                    <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-leave-application">Leave Application</a>
+                </li>
 
-        <li class="nav-item active">
-          <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-holidays">Holidays</a>
-        </li>
+                <li class="nav-item active">
+                    <a class="nav-link px-3 py-4" routerLinkActive="router-link-active" routerLink="/superadmin/hr-holidays">Holidays</a>
+                </li>
 
-        <li class="nav-item dropdown pad-left-10 border-transparent">
-          <a class="nav-link dropdown-toggle pad-0" id="navbarDropdown" href="#" data-toggle="dropdown" aria-expanded="false" routerLink="#">
-            <div class="admin-name ng-binding">
-              HR
-            </div>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
-            <li><a class="dropdown-item" routerLink="/superadmin/hr-change-password">Change Password</a></li>
-            <li><a class="dropdown-item" (click)="logoutHR()">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
+                <li class="nav-item dropdown pad-left-10 border-transparent">
+                    <a class="nav-link dropdown-toggle pad-0" id="navbarDropdown" href="#" data-toggle="dropdown" aria-expanded="false" routerLink="#">
+                        <div class="admin-name ng-binding">
+                            HR
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" role="menu">
+                        <li><a class="dropdown-item" routerLink="/superadmin/hr-change-password">Change Password</a></li>
+                        <li><a class="dropdown-item" (click)="logoutHR()">Logout</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" routerLink="/superadmin/hr-leave-application"> <span class="glyphicon glyphicon-bell " id="navIcon"></span></a>
+                </li>
+
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 <div class="container-fluid grdBG">
-  <div class="row">
-    <div class="col-sm-3 border-right-white">
-      Total Employee : {{employeeReport.total_employee}}
-    </div>
-    <!-- <div class="col-sm-3 border-right-white">
+    <div class="row">
+        <div class="col-sm-3 border-right-white">
+            Total Employee : {{employeeReport.total_employee}}
+        </div>
+        <!-- <div class="col-sm-3 border-right-white">
       Increament Date : {{employeeReport.increamentdate}}
     </div>
     <div class="col-sm-3 border-right-white">
       Leave Credit : {{employeeReport.leave_credit}}
     </div> -->
-    <div class="col-sm-3 border-right-white">
-      Leave application : {{employeeReport.pending}}
+        <div class="col-sm-3 border-right-white">
+            Leave application : {{employeeReport.pending}}
+        </div>
     </div>
-  </div>
 </div>

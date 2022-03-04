@@ -3,118 +3,182 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SuperadminService {
-  local_url = environment.LOCAL_API_URL ; // localhost
-  token:any;
-  userid:any;
+  local_url = environment.LOCAL_API_URL; // localhost
+  token: any;
+  userid: any;
   httpHeaders = new HttpHeaders({
-    'Content-Type':'application/json',
+    'Content-Type': 'application/json',
   });
 
   options = {
-    headers:  this.httpHeaders
+    headers: this.httpHeaders,
   };
 
-  constructor(private http : HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-/////////////////////////http request/////////////////////////////////
+  /////////////////////////http request/////////////////////////////////
 
-  superadminLogin(body:any) : Observable<any> {
+  superadminLogin(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadminlogin/login',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadminlogin/login',
+      body
+    );
   }
 
-  superadminLogout(body:any) : Observable<any> {
+  superadminLogout(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/logout/logout',body);
+    return this.http.post<any>(this.local_url + '/api/logout/logout', body);
   }
 
-  getEmployeeList(body:any) : Observable<any> {
+  getEmployeeList(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getEmployeeList',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/getEmployeeList',
+      { params: body }
+    );
   }
 
-  addUpdateEmployeeDetails(body:any) : Observable<any> {
+  addUpdateEmployeeDetails(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/addUpdateEmployeeDetails',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/addUpdateEmployeeDetails',
+      body
+    );
   }
 
-  endEmployeeSession(body:any) : Observable<any> {
+  endEmployeeSession(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/endEmployeeSession',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/endEmployeeSession',
+      body
+    );
   }
 
-  approveLeaveApplication(body:any) : Observable<any> {
+  approveLeaveApplication(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/approveLeaveApplication',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/approveLeaveApplication',
+      body
+    );
   }
 
-  getAllEmployeeReportCard(body:any) : Observable<any> {
+  getAllEmployeeReportCard(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getAllEmployeeReportCard',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/getAllEmployeeReportCard',
+      { params: body }
+    );
   }
 
-  uploadZipDocument(body:any) : Observable<any> {
+  uploadZipDocument(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/uploadZipDocument',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/uploadZipDocument',
+      body
+    );
   }
 
-  addUpdateBusinessHolidays(body:any) : Observable<any> {
+  addUpdateBusinessHolidays(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/addUpdateBusinessHolidays',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/addUpdateBusinessHolidays',
+      body
+    );
   }
 
-  deleteBusinessHolidays(body:any) : Observable<any> {
+  deleteBusinessHolidays(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/deleteBusinessHolidays',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/deleteBusinessHolidays',
+      body
+    );
   }
 
-  getBusinessHolidayList(body:any) : Observable<any> {
+  getBusinessHolidayList(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getBusinessHolidayList',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/getBusinessHolidayList',
+      { params: body }
+    );
   }
 
-  getLeaveApplicationList(body:any) : Observable<any> {
+  getLeaveApplicationList(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getLeaveApplicationList',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/getLeaveApplicationList',
+      { params: body }
+    );
   }
 
-  getEmployeesDailyWorksheetData(body:any) : Observable<any> {
+  getEmployeesDailyWorksheetData(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/superadmin/getEmployeesDailyWorksheetData',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/getEmployeesDailyWorksheetData',
+      { params: body }
+    );
   }
 
-  getWorkingMonthsList(body:any) : Observable<any> {
+  getWorkingMonthsList(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/employee/getWorkingMonthsList',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/employee/getWorkingMonthsList',
+      { params: body }
+    );
   }
 
-  getEmployeeDetailsById(body:any) : Observable<any> {
+  getEmployeeDetailsById(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.get<any>(this.local_url+'/api/employee/getEmployeeDetailsById',{ params: body});
+    return this.http.get<any>(
+      this.local_url + '/api/employee/getEmployeeDetailsById',
+      { params: body }
+    );
   }
 
-  updatePassword(body:any) : Observable<any> {
+  updatePassword(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/updatePassword',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/updatePassword',
+      body
+    );
   }
 
-  addPresentByUser(body:any) : Observable<any> {
+  addPresentByUser(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/addPresentByUser',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/addPresentByUser',
+      body
+    );
   }
 
-  exportEmployeeReport(body:any) : Observable<any> {
+  exportEmployeeReport(body: any): Observable<any> {
     body.user_type = 'superadmin';
-    return this.http.post<any>(this.local_url+'/api/superadmin/exportEmployeeReport',body);
+    return this.http.post<any>(
+      this.local_url + '/api/superadmin/exportEmployeeReport',
+      body
+    );
+  }
+  updateUnreadLeaveApplication(body: any): Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/updateUnreadLeaveApplication',
+      body
+    );
+  }
+  countApplicationList(body: any): Observable<any> {
+    body.user_type = 'superadmin';
+    return this.http.get<any>(
+      this.local_url + '/api/superadmin/countApplicationList',
+      body
+    );
   }
 
-  get_Time(){
-    var min=60;
-    var ms=1000;
-    return  new Date().getTimezoneOffset() * min * ms;
+  get_Time() {
+    var min = 60;
+    var ms = 1000;
+    return new Date().getTimezoneOffset() * min * ms;
   }
-
 }
