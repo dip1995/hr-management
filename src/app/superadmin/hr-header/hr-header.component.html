@@ -37,7 +37,9 @@
                     </ul>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" routerLink="/superadmin/hr-leave-application"> <span class="glyphicon glyphicon-bell " id="navIcon"></span></a>
+                    <a class="nav-link" routerLink="/superadmin/hr-leave-application">
+                        <span class="glyphicon glyphicon-bell " id="navIcon"><span class="notification" *ngIf="leaveNotification!=0">{{leaveNotification}}</span></span>
+                    </a>
                 </li>
 
             </ul>

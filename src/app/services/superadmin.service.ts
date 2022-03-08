@@ -165,14 +165,14 @@ export class SuperadminService {
     body.user_type = 'superadmin';
     return this.http.get<any>(
       this.local_url + '/api/superadmin/updateUnreadLeaveApplication',
-      body
+      { params: body }
     );
   }
   countApplicationList(body: any): Observable<any> {
     body.user_type = 'superadmin';
     return this.http.get<any>(
       this.local_url + '/api/superadmin/countApplicationList',
-      body
+      { params: body }
     );
   }
 

@@ -20,6 +20,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   selectMonth: any = +new Date();
   leaveError: any = false;
   leaveErrorMessage: any = '';
+  //notification: any = {};
 
   gridApi;
   gridColumnApi;
@@ -122,7 +123,7 @@ export class HrLeaveApplicationComponent implements OnInit {
           } else if (params.data.approve_status == 2) {
             return { color: 'red' };
           } else {
-            return { color: 'black' };
+            return { color: 'orange' };
           }
         },
 
@@ -138,6 +139,15 @@ export class HrLeaveApplicationComponent implements OnInit {
         headerName: 'Notification',
         field: 'notification',
         // width: 220,
+        cellRenderer: (data) => {
+          // return data.value == 1 ? 'unseen' : data.value == 0 ? 'seen' : 'seen';
+          // console.log(data);
+          if (data.value == 1) {
+            return 'unseen';
+          } else {
+            return 'seen';
+          }
+        },
         flex: 1,
         filter: 'agTextColumnFilter',
         cellClass: 'ag-grid-cell-border',
@@ -188,6 +198,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   ngOnInit() {
     this.getWorkingMonthsList();
     this.getLeaveApplicationList();
+    this.updateUnreadLeaveApplication();
   }
 
   approveLeaveApplication(reject: number) {
@@ -260,6 +271,11 @@ export class HrLeaveApplicationComponent implements OnInit {
       } else {
         // this.alertSuccessErrorMsg(res.status, res.message,false);
       }
+    });
+  }
+  updateUnreadLeaveApplication() {
+    this.superadminService.updateUnreadLeaveApplication({}).subscribe((res) => {
+      console.log(res);
     });
   }
 

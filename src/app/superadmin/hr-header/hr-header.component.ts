@@ -13,6 +13,8 @@ export class HrHeaderComponent implements OnInit {
   linkUrl: any = environment.LINK_URL; // url
   userCookie: any;
   employeeReport: any = {};
+  leaveNotification: any = [];
+  data: any;
   constructor(
     private router: Router,
     private cookieService: CookieService,
@@ -25,7 +27,7 @@ export class HrHeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllEmployeeReportCard();
-    //this.countApplicationList();
+    this.countApplicationList();
   }
 
   logoutHR() {
@@ -59,7 +61,8 @@ export class HrHeaderComponent implements OnInit {
   }
   countApplicationList() {
     this.superadminService.countApplicationList({}).subscribe((res) => {
-      console.log(res);
+      this.leaveNotification = res.data[0].total_row;
+      // console.log(this.leaveNotification);
     });
   }
 

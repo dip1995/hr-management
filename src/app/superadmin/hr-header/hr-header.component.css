@@ -125,11 +125,31 @@ ul.navbar-nav a.nav-link:hover {
 }
 
 #navIcon {
-    font-size: 25px;
+    /* font-size: 25px;
     color: #2b79ab;
-    padding-left: 10px;
+    padding-left: 10px; */
+    /* background-color: #555; */
+    color: #086D92;
+    /* text-decoration: none; */
+    padding: -1px 2px;
+    /* position: relative; */
+    display: inline-block;
+    /* border-radius: 2px; */
+    font-size: 30px;
 }
 
 #headerList {
     padding-right: 0px;
+}
+
+.notification {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 7px 8px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    margin-top: -5px;
 }
