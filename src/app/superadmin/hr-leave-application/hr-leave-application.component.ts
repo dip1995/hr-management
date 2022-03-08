@@ -40,6 +40,7 @@ export class HrLeaveApplicationComponent implements OnInit {
   modalElements: any = { title: '', body: '' };
   approveStatus: any = 1;
   gridOptions: any;
+  notification: any;
   constructor(
     private router: Router,
     private superadminService: SuperadminService,
@@ -140,8 +141,7 @@ export class HrLeaveApplicationComponent implements OnInit {
         field: 'notification',
         // width: 220,
         cellRenderer: (data) => {
-          // return data.value == 1 ? 'unseen' : data.value == 0 ? 'seen' : 'seen';
-          // console.log(data);
+          console.log(data);
           if (data.value == 1) {
             return 'unseen';
           } else {
@@ -276,6 +276,8 @@ export class HrLeaveApplicationComponent implements OnInit {
   updateUnreadLeaveApplication() {
     this.superadminService.updateUnreadLeaveApplication({}).subscribe((res) => {
       console.log(res);
+      this.notification = res.data.affectedRows;
+      this.notification = [];
     });
   }
 
