@@ -141,7 +141,6 @@ export class HrLeaveApplicationComponent implements OnInit {
         field: 'notification',
         // width: 220,
         cellRenderer: (data) => {
-          console.log(data);
           if (data.value == 1) {
             return 'unseen';
           } else {
