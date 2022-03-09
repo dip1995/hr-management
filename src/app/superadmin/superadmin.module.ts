@@ -14,11 +14,22 @@ import { AgGridModule } from 'ag-grid-angular';
 import { HrEmployeeComponent } from './hr-employee/hr-employee.component';
 import { HrChangePasswordComponent } from './hr-change-password/hr-change-password.component';
 import { HrEmployeeDetailsComponent } from './hr-employee-details/hr-employee-details.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
 // import { HttpClientModule } from '@angular/common/http';
 
-
 @NgModule({
-  declarations: [LoginComponent, DashboardComponent, HrDailyWorkComponent, HrLeaveApplicationComponent, HrHolidaysComponent, HrHeaderComponent, HrEmployeeComponent, HrChangePasswordComponent, HrEmployeeDetailsComponent],
+  declarations: [
+    LoginComponent,
+    DashboardComponent,
+    HrDailyWorkComponent,
+    HrLeaveApplicationComponent,
+    HrHolidaysComponent,
+    HrHeaderComponent,
+    HrEmployeeComponent,
+    HrChangePasswordComponent,
+    HrEmployeeDetailsComponent,
+  ],
   imports: [
     // BrowserModule,
     FormsModule,
@@ -26,6 +37,8 @@ import { HrEmployeeDetailsComponent } from './hr-employee-details/hr-employee-de
     CommonModule,
     CommonModuleModule,
     SuperadminRoutingModule,
+    MatBadgeModule,
+    MatIconModule,
     AgGridModule.withComponents([]),
     // HttpClientModule
   ],
@@ -35,7 +48,7 @@ import { HrEmployeeDetailsComponent } from './hr-employee-details/hr-employee-de
     HrDailyWorkComponent,
     HrLeaveApplicationComponent,
     HrHolidaysComponent,
-    HrEmployeeDetailsComponent
-  ]
+    HrEmployeeDetailsComponent,
+  ],
 })
-export class SuperadminModule { }
+export class SuperadminModule {}
